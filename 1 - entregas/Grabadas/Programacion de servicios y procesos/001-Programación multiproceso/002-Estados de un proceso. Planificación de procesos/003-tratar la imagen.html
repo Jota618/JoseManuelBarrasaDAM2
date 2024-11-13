@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+  <body>
+    <canvas id="lienzo1"></canvas>
+    <script>
+      const lienzo = document.querySelector("#lienzo1");
+      lienzo.width = 1920;
+      lienzo.height = 1080;
+      const contexto = lienzo.getContext("2d");
+      var imagen = new Image();
+      imagen.src = "coche.JPG";
+      imagen.onload = function () {
+        contexto.drawImage(imagen, 0, 0);
+        var datos = contexto.getImageData(0, 0, 1920, 1080);
+      };
+    </script>
+  </body>
+</html>

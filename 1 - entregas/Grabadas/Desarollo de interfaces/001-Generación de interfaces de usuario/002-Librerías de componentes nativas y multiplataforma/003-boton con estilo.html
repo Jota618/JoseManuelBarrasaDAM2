@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <style>
+      button {
+        border: none; /* Elimina el borde */
+        background: linear-gradient(135deg, #007BFF, #0056b3); /* Fondo con degradado azul */
+        color: white; /* Texto en blanco */
+        padding: 10px 20px; /* Espaciado interno: 10px arriba/abajo, 20px izq/dcha */
+        font-size: 16px; /* Tamaño de fuente de 16px */
+        font-family: 'Arial', sans-serif; /* Fuente Arial o sans-serif por defecto */
+        border-radius: 8px; /* Esquinas redondeadas con 8px */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera para el botón */
+        transition: background 0.3s ease, transform 0.2s ease; /* Suaviza el cambio de fondo y el movimiento */
+        cursor: pointer; /* Cambia el cursor a "puntero" cuando se pasa por encima */
+      }
+
+      button:hover {
+        background: linear-gradient(135deg, #0056b3, #003f7f); /* Cambia el color de fondo al pasar el mouse */
+        transform: translateY(-2px); /* Eleva el botón 2px hacia arriba en hover */
+      }
+
+      button:active {
+        transform: translateY(0); /* Devuelve el botón a su posición al hacer clic */
+        background: #003f7f; /* Cambia el fondo a un azul más oscuro al hacer clic */
+      }
+    </style>
+  </head>
+  <body>
+    <button>Púlsame</button> <!-- Texto del botón -->
+  </body>
+</html>

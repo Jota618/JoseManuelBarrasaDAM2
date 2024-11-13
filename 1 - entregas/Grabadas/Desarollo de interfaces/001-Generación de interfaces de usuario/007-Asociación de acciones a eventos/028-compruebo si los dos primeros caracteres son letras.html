@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+  <body>
+    <input class="iban" placeholder="Introduce tu IBAN"> <!-- Input donde el usuario ingresará el IBAN -->
+    <p id="error-message" style="color: red; display: none;">Error: El IBAN no es válido.</p> <!-- Mensaje de error, inicialmente oculto -->
+    <p id="success-message" style="color: green; display: none;">Éxito: El IBAN es válido.</p> <!-- Mensaje de éxito, inicialmente oculto -->
+
+    <script>
+      function isLetter(char) {
+        return /^[a-zA-Z]$/.test(char); // Comprueba si char es una letra
+      }
+
+      const entrada = document.querySelector("input"); // Selecciona el input
+      const errorMessage = document.getElementById("error-message"); // Selecciona el mensaje de error
+      const successMessage = document.getElementById("success-message"); // Selecciona el mensaje de éxito
+
+      entrada.onchange = function(e) {
+        let contenido = this.value; // Obtiene el valor del input
+        
+        // Comprueba condiciones específicas sobre el contenido ingresado
+        if (
+          contenido[4] == " " && // Espacio en la posición 4
+          contenido[9] == " " && // Espacio en la posición 9
+          contenido[14] == " " && // Espacio en la posición 14
+          contenido[19] == " " && // Espacio en la posición 19
+          isLetter(contenido[0]) && // Primer carácter es una letra
+          isLetter(contenido[1])    // Segundo carácter es una letra
+        ) {
+          this.style.background = "rgb(200,255,200)"; // Cambia a verde claro si es válido
+          errorMessage.style.display = "none"; // Oculta el mensaje de error
+          successMessage.style.display = "block"; // Muestra el mensaje de éxito
+
+          // Temporizador para ocultar el mensaje de éxito después de 4 segundos
+          setTimeout(() => {
+            successMessage.style.display = "none"; // Oculta el mensaje de éxito
+          }, 4000);
+        } else {
+          this.style.background = "rgb(255,200,200)"; // Cambia a rojo claro si no es válido
+          errorMessage.style.display = "block"; // Muestra el mensaje de error
+          successMessage.style.display = "none"; // Oculta el mensaje de éxito
+
+          // Temporizador para ocultar el mensaje de error después de 4 segundos
+          setTimeout(() => {
+            errorMessage.style.display = "none"; // Oculta el mensaje de error
+          }, 4000);
+        }
+      }
+    </script>
+  </body>
+</html>
+
+
+
+
+

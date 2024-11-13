@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+  <body>
+    <input class="iban">
+    <script>
+      const entrada = document.querySelector("input")
+      entrada.onkeyup = function(e){
+        let contenido = this.value;
+        for(let i = 0;i<contenido.length;i++){
+          console.log(contenido[i])
+        }
+      }
+    </script>
+  </body>
+</html>

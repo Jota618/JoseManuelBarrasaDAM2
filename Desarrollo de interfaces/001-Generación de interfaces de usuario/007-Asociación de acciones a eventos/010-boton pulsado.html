@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <body>
+    <style>
+      canvas{border:1px solid grey;} 
+    </style>
+    <canvas></canvas>
+    <script>
+      var pulsado = false;                                    // De entrada no estoy pulsando el raton
+      document.onmousedown = function(){pulsado = true;}      // Cuando pulso el boton izquierdo, cambio la variable
+      document.onmouseup = function(){pulsado = false;}       // Cuando despulso, cambio la variable
+      const lienzo = document.querySelector("canvas")         // atrapo el lienzo
+      const contexto = lienzo.getContext("2d")                // Atrapo el contexto
+      lienzo.width = 512                                      // Le doy anchura al lienzo
+      lienzo.height = 512                                     // Le doy altura al lienzo
+      lienzo.onmousemove = function(e){                       // Cuando mueva el raton por el lienzo
+        if(pulsado){                                          // Si tengo el raton pulsado
+          contexto.fillRect(e.offsetX,e.offsetY,2,2)          // Dibuja en la pantalla
+        }
+      }
+    </script>
+  </body>
+</html>

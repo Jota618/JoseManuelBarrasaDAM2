@@ -1,0 +1,1 @@
+CREATE TABLE `crimson`.`aplicaciones` (`Identificador` INT NOT NULL AUTO_INCREMENT , `nombre` VARCHAR(100) NOT NULL , `descripcion` TEXT NOT NULL , `icono` VARCHAR(255) NOT NULL , `ruta` VARCHAR(255) NOT NULL , `activa` BOOLEAN NOT NULL , PRIMARY KEY (`Identificador`)) ENGINE = InnoDB;

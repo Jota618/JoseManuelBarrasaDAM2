@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+  <body>
+    <style>
+      canvas{border:1px solid grey;} 
+    </style>
+    <input type="color" id="color">
+    <select id="radio">
+      <option value=1>1</option>
+      <option value=2>2</option>
+      <option value=3>3</option>
+      <option value=4>4</option>
+      <option value=5>5</option>
+      <option value=6>6</option>
+      <option value=7>7</option>
+      <option value=8>8</option>
+      <option value=9>9</option>
+      <option value=10>10</option>
+    </select>
+    <canvas></canvas>
+    <script>
+     var radio = 1
+      var pulsado = false;                                    // De entrada no estoy pulsando el raton
+      document.onmousedown = function(){pulsado = true;}      // Cuando pulso el boton izquierdo, cambio la variable
+      document.onmouseup = function(){pulsado = false;}       // Cuando despulso, cambio la variable
+      const lienzo = document.querySelector("canvas")         // atrapo el lienzo
+      const contexto = lienzo.getContext("2d")                // Atrapo el contexto
+      contexto.fillStyle = "black"
+      lienzo.width = 512                                      // Le doy anchura al lienzo
+      lienzo.height = 512                                     // Le doy altura al lienzo
+      lienzo.onmousemove = function(e){                       // Cuando mueva el raton por el lienzo
+        if(pulsado){                                          // Si tengo el raton pulsado
+          contexto.fillRect(e.offsetX,e.offsetY,radio,radio)          // Dibuja en la pantalla
+        }
+      }
+      document.getElementById("color").onchange = function(){ // Cuando cambie el valor del color
+        contexto.fillStyle = this.value                       // El color del contexto es el color del input
+      }
+      document.getElementById("radio").onchange = function(){ // Cuando cambie el valor del color
+        radio = this.value                                    // El color del contexto es el color del input
+      }
+    </script>
+  </body>
+</html>

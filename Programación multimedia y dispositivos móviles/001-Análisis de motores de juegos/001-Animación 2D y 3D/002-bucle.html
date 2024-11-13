@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      canvas{border:1px solid grey;}
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      var lienzo = document.querySelector("canvas");
+      var contexto = lienzo.getContext("2d");
+      lienzo.width = 512;
+      lienzo.height = 512;
+      contexto.fillRect(20,20,30,30);
+      var temporizador = setTimeout("bucle()",1000);
+      function bucle(){
+        console.log("esto es un bucle")
+        clearTimeout(temporizador);
+        temporizador = setTimeout("bucle()",1000);
+      }
+    </script>
+  </body>
+</html>

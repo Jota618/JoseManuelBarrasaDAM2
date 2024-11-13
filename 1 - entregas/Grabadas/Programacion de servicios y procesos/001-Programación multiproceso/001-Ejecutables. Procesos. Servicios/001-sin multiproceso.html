@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <body>
+    <script>
+      // Se declara una variable `numero` con un valor inicial muy pequeño.
+      let numero = 1.0000000054;
+      // Se declara una variable `iteraciones` que indica cuántas veces se repetirá el bucle.
+      let iteraciones = 10000000000; // 10 mil millones de iteraciones
+
+      // Se inicia un bucle que se repetirá `iteraciones` veces.
+      for (let i = 0; i < iteraciones; i++) {
+        // En cada iteración, se multiplica `numero` por un valor muy cercano a 1.
+        numero *= 1.000000000076;
+      }
+
+      // Una vez que el bucle ha terminado, se imprime "finalizado" en la consola.
+      console.log("finalizado");
+    </script>
+  </body>
+</html>

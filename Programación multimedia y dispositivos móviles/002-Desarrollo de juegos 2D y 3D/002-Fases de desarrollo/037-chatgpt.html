@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="estilo.css">
+    <title>Multiplayer Checkers Game</title>
+  </head>
+  <body>
+    <select id="seleccionajugador">
+      <option>Selecciona un rol</option>
+      <option value="p1">Soy el jugador 1 (negras)</option>
+      <option value="p2">Soy el jugador 2 (blancas)</option>
+      <option value="p0">Soy un espectador</option>
+    </select>
+    <div id="tablero"></div>
+
+    <script>
+      // Global variables
+      var jugador = "";
+      var fichaseleccionada = null; // Represents the piece currently held
+      var temporizador = null;
+
+      // Player selection
+      let selector = document.querySelector("#seleccionajugador");
+      selector.onchange = function () {
+        jugador = this.value;
+      };
+
+      // Initialize the board
+      let tablero = document.querySelector("#tablero");
+      for (let i = 0; i < 64; i++) {
+        let elemento = document.createElement("div");
+        elemento.setAttribute("id", "celda" + i);
+
+        if ((i + Math.floor(i / 8)) % 2 == 0) {
+          elemento.classList.add("celdablanca");
+        } else {
+          elemento.classList.add("celdanegra");
+        }
+
+        elemento.onclick = function (e) {
+          if (fichaseleccionada != null) {
+            if (elemento.innerHTML == "") {
+              if (elemento.classList.contains("celdablanca")) {
+                elemento.appendChild(fichaseleccionada);
+                fichaseleccionada = null;
+                // After making a move, send the updated game state to the server
+                enviarEstadoJuego();
+              }
+            }
+          }
+        };
+
+        if (
+          (i < 24 || i >= 40) &&
+          (i + Math.floor(i / 8)) % 2 == 0
+        ) {
+          let ficha = document.createElement("article");
+          ficha.onclick = function (e) {
+            e.stopPropagation();
+            if (fichaseleccionada == null) {
+              // Allow only the correct player to pick up their pieces
+              if (
+                (jugador === "p1" && ficha.classList.contains("fichanegra")) ||
+                (jugador === "p2" && ficha.classList.contains("fichablanca")) ||
+                jugador === "p0" // Spectator can pick up any piece (optional)
+              ) {
+                fichaseleccionada = ficha;
+                this.parentElement.removeChild(this);
+              } else {
+                alert("No es tu turno o no puedes mover esta ficha.");
+              }
+            }
+          };
+          if (i < 24) {
+            ficha.classList.add("fichablanca");
+          }
+          if (i >= 40) {
+            ficha.classList.add("fichanegra");
+          }
+          elemento.appendChild(ficha);
+        }
+        tablero.appendChild(elemento);
+      }
+
+      // Function to collect the current game state into 'mensaje' array
+      function obtenerEstadoJuego() {
+        let fichas = document.querySelectorAll("article");
+        let mensaje = [];
+        for (let i = 0; i < fichas.length; i++) {
+          mensaje.push({
+            clase: fichas[i].classList[0],
+            celda: fichas[i].parentElement.getAttribute("id"),
+          });
+        }
+        return mensaje;
+      }
+
+      // Function to update the local game state based on 'mensaje' array
+      function actualizarEstadoJuego(mensaje) {
+        // Clear all pieces from the board
+        let celdas = document.querySelectorAll("#tablero div");
+        celdas.forEach((celda) => {
+          celda.innerHTML = "";
+        });
+        // Re-create pieces based on 'mensaje' array
+        mensaje.forEach((item) => {
+          let ficha = document.createElement("article");
+          ficha.classList.add(item.clase);
+          ficha.onclick = function (e) {
+            e.stopPropagation();
+            if (fichaseleccionada == null) {
+              // Allow only the correct player to pick up their pieces
+              if (
+                (jugador === "p1" && ficha.classList.contains("fichanegra")) ||
+                (jugador === "p2" && ficha.classList.contains("fichablanca")) ||
+                jugador === "p0" // Spectator can pick up any piece (optional)
+              ) {
+                fichaseleccionada = ficha;
+                this.parentElement.removeChild(this);
+              } else {
+                alert("No es tu turno o no puedes mover esta ficha.");
+              }
+            }
+          };
+          document
+            .getElementById(item.celda)
+            .appendChild(ficha);
+        });
+      }
+
+      // Function to send the current game state to the server
+      function enviarEstadoJuego() {
+        if (jugador === "p1" || jugador === "p2") {
+          let mensaje = obtenerEstadoJuego();
+          fetch("http://localhost:5000/update_board", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              mensaje: mensaje,
+              player: jugador,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data.message);
+            })
+            .catch((error) => {
+              console.error("Error updating board:", error);
+            });
+        }
+      }
+
+      // Function to fetch the latest game state from the server
+      function obtenerEstadoDelServidor() {
+        fetch("http://localhost:5000/get_board")
+          .then((response) => response.json())
+          .then((data) => {
+            let mensajeServidor = data.mensaje;
+            let ultimoJugador = data.last_updated_by;
+
+            // Update the local game state if needed
+            let estadoLocal = obtenerEstadoJuego();
+
+            // Compare local and server state
+            if (
+              JSON.stringify(estadoLocal) !==
+              JSON.stringify(mensajeServidor)
+            ) {
+              actualizarEstadoJuego(mensajeServidor);
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching board state:", error);
+          });
+      }
+
+      // Main loop function
+      function bucle() {
+        // Regularly fetch the game state from the server
+        obtenerEstadoDelServidor();
+
+        // Set up the next iteration of the loop
+        temporizador = setTimeout(bucle, 1000);
+      }
+
+      // Start the main loop after selecting a player
+      selector.onchange = function () {
+        jugador = this.value;
+        if (temporizador === null) {
+          bucle();
+        }
+      };
+    </script>
+  </body>
+</html>
+

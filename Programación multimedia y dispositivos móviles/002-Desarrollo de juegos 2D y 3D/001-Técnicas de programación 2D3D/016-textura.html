@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Three.js</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script>
+      const escena = new THREE.Scene();                                       // En primer lugar creo una escena 3D
+      escena.background = new THREE.Color(0xcccccc);
+      const camara = new THREE.PerspectiveCamera(
+        75, 
+        window.innerWidth / window.innerHeight, 
+        0.1, 
+        1000
+      );                                                                      // Camara, 75grados, proporcion como la pantalla, recorte cercano 0.1, rlejano 1000
+      const representador = new THREE.WebGLRenderer();                        // Creo un renderizador que usa WebGL
+      representador.setSize(
+        window.innerWidth, 
+        window.innerHeight
+        );                                                                    //  Establezco la proporción del renderizador
+      document.body.appendChild(representador.domElement);                    // Y lo añado al body
+      
+      /*////////////////////// CARGAR TEXTURAS //////////////////////////*/
+      
+      const cargaTextura = new THREE.TextureLoader();
+      const texturasuelo = cargaTextura.load('suelo.jpg');
+      
+      
+      /*////////////////////// CARGAR TEXTURAS //////////////////////////*/
+    
+      /*////////////////////// CREAMOS OBJETOS EN PANTALLA //////////////////////////*/
+      
+      const geometriaplano = new THREE.PlaneGeometry(5,5);                              // Instancio una geometría vacía de plano
+      const materialplano = new THREE.MeshPhongMaterial({ map: texturasuelo });      // Creo un nuevo material
+      const plano = new THREE.Mesh(geometriaplano, materialplano);                       // Creo un nuevo plano uniendo la geometría con el material
+      escena.add(plano);                                                       // en la escena añado el plano
+      
+      plano.rotation.x = -Math.PI/2                                           // roto el plano menos 90 grados
+      
+      const geometria = new THREE.BoxGeometry();                              // Instancio una geometría vacía
+      const material = new THREE.MeshPhongMaterial({ color: 0xff0000 });      // Creo un nuevo material
+      const cubo = new THREE.Mesh(geometria, material);                       // Creo un nuevo cubo uniendo la geometría con el material
+      escena.add(cubo);                                                       // en la escena añado el cubo
+      
+      cubo.position.y = 0.5
+      
+      const geometriaesfera = new THREE.SphereGeometry(0.5, 32, 16);          // Instancio una geometría vacía
+      const materialesfera = new THREE.MeshPhongMaterial({ color: 0x00ff00 }); // Le creo un nuevo material de tipo Phong
+      const esfera = new THREE.Mesh(geometriaesfera,materialesfera)           // Creo  una nueva esfera con la geomtría y el material
+      esfera.position.x = 2                                                   // Muevo la esfera dos unidades en X
+      
+      escena.add(esfera);                                                     // añado la esfera a la escena
+      
+      
+      /*////////////////////// CREAMOS OBJETOS EN PANTALLA //////////////////////////*/ 
+      
+      /*////////////////////// CREAMOS LUCES EN PANTALLA //////////////////////////*/ 
+      
+      const pointLight = new THREE.PointLight( 0xffffff, 1, 100 );            // Creo una luz puntual infinitamente pequeña
+      pointLight.position.set( 0, 5, 0 );                                     // La luz está situada 5 unidades en Y
+      escena.add( pointLight );                                               // Añado la luz a la escena
+      
+      const light = new THREE.AmbientLight( 0x404040 );                       // Creo una nueva luz ambiental
+      escena.add( light );                                                    // y la añado a la escena
+      
+     /*////////////////////// CREAMOS LUCES EN PANTALLA //////////////////////////*/ 
+      
+      // Controles para mover al jugador con las teclas del teclado ////////////////////////////////
+      x = 1
+      y = 0
+      document.onkeydown = function(e){
+        if(e.key == "ArrowUp"){y+=0.1}
+        if(e.key == "ArrowDown"){y-=0.1}
+        if(e.key == "ArrowLeft"){x-=0.1}         // Esto es lo que ocurre cuando el jugador pulsa la flecha izquierda
+        if(e.key == "ArrowRight"){x+=0.1}           // Esto es lo que ocurre cuando el jugador pulsa la flecha derecha
+      }
+      
+      // Controles para mover al jugador con las teclas del teclado ////////////////////////////////
+      
+      camara.position.z = 5;                                                  // Muevo la cámara un poco hacia atrás
+      camara.position.y = 2;
+      
+      function animar() {                                                     // Realmente es la función de bucle
+        esfera.position.x = x
+        esfera.position.y = y
+        requestAnimationFrame(animar);                                        // Llama de nuevo al bucle en cuanto puedas
+        representador.render(escena, camara);                                 // Renderizar la escena desde la perspectiva de la cámara
+      }
+      animar();                                                               // Iniciar la animación
+    </script>
+  </body>
+</html>

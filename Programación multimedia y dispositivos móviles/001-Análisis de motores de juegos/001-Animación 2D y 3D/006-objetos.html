@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      canvas{border:1px solid grey;}
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      class Npc{
+        constructor(){
+          this.x = Math.random()*512;
+          this.y = Math.random()*512;
+          this.angulo = Math.random()*Math.PI*2
+        }
+      }
+      
+      var minpc = new Npc();
+      console.log(minpc);
+      var x = 20;
+      var y = 20;
+      var lienzo = document.querySelector("canvas");
+      var contexto = lienzo.getContext("2d");
+      lienzo.width = 512;
+      lienzo.height = 512;
+      
+      var temporizador = setTimeout("bucle()",1000);
+      function bucle(){
+        contexto.clearRect(0,0,512,512);
+        minpc.x += Math.cos(minpc.angulo);
+        minpc.y += Math.sin(minpc.angulo);
+        contexto.fillRect(minpc.x,minpc.y,30,30);
+        clearTimeout(temporizador);
+        temporizador = setTimeout("bucle()",30);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+    #tablero{
+      width:850px;
+      height:850px;
+      line-height: 0;
+    }
+      #tablero div{
+        border:1px solid grey;
+        width:100px;
+        height:100px;
+        display:inline-block;
+        position:relative;
+      }
+      .celdablanca{background:white;}
+      .celdanegra{background:black;}
+      article{
+        width:50px;
+        height:50px;
+        background:grey;
+        border-radius:50px;
+        position:absolute;
+        top:50%;
+        left:50%;
+        margin-left:-25px;
+        margin-top:-25px;
+        box-shadow:0px 4px 8px rgba(0,0,0,0.5);
+      }
+      .fichablanca{
+        border:1px solid black;
+        background:white;
+      }
+      .fichanegra{
+        border:1px solid white;
+        background:black;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div id="tablero">
+    </div>
+    <script>
+        var fichaseleccionada = "";                                                  // esta variable global representa a mi mano, es decir, si tengo  una ficha seleccionada en la mano
+        let tablero = document.querySelector("#tablero")                        // Selecciono el tablero
+        for(let i = 0;i<64;i++){                                                // Para cada una de las 64 celdas de un tablero de damas
+           let elemento = document.createElement("div")                         // Creo un elemento que es la celda del tablero
+           if((i+Math.floor(i/8))%2 == 0){                                      // En el caso de que le toque celda blanca  
+            elemento.classList.add("celdablanca")                               // Añadele la clase css de celda blanca
+           }else{                                                               // en caso contrario
+            elemento.classList.add("celdanegra")                                // Añadele la clase css de celda negra
+           }
+           elemento.onclick = function(e){                                      // Cuando sobre una celda haga click
+            console.log("Has hecho click en una celda")                         // Sacame un aviso
+            console.log(e.pageX,e.pageY)                                        // Demuestrame que conoces las coordenadas x y de la celda
+            if(fichaseleccionada != ""){                                        // si tengo una ficha en la mano
+              elemento.appendChild(fichaseleccionada)                           // En la celda donde he hecho click, suelto la ficha
+              fichaseleccionada = "";                                           // Vacío mi mano
+            }
+           }
+           if((i < 24 || i >= 40) && (i+Math.floor(i/8))%2 == 0){               // Si se cumplen tres condiciones
+             let ficha = document.createElement("article")                      // Creo una etiqueta articulo
+             ficha.onclick = function(e){                                       // Cuando haga click en la ficha
+              e.stopPropagation()                                               // Si hago click en la ficha ya no hago click en la celda
+              console.log("Has hecho click en la ficha")                        // Saco un mensaje por pantalla
+              if(fichaseleccionada == ""){
+                fichaseleccionada = ficha                                         // Pongo la ficha en mi mano
+                this.remove()                                                     // Quito la ficha de la celda
+              }
+             }
+             if(i < 24){ficha.classList.add("fichablanca")}
+             if(i >= 40){ficha.classList.add("fichanegra")}
+             elemento.appendChild(ficha)                                        // Añado la ficha al elemento
+           }
+           tablero.appendChild(elemento)                                        // Añado la casilla al tablero
+           
+        }
+        
+        
+    </script>
+  </body>
+</html>

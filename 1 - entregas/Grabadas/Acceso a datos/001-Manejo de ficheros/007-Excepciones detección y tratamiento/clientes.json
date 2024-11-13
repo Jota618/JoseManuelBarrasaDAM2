@@ -1,0 +1,13 @@
+{
+    "nombre": "Jose Vicente",
+    "apellidos": "Carratal\u00e1 Sanchis",
+    "emails": {
+        "personal": [
+            "jocarsa2@gmail.com"
+        ],
+        "profesional": [
+            "info@josevicentecarratala.com",
+            "info@jocarsa.com"
+        ]
+    }
+}

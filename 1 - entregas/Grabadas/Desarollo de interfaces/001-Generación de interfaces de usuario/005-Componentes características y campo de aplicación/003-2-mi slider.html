@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <title>Slider Personalizado</title>
+        <style>
+            /* Estilo general del contenedor del slider */
+            .slider-container {
+                width: 300px; /* Ancho de la barra del slider */
+                margin: 50px auto; /* Centrar el slider horizontalmente */
+            }
+
+            /* Estilo de la barra del slider */
+            .slider-bar {
+                width: 100%; /* Barra ocupa todo el ancho del contenedor */
+                height: 10px; /* Altura de la barra */
+                background: linear-gradient(
+                    to right,
+                    red,
+                    yellow,
+                    green
+                ); /* Gradiente de color de izquierda a derecha */
+                border-radius: 10px; /* Bordes redondeados */
+                position: relative; /* Para permitir el uso de elementos absolutos dentro */
+            }
+
+            /* Estilo del círculo deslizante */
+            .slider-thumb {
+                width: 20px; /* Tamaño del círculo */
+                height: 20px;
+                background-color: white; /* Color blanco para contrastar */
+                border: 2px solid black; /* Borde negro para resaltar */
+                border-radius: 50%; /* Círculo perfecto */
+                position: absolute;
+                top: -5px; /* Centrar el círculo verticalmente sobre la barra */
+                left: 0; /* Empieza en la posición más a la izquierda */
+                cursor: pointer; /* Cambia el cursor cuando se pasa por encima */
+                transition: background-color 0.2s ease; /* Transición suave al interactuar */
+            }
+
+            /* Cambia el color del círculo cuando se pasa el mouse por encima */
+            .slider-thumb:hover {
+                background-color: lightgray;
+            }
+
+            /* Estilo del valor mostrado debajo del slider */
+            .slider-value {
+                text-align: center;
+                font-size: 18px;
+                margin-top: 10px;
+                font-family: Arial, sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Contenedor general del slider -->
+        <div class="slider-container">
+            <!-- Barra del slider -->
+            <div class="slider-bar" id="slider-bar">
+                <!-- Círculo deslizante -->
+                <div class="slider-thumb" id="slider-thumb"></div>
+            </div>
+            <!-- Muestra el valor seleccionado -->
+            <div class="slider-value" id="slider-value">Volumen: 0</div>
+        </div>
+
+        <script>
+            // Obtener elementos del DOM
+            const sliderBar = document.getElementById("slider-bar");
+            const sliderThumb = document.getElementById("slider-thumb");
+            const sliderValue = document.getElementById("slider-value");
+
+            let sliderWidth = sliderBar.offsetWidth; // Ancho total de la barra
+
+            // Función para mover el círculo deslizante
+            sliderBar.addEventListener("click", function (event) {
+                let posX = event.clientX - sliderBar.getBoundingClientRect().left; // Calcula la posición relativa del clic
+                moveThumb(posX);
+            });
+
+            sliderThumb.addEventListener("mousedown", function () {
+                // Activar el seguimiento del mouse
+                document.addEventListener("mousemove", onMouseMove);
+                document.addEventListener("mouseup", function () {
+                    // Desactivar el seguimiento cuando se suelta el mouse
+                    document.removeEventListener("mousemove", onMouseMove);
+                });
+            });
+
+            function onMouseMove(event) {
+                let posX = event.clientX - sliderBar.getBoundingClientRect().left;
+                moveThumb(posX);
+            }
+
+            // Función para mover el círculo y actualizar el valor
+            function moveThumb(posX) {
+                if (posX >= 0 && posX <= sliderWidth) {
+                    sliderThumb.style.left = posX - sliderThumb.offsetWidth / 2 + "px"; // Mueve el círculo
+                    let value = Math.round((posX / sliderWidth) * 100); // Calcula el valor en porcentaje
+                    sliderValue.innerText = "Volumen: " + value; // Actualiza el valor mostrado
+                }
+            }
+        </script>
+    </body>
+</html>

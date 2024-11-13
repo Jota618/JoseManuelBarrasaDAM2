@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      canvas{border:1px solid grey;position:absolute;top:0px;left:0px;}
+    </style>
+  </head>
+  <body>
+    <canvas id="lienzo1"></canvas>
+    <canvas id="lienzo2"></canvas>
+    <script>
+      // Declaro variables globales en uso en todo el juego
+      
+      gravedad = 1;
+      // Cargo las imágenes del bueno y del malo
+      
+      var imagenbueno = new Image();
+      imagenbueno.src = "./img/bueno.png"
+      var imagenmalo = new Image()
+      imagenmalo.src = "./img/malo.png"
+    
+      class Jugador{
+        constructor(){
+          this.x = 256
+          this.y = 256;
+          this.vy = 0;
+        }
+        dibuja(){
+          //contexto2.fillRect(this.x,this.y,20,20)
+          contexto.drawImage(imagenbueno,this.x,this.y)
+        }
+        mueve(){
+          jugador.vy += gravedad;
+          jugador.y += jugador.vy
+        }
+      }
+      class Npc{
+        // Función que se ejecuta cuando se instancia el objeto
+        constructor(){
+          this.x = Math.random()*512; // Se le da una posición entre 0 y 512 en x
+          this.y = Math.random()*512; // Se le da una posición entre 0 y 512 en y
+          this.angulo = Math.random()*Math.PI*2 // Se le da  un ángulo entre 0 y 2*PI radianes
+          this.vy = 0;
+        }
+        // Este es un método para que se detecte la colisión con las paredes y rebote
+        rebota(){
+          /* en el caso de que el objeto esté fuera de los límites, 
+          fuerzo a traerlo dentro de los límites
+          y además le pongo 180 grados al ángulo */
+          if(this.x < 0){this.x = 10;this.angulo += Math.PI;}
+          if(this.x > 512){this.x = 502;this.angulo += Math.PI;}
+          if(this.y < 0){this.y = 0;this.angulo += Math.PI;}
+          if(this.y > 512){this.y = 502;this.angulo += Math.PI;}
+        }
+        // Este método define el movimiento de la caja
+        mueve(){
+          this.x += Math.cos(this.angulo);
+          this.y += Math.sin(this.angulo);
+        }
+        // Este método es el encargado de dibujar el Npc
+        dibuja(){
+          //contexto.fillRect(this.x,this.y,30,30);
+          contexto.drawImage(imagenmalo,this.x,this.y)
+        }
+      }
+      // Aquí instancio una única copia del jugador humano
+      var jugador = new Jugador();
+      // Aquí instancio a los npc en un array de 50 elementos
+      var misnpcs = [];
+      var numeronpc = 20;
+      for(let i = 0;i<numeronpc;i++){
+        misnpcs[i] = new Npc();
+      }
+      var x = 20;
+      var y = 20;
+      var lienzo = document.querySelector("#lienzo1");
+      var contexto = lienzo.getContext("2d");
+      lienzo.width = 512;
+      lienzo.height = 512;
+      
+      var lienzo2 = document.querySelector("#lienzo2");
+      var contexto2 = lienzo2.getContext("2d");
+      lienzo2.width = 512;
+      lienzo2.height = 512;
+      contexto2.fillStyle = "green"
+      
+      // Controles para mover al jugador con las teclas del teclado
+      document.onkeydown = function(e){
+        if(e.key == "ArrowUp"){jugador.y -= 5}
+        if(e.key == "ArrowDown"){jugador.y += 5}
+        if(e.key == "ArrowLeft"){jugador.x -= 5}
+        if(e.key == "ArrowRight"){jugador.x += 5}
+      }
+      
+      var temporizador = setTimeout("bucle()",1000);
+      function bucle(){
+        
+        contexto.clearRect(0,0,512,512); // Limpio el lienzo 1
+        contexto2.clearRect(0,0,512,512); // Limpio el lienzo 2
+        // A continuación movemos a todos los npc llamando a sus métodos
+        for(let i = 0;i<numeronpc;i++){
+          misnpcs[i].mueve()
+          misnpcs[i].rebota();
+          misnpcs[i].dibuja();
+        }
+        // Dibujamos al jugador 1
+        jugador.mueve();
+        jugador.dibuja();
+        // Mediante la siguiente linea soy capaz de obtener un array con los componentes de color de un pixel
+        var datos = contexto.getImageData(jugador.x,jugador.y,1,1).data;
+        var alpha = datos[3]; // El índice 3 es la transparencia
+        if(alpha == 255){
+          window.location = window.location // Esto es recargar la página, lo que viene a querer decir que has perdido
+        }
+        clearTimeout(temporizador);
+        temporizador = setTimeout("bucle()",30);
+      }
+    </script>
+  </body>
+</html>

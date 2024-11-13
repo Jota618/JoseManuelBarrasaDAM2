@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Minijuego de Space Invaders</title>
+        <style>
+            body {
+                margin: 0;
+                overflow: hidden;
+            }
+            canvas {
+                display: block; /* Hace que el canvas se comporte como un bloque, eliminando espacios en línea */
+                margin: 0 auto; /* Centra el canvas horizontalmente en la página */
+                background: url("space-background.gif") no-repeat center center; /* Establece un GIF como fondo del canvas, centrado y sin repetirse */
+                background-size: cover; /* Hace que el fondo cubra todo el canvas, manteniendo la proporción del GIF */
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="lienzoJuego" width="800" height="600"></canvas>
+        <!-- Define un elemento canvas con dimensiones específicas para el juego -->
+        <script src="juego.js"></script>
+        <!-- Incluye un archivo JavaScript externo para manejar la lógica del juego -->
+    </body>
+</html>

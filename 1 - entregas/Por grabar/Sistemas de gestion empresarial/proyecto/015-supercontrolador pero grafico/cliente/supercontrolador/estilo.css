@@ -1,0 +1,39 @@
+body,html{
+  font-family:sans-serif;
+  background:crimson;
+  padding:0px;
+  height:100%;
+  margin:0px;
+  color:white;
+}
+header{
+  padding:20px;
+}
+main{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: stretch;
+	align-content: stretch;
+	height:100%;
+}
+main nav{
+  width:20%;
+  height:100%;
+}
+main section{
+  width:80%;
+  background:white;
+  height:100%;
+  border-radius:20px 0px 0px 0px;
+  color:black;
+}
+nav ul{
+  list-style-type:none;
+  padding:0px;
+}
+nav ul li{
+  padding:15px;
+  cursor:pointer;
+}

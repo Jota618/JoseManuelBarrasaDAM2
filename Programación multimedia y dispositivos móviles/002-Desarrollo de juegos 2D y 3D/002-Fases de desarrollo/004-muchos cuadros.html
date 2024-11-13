@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      canvas{border:1px solid grey;}
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      const lienzo = document.querySelector("canvas")
+      lienzo.width = 512
+      lienzo.height = 512
+      const contexto = lienzo.getContext("2d")
+      for(let i = 0;i<20;i++){
+        contexto.fillRect(Math.random()*512,Math.random()*512,20,20)
+      }
+      
+      lienzo.onclick = function(e){
+        console.log(e.offsetX,e.offsetY)
+        let color = contexto.getImageData(e.offsetX,e.offsetY,1,1)
+        if(color.data[3] == 255){
+          console.log("Has hecho click en un objeto")
+        }else{
+          console.log("no has hecho click en un objeto")
+        }
+      }
+    </script>
+  </body>
+</html>

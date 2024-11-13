@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+    #tablero{
+      width:850px;
+      height:850px;
+      line-height: 0;
+    }
+      #tablero div{
+        border:1px solid grey;
+        width:100px;
+        height:100px;
+        display:inline-block;
+        position:relative;
+      }
+      .celdablanca{background:white;}
+      .celdanegra{background:black;}
+      article{
+        width:50px;
+        height:50px;
+        background:grey;
+        border-radius:50px;
+        position:absolute;
+        top:50%;
+        left:50%;
+        margin-left:-25px;
+        margin-top:-25px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="tablero">
+    </div>
+    <script>
+        let tablero = document.querySelector("#tablero")
+        for(let i = 0;i<64;i++){
+           let elemento = document.createElement("div")
+           if((i+Math.floor(i/8))%2 == 0){
+            elemento.classList.add("celdablanca")
+           }else{
+            elemento.classList.add("celdanegra")
+           }
+           elemento.onclick = function(e){
+            console.log("Has hecho click en una celda")
+            console.log(e.pageX,e.pageY)
+           }
+           let ficha = document.createElement("article")
+           elemento.appendChild(ficha)
+           tablero.appendChild(elemento)
+           
+        }
+        
+        
+    </script>
+  </body>
+</html>

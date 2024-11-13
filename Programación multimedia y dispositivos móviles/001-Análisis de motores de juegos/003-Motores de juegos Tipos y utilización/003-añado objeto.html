@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Three.js</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+ 
+      const escena = new THREE.Scene();                                   // En primer lugar creo una escena 3D
+      const camara = new THREE.PerspectiveCamera(
+        75, 
+        window.innerWidth / window.innerHeight, 
+        0.1, 
+        1000
+      );                                                  // Camara, 75grados, proporcion como la pantalla, recorte cercano 0.1, rlejano 1000
+      const representador = new THREE.WebGLRenderer();         // Creo un renderizador que usa WebGL
+      representador.setSize(
+        window.innerWidth, 
+        window.innerHeight
+        );                                                //  Establezco la proporción del renderizador
+      document.body.appendChild(representador.domElement);     // Y lo añado al body
+
+      
+      const geometria = new THREE.BoxGeometry();                           // Instancio una geometría vacía
+      const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });  // Creo un nuevo material
+      const cubo = new THREE.Mesh(geometria, material);                    // Creo un nuevo cubo uniendo la geometría con el material
+      escena.add(cubo);                                   // en la escena añado el cubo
+      
+      camara.position.z = 5;
+    </script>
+  </body>
+</html>

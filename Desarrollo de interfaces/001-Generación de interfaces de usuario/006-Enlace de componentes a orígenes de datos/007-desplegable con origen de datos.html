@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <select id="personas">
+      <option>Selecciona a una persona</option>
+    </select>
+    <script>
+      fetch("personas.json")
+      .then(response => response.json())
+      .then(function(response){
+        console.log(response)
+        response['personas'].forEach(function(currentValue) {
+          let option = document.createElement("option");
+          option.textContent = currentValue;
+          document.querySelector("#personas").appendChild(option);
+        });
+      })
+    </script>
+  </body>
+</html>
+

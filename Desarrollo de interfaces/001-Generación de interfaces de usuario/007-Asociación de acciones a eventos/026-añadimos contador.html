@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <body>
+    <input class="iban">
+    <script>
+      const entrada = document.querySelector("input")
+      entrada.onchange = function(e){
+        let contenido = this.value;
+        for(let i = 0;i<contenido.length;i++){
+          if(contenido[4] == " " && contenido[9] == " " && contenido[14] == " " && contenido[19] == " "){
+            //console.log("es correcto")
+          }else{
+            console.log("no es correcto")
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
+

@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <body>
+    <style>
+      /* El estilo para el canvas: le añadimos un borde gris de 1px */
+      canvas {
+        border: 1px solid grey; /* Añade un borde de 1px de color gris al lienzo */
+      }
+    </style>
+
+    <!-- Canvas donde se dibujará el contenido gráfico -->
+    <canvas></canvas>
+    <!-- Elemento HTML que permite dibujar gráficos y animaciones -->
+
+    <script>
+      /* Seleccionamos el canvas desde el DOM */
+      const lienzo = document.querySelector("canvas");
+      /* Obtenemos el contexto de dibujo en 2D del canvas */
+      const contexto = lienzo.getContext("2d");
+
+      /* Definimos el ancho del canvas */
+      lienzo.width = 512; /* Establece el ancho del canvas a 512 píxeles */
+      /* Definimos la altura del canvas */
+      lienzo.height = 512; /* Establece la altura del canvas a 512 píxeles */
+    </script>
+  </body>
+</html>

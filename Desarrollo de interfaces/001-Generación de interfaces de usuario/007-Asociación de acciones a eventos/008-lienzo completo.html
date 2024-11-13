@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+  <body>
+    <style>
+      canvas{border:1px solid grey;} 
+    </style>
+    <canvas></canvas>
+    <script>
+      const lienzo = document.querySelector("canvas")
+      const contexto = lienzo.getContext("2d")
+      lienzo.width = 512
+      lienzo.height = 512
+      lienzo.onmousemove = function(e){
+        contexto.fillRect(e.offsetX,e.offsetY,2,2)
+      }
+    </script>
+  </body>
+</html>

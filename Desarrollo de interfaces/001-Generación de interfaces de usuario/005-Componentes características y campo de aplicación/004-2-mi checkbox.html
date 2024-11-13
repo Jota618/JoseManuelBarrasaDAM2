@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <title>Checkbox Estilo Botón de Encendido</title>
+        <style>
+            /* Contenedor del switch personalizado */
+            .power-switch {
+                position: relative;
+                display: inline-block;
+                width: 80px; /* Un poco más ancho que el ejemplo anterior */
+                height: 40px;
+                background-color: #ddd; /* Color base cuando está apagado */
+                border-radius: 40px; /* Borde redondeado total */
+                box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.2); /* Sombra interior suave */
+                cursor: pointer;
+                transition: background-color 0.4s ease; /* Transición suave */
+            }
+
+            /* Ocultamos el checkbox por defecto */
+            .power-switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            /* Círculo deslizante dentro del switch */
+            .power-switch .switch-thumb {
+                position: absolute;
+                top: 50%;
+                left: 5px;
+                transform: translateY(-50%);
+                width: 30px;
+                height: 30px;
+                background-color: white;
+                border-radius: 50%;
+                box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3); /* Sombra del círculo */
+                transition: transform 0.4s ease;
+            }
+
+            /* Estado del switch cuando está activado */
+            .power-switch input:checked + .switch-thumb {
+                transform: translate(40px, -50%); /* Mueve el círculo a la derecha */
+            }
+
+            /* Cambiar el color de fondo cuando se activa */
+            .power-switch input:checked + .switch-thumb::before {
+                background-color: #32cd32; /* Verde cuando está activado */
+            }
+
+            /* Estado activado del fondo */
+            .power-switch input:checked + .switch-thumb {
+                background-color: #32cd32; /* El círculo cambia a verde también */
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Estructura del switch -->
+        <label class="power-switch">
+            <input type="checkbox" />
+            <div class="switch-thumb"></div>
+        </label>
+    </body>
+</html>

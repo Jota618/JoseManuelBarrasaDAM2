@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <body>
+    <input class="iban">
+    <script>
+    function isLetter(char) {
+      return /^[a-zA-Z]$/.test(char);
+    }
+      const entrada = document.querySelector("input")
+      entrada.onchange = function(e){
+        let contenido = this.value;
+        for(let i = 0;i<contenido.length;i++){
+          if(
+            contenido[4] == " " 
+            && contenido[9] == " " 
+            && contenido[14] == " " 
+            && contenido[19] == " "
+            && isLetter(contenido[0])
+            && isLetter(contenido[1])
+          ){
+            this.style.background = "rgb(200,255,200)"
+          }else{
+            this.style.background = "rgb(255,200,200)"
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
+

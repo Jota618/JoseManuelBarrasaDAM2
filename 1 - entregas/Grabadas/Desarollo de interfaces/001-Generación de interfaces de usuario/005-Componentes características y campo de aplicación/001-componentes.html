@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+  <!-- Define el tipo de documento HTML5 y el idioma como español -->
+  <head>
+    <meta charset="utf-8" />
+    <!-- Especifica la codificación de caracteres en UTF-8 -->
+  </head>
+  <body>
+    <label for="nombre">Introduce tu nombre</label>
+    <!-- Etiqueta que describe el campo de texto para el nombre -->
+
+    <input type="text" id="nombre" placeholder="Introduce tu nombre" />
+    <!-- Campo de texto con el atributo "placeholder", que muestra "Introduce tu nombre" hasta que el usuario haga clic para escribir -->
+
+    <select>
+      <!-- Desplegable para seleccionar una opción -->
+      <option>Valencia</option>
+      <!-- Opción del desplegable -->
+      <option>Madrid</option>
+      <!-- Opción del desplegable -->
+      <option>Barcelona</option>
+      <!-- Opción del desplegable -->
+    </select>
+
+    <textarea placeholder="Escribe aquí..."></textarea>
+    <!-- Área de texto con un placeholder que indica dónde escribir -->
+
+    <button>Púlsame</button>
+    <!-- Botón con el texto "Púlsame" -->
+
+    <fieldset>
+      <!-- Agrupa varios elementos relacionados dentro del formulario -->
+      <legend>Identificacion:</legend>
+      <!-- Título del conjunto de campos agrupados -->
+
+      <label for="fname">Nombre:</label><br />
+      <!-- Etiqueta para el campo del primer nombre -->
+      <input type="text" id="fname" name="fname" placeholder="Introduce tu primer nombre" /><br />
+      <!-- Campo de texto con placeholder que desaparece al hacer clic, pidiendo el primer nombre -->
+
+      <label for="lname">Apellido:</label><br />
+      <!-- Etiqueta para el campo del apellido -->
+      <input type="text" id="lname" name="lname" placeholder="Introduce tu apellido" /><br /><br />
+      <!-- Campo de texto con placeholder para el apellido -->
+
+      <input type="submit" value="Enviar" />
+      <!-- Botón de envío del formulario -->
+    </fieldset>
+
+    <input list="browsers" placeholder="Elige tu navegador favorito" />
+    <!-- Campo de entrada que permite seleccionar de una lista de navegadores, con un placeholder que desaparece al hacer clic -->
+    <datalist id="browsers">
+      <!-- Lista de opciones predefinidas para el input anterior -->
+      <option value="Edge"><!-- Opción para seleccionar "Edge" --></option>
+      <option value="Firefox"><!-- Opción para seleccionar "Firefox" --></option>
+      <option value="Chrome"><!-- Opción para seleccionar "Chrome" --></option>
+      <option value="Opera"><!-- Opción para seleccionar "Opera" --></option>
+      <option value="Safari"><!-- Opción para seleccionar "Safari" --></option>
+    </datalist>
+  </body>
+</html>

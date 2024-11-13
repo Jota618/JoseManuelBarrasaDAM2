@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      canvas {
+        border: 1px solid grey; 
+        display: block; /* Hace que el canvas ocupe el ancho completo */
+        margin-top: 10px; /* Espacio entre los botones y el canvas */
+      }
+
+      .herramienta {
+        padding: 10px 15px; /* Añade padding para mayor área clicable */
+        margin: 5px; /* Espacio entre botones */
+        border: none; /* Sin borde por defecto */
+        background-color: #007BFF; /* Color de fondo */
+        color: white; /* Color del texto */
+        border-radius: 5px; /* Bordes redondeados */
+        cursor: pointer; /* Cambia el cursor a puntero */
+        font-size: 16px; /* Tamaño de la fuente */
+        transition: background-color 0.3s, transform 0.2s; /* Efecto de transición al pasar el ratón */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Sombra para dar profundidad */
+      }
+
+      .herramienta:hover {
+        background-color: #0056b3; /* Color de fondo al pasar el ratón */
+        transform: translateY(-2px); /* Sube un poco al pasar el ratón */
+      }
+
+      .color-label {
+        margin: 10px 0; /* Espacio vertical */
+        display: block; /* Hace que el label ocupe el ancho completo */
+        font-weight: bold; /* Negrita para destacar */
+      }
+
+      input[type="color"] {
+        width: 60px; /* Ancho fijo para los cuadros de color */
+        height: 60px; /* Alto fijo para los cuadros de color */
+        border: none; /* Sin borde */
+        cursor: pointer; /* Cambia el cursor a puntero */
+        margin: 5px 0; /* Espacio alrededor del cuadro */
+      }
+
+      select {
+        padding: 10px; /* Añade padding para mayor área clicable */
+        margin: 5px; /* Espacio alrededor del select */
+        border: 1px solid grey; /* Borde para el select */
+        border-radius: 5px; /* Bordes redondeados */
+        font-size: 16px; /* Tamaño de la fuente */
+      }
+    </style>
+  </head>
+  <body>
+    <button class="herramienta" id="dibujar">Dibujar</button>
+    <button class="herramienta" id="borrar">Borrar</button>
+    <button class="herramienta" id="limpiar">Borrar Todo</button>
+    
+    <label class="color-label">Color inicial:</label>
+    <input type="color" id="color">
+    
+    <label class="color-label">Color final del gradiente:</label>
+    <input type="color" id="color2" title="Selecciona el color final del gradiente">
+    
+    <label class="color-label">Tamaño del pincel:</label>
+    <select id="radio">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select>
+    
+    <canvas></canvas>
+
+    <script>
+      var operacion = "dibujar";
+      var radio = 1;
+      var pulsado = false;
+      var lienzo = document.querySelector("canvas");
+      var contexto = lienzo.getContext("2d");
+
+      lienzo.width = 512;
+      lienzo.height = 512;
+
+      document.onmousedown = function() { pulsado = true; };
+      document.onmouseup = function() { pulsado = false; };
+
+      lienzo.onmousemove = function(e) {
+        if (pulsado) {
+          if (operacion == "dibujar") {
+            // Crear un gradiente
+            var gradiente = contexto.createRadialGradient(e.offsetX, e.offsetY, 0, e.offsetX, e.offsetY, radio);
+            gradiente.addColorStop(0, document.getElementById("color").value);
+            gradiente.addColorStop(1, document.getElementById("color2").value);
+            contexto.fillStyle = gradiente; // Usar el gradiente como color de relleno
+            contexto.fillRect(e.offsetX, e.offsetY, radio, radio);
+          } else {
+            contexto.clearRect(e.offsetX, e.offsetY, radio, radio);
+          }
+        }
+      };
+
+      document.getElementById("color").onchange = function() {
+        contexto.fillStyle = this.value; 
+      };
+
+      document.getElementById("color2").onchange = function() {
+        // Esto no afecta directamente el color actual, pero puedes usarlo para otros efectos.
+      };
+
+      document.getElementById("radio").onchange = function() {
+        radio = this.value;
+      };
+
+      document.getElementById("dibujar").onclick = function() {
+        operacion = "dibujar";
+      };
+
+      document.getElementById("borrar").onclick = function() {
+        operacion = "borrar";
+      };
+
+      // Funcionalidad para limpiar todo el canvas
+      document.getElementById("limpiar").onclick = function() {
+        contexto.clearRect(0, 0, lienzo.width, lienzo.height); // Limpiar el canvas
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,227 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      canvas{border:1px solid grey;position:absolute;top:0px;left:0px;}
+    </style>
+  </head>
+  <body>
+    <canvas id="lienzofondo"></canvas>
+    <canvas id="lienzoplataformas"></canvas>
+    <canvas id="lienzo1"></canvas>
+    <canvas id="lienzo2"></canvas>
+    <script>
+      // Declaro variables globales en uso en todo el juego /////////////////////////////////////////////////////////////
+      
+      var gravedad = 1;                                                           // La variable de gravedad define como de rápido cae el personaje
+      var salto = -8;
+      
+      
+      /*//////////////////////////////IMAGENES////////////////////////////////*/
+      
+      var imagenbueno = new Image();                                          // Creo una nueva imagen como objeto de Javascript
+      imagenbueno.src = "./img/spritesheetbueno.png"                                     // Le pongo el origen de la imagen
+      var imagenmalo = new Image()
+      imagenmalo.src = "./img/malo.png"
+      var imagenplataformas = new Image();
+      imagenplataformas.src = "./img/plataformas.png"
+      imagenplataformas.onload = function(){                                  // Cuando la imagen de las plataformas ha cargado desde el disco duro
+        contextoplataformas.drawImage(imagenplataformas,0,0)                  // La pinto sobre el lienzo del fondo
+      }
+      
+      var imagenfondo = new Image();
+      imagenfondo.src = "./img/fondo.jpg"
+      imagenfondo.onload = function(){                                  // Cuando la imagen de las plataformas ha cargado desde el disco duro
+        contextofondo.drawImage(imagenfondo,0,0)                  // La pinto sobre el lienzo del fondo
+      }
+      
+      /*//////////////////////////////IMAGENES////////////////////////////////*/
+      
+      /*/////////////////////////////////// CLASES QUE INTERVIENEN EN EL JUEGO //////////////////////////////////////*/
+    
+      class Jugador{                                                          // Declaro una clase jugador
+        constructor(){                                                        // Define las propiedades de inicio de la instancia
+          this.x = 256                                                        // Creo propiedades para ese objeto
+          this.y = 256;
+          this.vy = 0;
+          this.cayendo = true;
+          this.direccion = "izquierda"
+          
+        }
+        dibuja(){                                                             // Método que se ejecuta para dibujar al personaje
+          if(this.direccion == "izquierda"){                                  // Si la direccion es izquierda, toma la primera mitad de la imagen
+            contexto.drawImage(imagenbueno, 
+              0, 0, 35, 35,  // Source: x, y, width, height (on the sprite sheet)
+              this.x, this.y, 35, 35  // Destination: x, y, width, height (on the canvas)
+            );
+          }else{                                                              // En caso contrario, toma la segunda mitad de la imagen
+            contexto.drawImage(imagenbueno, 
+              35, 0, 35, 35,  // Source: x, y, width, height (on the sprite sheet)
+              this.x, this.y, 35, 35  // Destination: x, y, width, height (on the canvas)
+            );
+          }
+        }
+        mueve(){                                                              // grstiona el movimiento del personaje
+          if(this.cayendo == true){
+            jugador.vy += gravedad;
+            jugador.y += jugador.vy
+          }
+          this.muere();
+          this.colisionaPlataformas()
+        }
+        muere(){                                                              // Gestiona la muerte del personaje
+          if(this.y > 512){
+            window.location = window.location;
+          }
+        }
+        colisionaPlataformas(){
+          let pixel = contextoplataformas.getImageData(this.x,this.y+35,1,1)
+          if(pixel.data[3] > 0){
+            this.cayendo = false;
+          }else{
+            this.cayendo = true;
+          }
+        }
+      }
+      class Npc{
+        // Función que se ejecuta cuando se instancia el objeto
+        constructor(){
+          this.x = Math.random()*512; // Se le da una posición entre 0 y 512 en x
+          this.y = Math.random()*512; // Se le da una posición entre 0 y 512 en y
+          this.angulo = Math.random()*Math.PI*2 // Se le da  un ángulo entre 0 y 2*PI radianes
+          this.vy = 0;
+        }
+        // Este es un método para que se detecte la colisión con las paredes y rebote
+        rebota(){
+          /* en el caso de que el objeto esté fuera de los límites, 
+          fuerzo a traerlo dentro de los límites
+          y además le pongo 180 grados al ángulo */
+          if(this.x < 0){this.x = 10;this.angulo += Math.PI;}
+          if(this.x > 512){this.x = 502;this.angulo += Math.PI;}
+          if(this.y < 0){this.y = 0;this.angulo += Math.PI;}
+          if(this.y > 512){this.y = 502;this.angulo += Math.PI;}
+        }
+        // Este método define el movimiento de la caja
+        mueve(){
+          this.x += Math.cos(this.angulo);
+          this.y += Math.sin(this.angulo);
+        }
+        // Este método es el encargado de dibujar el Npc
+        dibuja(){
+          //contexto.fillRect(this.x,this.y,30,30);
+          contexto.drawImage(imagenmalo,this.x,this.y)
+        }
+      }
+      
+      class Bala{
+        constructor(){
+          this.x = jugador.x;                               // La posición x inicial de la bala es la misma posición del jugador
+          this.y = jugador.y;                               // La posición y inicial de la bala es la mism posición del jugador
+          this.vx = 10;                                     // A la bala se le da una velocidad inicial
+          if(jugador.direccion == "izquierda"){             // Si el jugador va hacia la izquierda
+            this.direccion = -1                             // En ese caso la velociad de la bala es negativa
+          }else{                                            // Si el personaje va hacia la derecha
+            this.direccion = 1                              // En ese caso la velocidad es positiva
+          }
+        }
+        mueve(){                                            // Método que mueve la bala
+          this.x += this.direccion*this.vx                  // Actualiza su posición
+        }
+        dibuja(){                                           // Método que dibuja la bala
+          contexto.beginPath()
+          contexto.arc(this.x,this.y,10,0,Math.PI*2)
+          contexto.fill()
+        }
+      }
+      
+      /*/////////////////////////////////// CLASES QUE INTERVIENEN EN EL JUEGO //////////////////////////////////////*/
+      
+      /*/////////////////////////////////// DECLARACIONES INICIALES //////////////////////////////////////*/
+      
+      var jugador = new Jugador();                                                  // Aquí instancio una única copia del jugador humano
+      
+      var misnpcs = [];                                                             // Aquí instancio a los npc en un array de 50 elementos
+      var balas = [];
+      var numeronpc = 2;                                                           // defino el numero de npc
+      for(let i = 0;i<numeronpc;i++){                                               // Recorro el array
+        misnpcs[i] = new Npc();                                                     // PAra cada elemento, meto una nueva instancia de Npc
+      }
+      
+      /*/////////////////////////////////// DECLARACIONES INICIALES //////////////////////////////////////*/
+      
+      /*//////////////////////////////LIENZOS////////////////////////////////*/
+      
+      var lienzo = document.querySelector("#lienzo1");                              // Primero selecciono la etiqueta lienzo en html
+      var contexto = lienzo.getContext("2d");                                       // Le digo que voy a pintar en 2D
+      lienzo.width = 512;                                                           // Le digo que la anchura es de 512
+      lienzo.height = 512;                                                          // Le digo que la altura es de 512
+      
+      var lienzo2 = document.querySelector("#lienzo2");
+      var contexto2 = lienzo2.getContext("2d");
+      lienzo2.width = 512;
+      lienzo2.height = 512;
+      contexto2.fillStyle = "green"
+      
+      var lienzoplataformas = document.querySelector("#lienzoplataformas");
+      var contextoplataformas = lienzoplataformas.getContext("2d");
+      lienzoplataformas.width = 512;
+      lienzoplataformas.height = 512;
+      lienzoplataformas.fillStyle = "green"
+      
+      var lienzofondo = document.querySelector("#lienzofondo");
+      var contextofondo = lienzofondo.getContext("2d");
+      lienzofondo.width = 512;
+      lienzofondo.height = 512;
+      lienzofondo.fillStyle = "green"
+      
+      /*//////////////////////////////LIENZOS////////////////////////////////*/
+      
+      // Controles para mover al jugador con las teclas del teclado ////////////////////////////////
+      
+      document.onkeydown = function(e){
+      console.log(e)
+        if(e.key == "ArrowUp" && jugador.cayendo == false){
+          jugador.y -= 5;
+          jugador.vy = salto;
+          }
+        if(e.key == "ArrowDown"){jugador.y += 5}
+        if(e.key == "ArrowLeft"){jugador.x -= 5;jugador.direccion = "izquierda";}         // Esto es lo que ocurre cuando el jugador pulsa la flecha izquierda
+        if(e.key == "ArrowRight"){jugador.x += 5;jugador.direccion = "derecha"}           // Esto es lo que ocurre cuando el jugador pulsa la flecha derecha
+        if(e.keyCode == 32){console.log("ok disparo");balas.push(new Bala());}          // Esto es lo que ocurre cuando pulso la barra espaciadora
+      }
+      
+      // Controles para mover al jugador con las teclas del teclado ////////////////////////////////
+      
+      var temporizador = setTimeout("bucle()",1000);
+      
+      
+      function bucle(){
+        
+        contexto.clearRect(0,0,512,512);                                            // Limpio el lienzo 1
+        contexto2.clearRect(0,0,512,512);                                           // Limpio el lienzo 2
+        
+        for(let i = 0;i<numeronpc;i++){                                             // A continuación movemos a todos los npc llamando a sus métodos
+          misnpcs[i].mueve()
+          misnpcs[i].rebota();
+          misnpcs[i].dibuja();
+        }
+        
+        for(let i = 0;i<balas.length;i++){                                          // A continuación movemos a todas las balas llamando a sus métodos
+          balas[i].mueve()                                                          // PAra cada una de las balas, movemos la bala
+          balas[i].dibuja();                                                        // Dibujamos la bala
+        }
+        
+        jugador.mueve();                                              
+        jugador.dibuja();                                                           // Dibujamos al jugador 1
+        
+        var datos = contexto.getImageData(jugador.x,jugador.y,1,1).data;            // Mediante la siguiente linea soy capaz de obtener un array con los componentes de color de un pixel
+        var alpha = datos[3];                                                       // El índice 3 es la transparencia
+        if(alpha == 255){
+          window.location = window.location                                         // Esto es recargar la página, lo que viene a querer decir que has perdido
+        }
+        clearTimeout(temporizador);
+        temporizador = setTimeout("bucle()",30);
+      }
+    </script>
+  </body>
+</html>

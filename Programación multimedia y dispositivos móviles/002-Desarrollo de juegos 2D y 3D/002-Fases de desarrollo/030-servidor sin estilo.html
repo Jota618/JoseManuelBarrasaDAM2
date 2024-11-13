@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="Stylesheet" href="estilo.css">
+  </head>
+  <body>
+    <div id="tablero">
+    </div>
+    <script>
+        var fichaseleccionada = "";                                                  // esta variable global representa a mi mano, es decir, si tengo  una ficha seleccionada en la mano
+        let tablero = document.querySelector("#tablero")                        // Selecciono el tablero
+        for(let i = 0;i<64;i++){                                                // Para cada una de las 64 celdas de un tablero de damas
+           let elemento = document.createElement("div")                         // Creo un elemento que es la celda del tablero
+           if((i+Math.floor(i/8))%2 == 0){                                      // En el caso de que le toque celda blanca  
+            elemento.classList.add("celdablanca")                               // Añadele la clase css de celda blanca
+           }else{                                                               // en caso contrario
+            elemento.classList.add("celdanegra")                                // Añadele la clase css de celda negra
+           }
+           elemento.onclick = function(e){                                      // Cuando sobre una celda haga click
+            console.log("Has hecho click en una celda")                         // Sacame un aviso
+            console.log(e.pageX,e.pageY)                                        // Demuestrame que conoces las coordenadas x y de la celda
+            if(fichaseleccionada != ""){                                        // si tengo una ficha en la mano
+              if(elemento.innerHTML == ""){                                     // Solo puedes soltar la ficha si la celda está vacia
+                if(elemento.classList.contains('celdablanca')){                 // Solo si mueves la ficha a una celda blanca
+                  elemento.appendChild(fichaseleccionada)                           // En la celda donde he hecho click, suelto la ficha
+                  fichaseleccionada = "";                                           // Vacío mi mano
+                }
+              }
+            }
+           }
+           if((i < 24 || i >= 40) && (i+Math.floor(i/8))%2 == 0){               // Si se cumplen tres condiciones
+             let ficha = document.createElement("article")                      // Creo una etiqueta articulo
+             ficha.onclick = function(e){                                       // Cuando haga click en la ficha
+              e.stopPropagation()                                               // Si hago click en la ficha ya no hago click en la celda
+              console.log("Has hecho click en la ficha")                        // Saco un mensaje por pantalla
+              if(fichaseleccionada == ""){                                      // Si no tienes una ficha ya en la mano
+                fichaseleccionada = ficha                                         // Pongo la ficha en mi mano
+                this.remove()                                                     // Quito la ficha de la celda
+              }
+             }
+             if(i < 24){ficha.classList.add("fichablanca")}
+             if(i >= 40){ficha.classList.add("fichanegra")}
+             elemento.appendChild(ficha)                                        // Añado la ficha al elemento
+           }
+           tablero.appendChild(elemento)                                        // Añado la casilla al tablero
+           
+        }
+        var temporizador = setTimeout("bucle()",1000)                           // Ejecuto el bucle dentro de un segundo
+        function bucle(){
+          let tablero = document.querySelector("#tablero").innerHTML            // Atrapo el HTML del tablero
+          fetch("guarda.php?datos="+encodeURI(tablero))                         // Lo envio a lo bestia al servidor
+          .then(function(response){
+            return response.text()
+          })
+          .then(function(datos){
+            console.log(datos)
+          })
+          clearTimeout(temporizador)                                            // Limpio el temporizador
+          temporizador = setTimeout("bucle()",1000)                             // Vuelvo a ejecutar el bucle dentro de un segundo
+        }
+        
+    </script>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <style>
+      button{
+        width:100px; /* Anchura del botón  */
+        height:25px;  /* Altura del botón */
+        border:none; /* Le quito el border que HTML le pone por defecto */
+        border-radius:20px; /* Quiero un radio redondeado */
+        background-image: 
+        linear-gradient(rgb(0,0,255), rgb(200,200,255)); /* Gradiente desde azul arriba a azul clarito abajo */
+        position:relative; /* La posicion es relativa para dentro meterle un elemento absoluto */
+        box-shadow:0px 5px 4px rgba(0,0,0,0.3); /* Arrojo una pequeña sombra */
+        color:white; /* El color del texto es blanco */
+        text-shadow:0px 2px 4px black; /* El texto arroja una pequeña sombra */
+      }
+      #brillo{
+        width:96px; /* El brillo es un poco menos ancho que el boton */
+        height:21px; /* El brillo es un poco menos alto que el boton */
+        top:2px; /* Tiene un margen superior de 2 pixeles */
+        left:2px; /* tiene un margen izquierdo de dos pixeles */
+        border-radius:20px; /* Está redondeado */
+        position:absolute; /* Su posición es absoluta dentro del boton */
+        background-image:  
+        linear-gradient(rgba(255,255,255,0.8),  
+        rgba(255,255,255,0.5), 
+        rgba(255,255,255,0.0)); /* Tiene un gradiente blanco */
+      }
+    </style>
+    
+  </head>
+  <body>
+    <button>
+      <div id="brillo"></div>
+      Púlsame
+    </button>
+    
+  </body>
+</html>
