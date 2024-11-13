@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+    #tablero{
+      width:850px;
+      height:850px;
+      line-height: 0;
+    }
+      #tablero div{
+        border:1px solid grey;
+        width:100px;
+        height:100px;
+        display:inline-block;
+        position:relative;
+      }
+      .celdablanca{background:white;}
+      .celdanegra{background:black;}
+      article{
+        width:50px;
+        height:50px;
+        background:grey;
+        border-radius:50px;
+        position:absolute;
+        top:50%;
+        left:50%;
+        margin-left:-25px;
+        margin-top:-25px;
+        box-shadow:0px 4px 8px rgba(0,0,0,0.5);
+      }
+      .fichablanca{
+        border:1px solid black;
+        background:white;
+      }
+      .fichanegra{
+        border:1px solid white;
+        background:black;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div id="tablero">
+    </div>
+    <script>
+        var temporizador = setTimeout("bucle()",1000)                           // Ejecuto el bucle dentro de un segundo
+        function bucle(){
+          let tablero = document.querySelector("#tablero").innerHTML            // Atrapo el HTML del tablero
+          fetch("tablero.html")                         // Lo envio a lo bestia al servidor
+          .then(function(response){
+            return response.text()
+          })
+          .then(function(datos){
+            document.querySelector("#tablero").innerHTML = datos
+          })
+          clearTimeout(temporizador)                                            // Limpio el temporizador
+          temporizador = setTimeout("bucle()",1000)                             // Vuelvo a ejecutar el bucle dentro de un segundo
+        }
+        
+    </script>
+  </body>
+</html>

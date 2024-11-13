@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="Stylesheet" href="estilo.css">
+  </head>
+  <body>
+   <select id="seleccionajugador">
+    <option>Selecciona un rol</option>
+    <option value="p1">Soy el jugador 1 (negras)</option>
+    <option value="p2">Soy el jugador 2 (blancas)</option>
+    <option value="p0">Soy un espectador</option>
+   </select>
+    <div id="tablero">
+    </div>
+    <script>
+        var jugador = "";
+        var turnoActual = "p1";  // Player 1 starts the game by default
+        
+        let selector = document.querySelector("#seleccionajugador");
+        selector.onchange = function() {
+          jugador = this.value;
+          bucle();  // Start the game loop when a role is selected
+        };
+        
+        var fichaseleccionada = "";
+        let tablero = document.querySelector("#tablero");
+
+        // Function to create the board
+        function crearTablero() {
+            for(let i = 0; i < 64; i++) {
+                let elemento = document.createElement("div");
+                if((i + Math.floor(i / 8)) % 2 == 0) {
+                    elemento.classList.add("celdablanca");
+                } else {
+                    elemento.classList.add("celdanegra");
+                }
+                elemento.onclick = function(e) {
+                    if(fichaseleccionada != "" && turnoActual == jugador) {  // Only allow move if it's the player's turn
+                        if(elemento.innerHTML == "") {
+                            if(elemento.classList.contains('celdablanca')) {
+                                elemento.appendChild(fichaseleccionada);
+                                fichaseleccionada = "";
+                                guardarTablero();  // Save the board state after the move
+                                cambiarTurno();    // Change the turn
+                            }
+                        }
+                    }
+                };
+                if((i < 24 || i >= 40) && (i + Math.floor(i / 8)) % 2 == 0) {
+                    let ficha = document.createElement("article");
+                    ficha.onclick = function(e) {
+                        e.stopPropagation();
+                        if(fichaseleccionada == "" && turnoActual == jugador) {  // Only allow pick-up if it's the player's turn
+                            fichaseleccionada = ficha;
+                            this.remove();
+                        }
+                    };
+                    if(i < 24) { ficha.classList.add("fichablanca"); }
+                    if(i >= 40) { ficha.classList.add("fichanegra"); }
+                    elemento.appendChild(ficha);
+                }
+                tablero.appendChild(elemento);
+            }
+        }
+
+        // Function to save the board state to the server
+        function guardarTablero() {
+            let tableroHTML = document.querySelector("#tablero").innerHTML;
+            fetch("guarda.php?datos=" + encodeURI(tableroHTML) + "&turno=" + turnoActual)
+            .then(response => response.text())
+            .then(datos => console.log("Tablero guardado:", datos));
+        }
+
+        // Function to load the board state from the server
+        function cargarTablero() {
+            fetch("tablero.html")
+            .then(response => response.text())
+            .then(datos => {
+                let partes = datos.split("<!--TURN-->");  // Assume turno is saved in the file as a comment
+                document.querySelector("#tablero").innerHTML = partes[0];  // Load the board state
+                turnoActual = partes[1];  // Load whose turn it is
+                asignarEventosFichas();  // Reassign event listeners to loaded elements
+            });
+        }
+
+        // Reassign event listeners after loading board state
+        function asignarEventosFichas() {
+            let fichas = document.querySelectorAll("#tablero article");
+            fichas.forEach(ficha => {
+                ficha.onclick = function(e) {
+                    e.stopPropagation();
+                    if(fichaseleccionada == "" && turnoActual == jugador) {
+                        fichaseleccionada = ficha;
+                        this.remove();
+                    }
+                };
+            });
+        }
+
+        // Function to switch turns between Player 1 and Player 2
+        function cambiarTurno() {
+            turnoActual = (turnoActual == "p1") ? "p2" : "p1";  // Toggle between players
+        }
+
+        // Game loop
+        var temporizador;
+        function bucle() {
+            cargarTablero();  // Fetch the latest board state every second
+            if (jugador != "p0") {  // If not a spectator, check if it's this player's turn
+                if (turnoActual != jugador) {
+                    // Disable move actions if it's not the player's turn
+                    console.log("Es el turno del otro jugador.");
+                }
+            }
+            clearTimeout(temporizador);
+            temporizador = setTimeout(bucle, 1000);  // Repeat every second
+        }
+
+        // Initialize the board
+        crearTablero();
+    </script>
+  </body>
+</html>
+
