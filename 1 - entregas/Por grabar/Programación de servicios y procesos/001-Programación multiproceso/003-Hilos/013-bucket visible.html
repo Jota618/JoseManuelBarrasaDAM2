@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+  <style>
+    #contienecanvas {
+      position: relative;
+    }
+    canvas {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+    }
+  </style>
+</head>
+<body> 
+  <button id="comenzar">Comenzar</button>
+  <select id="tamanio">
+    <option value="4">4</option>
+    <option value="8">8</option>
+    <option value="16">16</option>
+    <option value="32">32</option>
+    <option value="64">64</option>
+    <option value="128">128</option>
+    <option value="256">256</option>
+  </select>
+  <div id="contienecanvas">
+    <canvas id="lienzo1"></canvas>
+    <canvas id="lienzo2"></canvas>
+  </div>
+  <script>
+    /*/////////////////////////////// DECLARACIÓN DE VARIABLES GLOBALES ////////////////////////////////////*/
+    
+    var x;                                                   // Declaro una variable global x
+    var y;                                                   // Declaro una variable global y
+    var bucket;                                              // Declaro una variable bucket que define la anchura del bloque
+    
+    /*/////////////////////////////// DECLARACIÓN DE LIENZO Y PROPIEDADES INICIALES DE IMAGEN ////////////////////////////////////*/
+    
+    const lienzo = document.querySelector("#lienzo1");       // Selecciono el lienzo
+    lienzo.width = 1919;                                     // Le pongo 1919 pixeles de anchura
+    lienzo.height = 1005;                                    // Le pongo 1005 pixeles de altura
+    const contexto = lienzo.getContext("2d");                // Creo un contexto para dibujar en 2d
+    
+    const lienzo2 = document.querySelector("#lienzo2");      // Selecciono el segundo lienzo
+    lienzo2.width = 1919;                                    // Corregido: le pongo 1919 pixeles de anchura
+    lienzo2.height = 1005;                                   // Corregido: le pongo 1005 pixeles de altura
+    const contexto2 = lienzo2.getContext("2d");              // Creo un contexto para dibujar en 2d
+
+    var imagen = new Image();                                // Creo una nueva imagen
+    imagen.src = "foto-original.jpg";                        // Le pongo una imagen real
+    imagen.onload = function() {                             // Solo cuando esa imagen haya cargado en memoria
+      contexto.drawImage(imagen, 0, 0);                      // Pinto la imagen
+      
+      x = 0;                                                 // Inicialmente la X es 0
+      y = 0;                                                 // Inicialmente la Y es 0
+    };
+
+    document.getElementById("comenzar").onclick = function() {
+      bucket = parseInt(document.getElementById("tamanio").value);  // Establezco la anchura inicial del bucket
+      trabajaMucho();                                        // Llamo a una primera ejecución de la función
+    };
+
+    /*/////////////////////////////// FUNCIÓN PRINCIPAL DE PROCESO ////////////////////////////////////*/
+    
+    function trabajaMucho() {
+      contexto2.clearRect(0, 0, 1919, 1005);  // Limpiamos el canvas para el recuadro
+      contexto2.strokeStyle = "red";
+      contexto2.lineWidth = 6;
+
+      // Dibujar el recuadro rojo en la posición actual
+      contexto2.beginPath();
+      contexto2.strokeRect(x, y, bucket, bucket);
+      contexto2.stroke();
+
+      datos1 = contexto.getImageData(x, y, bucket, bucket);  // Leemos la porción de la imagen actual
+      var trabajador = new Worker("013-worker.js");
+      trabajador.postMessage(datos1.data);  // Enviamos los datos al worker
+
+      trabajador.onmessage = function (misdatos) {
+        for (let i = 0; i < datos1.data.length; i++) {
+          datos1.data[i] = misdatos.data[i];  // Actualizamos los datos con los valores procesados
+        }
+        contexto.putImageData(datos1, x, y);  // Dibujamos los datos procesados en el canvas
+
+        // Ahora movemos el recuadro a la siguiente posición
+        x += bucket;  // Avanzamos la coordenada x
+
+        if (x >= lienzo.width) {  // Si alcanzamos el borde derecho
+          x = 0;  // Reiniciamos x
+          y += bucket;  // Bajamos a la siguiente fila
+        }
+
+        if (y < lienzo.height) {  // Si no hemos terminado con la imagen
+          setTimeout(trabajaMucho, 100);  // Llamamos de nuevo a la función con un pequeño retraso
+        }
+      };
+    }
+  </script>
+</body>
+</html>
