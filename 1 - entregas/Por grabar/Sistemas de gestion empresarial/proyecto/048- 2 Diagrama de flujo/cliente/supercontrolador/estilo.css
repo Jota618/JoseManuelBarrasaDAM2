@@ -1,0 +1,203 @@
+body,
+html {
+  font-family: sans-serif;
+  background: rgb(230, 240, 255); /* Fondo azul claro */
+  padding: 0px;
+  height: 100%;
+  margin: 0px;
+  color: #333; /* Color de texto general */
+}
+
+header {
+  padding: 20px;
+  background-color: rgb(30, 90, 140); /* Fondo azul oscuro */
+  color: white; /* Texto blanco */
+  text-align: center; /* Centrar texto */
+  font-size: 2rem; /* Tamaño de fuente grande */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para destacar el encabezado */
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+  align-content: stretch;
+  height: 100%;
+}
+
+main nav {
+  width: 20%;
+  height: 100%;
+  background-color: rgb(70, 130, 180); /* Fondo azul medio para el menú */
+  color: white; /* Texto blanco para el menú */
+  padding: 10px; /* Espaciado interno */
+  border-radius: 0 20px 0 0; /* Bordes redondeados */
+}
+
+main section {
+  width: 80%;
+  background: white;
+  height: 100%;
+  border-radius: 20px 0px 0px 0px;
+  color: black;
+  padding: 20px;
+}
+
+main section table {
+  width: 100%;
+  border-collapse: collapse; /* Colapsar bordes de la tabla */
+}
+
+main section table thead {
+  background: rgb(30, 90, 140); /* Fondo azul oscuro para la cabecera de la tabla */
+  color: white; /* Texto blanco */
+}
+
+main section table thead tr th:first-child {
+  border-radius: 20px 0px 0px 20px; /* Bordes redondeados para la primera columna */
+}
+
+main section table thead tr th:last-child {
+  border-radius: 0px 20px 20px 0px; /* Bordes redondeados para la última columna */
+}
+
+main section table td,
+main section table th {
+  padding: 10px;
+  border: 1px solid rgb(200, 200, 200); /* Bordes sutiles para las celdas */
+}
+
+main section table tbody tr:nth-child(even) {
+  background: rgb(240, 240, 255); /* Fondo azul claro para filas pares */
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0px;
+}
+
+nav ul li {
+  padding: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Transición suave para el fondo */
+}
+
+nav ul li:hover {
+  background-color: rgb(50, 100, 150); /* Color de fondo más oscuro al pasar el ratón */
+}
+
+.papelera {
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+td.papelera:hover {
+  background-color: darkred; /* Rojo oscuro para el hover de papelera */
+}
+.papelera:hover {
+  transform: scale(1);
+  color: white;
+}
+
+#modal {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  backdrop-filter: blur(5px);
+}
+#contienemodal {
+  width: 800px;
+  height: 800px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: white;
+  margin-left: -400px;
+  margin-top: -400px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 40px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+  color: black;
+  text-align: center;
+}
+#contienemodal section {
+  column-count: 2;
+  column-gap: 60px;
+  text-align: left;
+}
+#contienemodal div {
+  break-inside: avoid-column;
+}
+
+#insertar {
+  width: 30px;
+  height: 30px;
+  background: rgb(20, 70, 120); /* Azul oscuro */
+  color: white;
+  border: none;
+  border-radius: 30px;
+  margin-bottom: 10px;
+  font-size: 30px;
+  text-align: center;
+  line-height: 30px;
+  font-weight: bold;
+}
+#insertar:hover{
+  transform: scale(1.1)
+}
+#contienemodal input {
+  width: 100%;
+  padding: 10px 0px;
+  margin: 10px 0px;
+  border: 0px;
+  border-bottom: 1px solid grey;
+}
+#contienemodal input:focus {
+  outline: none;
+  background: rgb(240, 240, 240);
+}
+#contienemodal p {
+  color: black;
+  padding: 0px;
+  margin: 0px;
+}
+#contienemodal button {
+  background: rgb(20, 70, 120); /* Azul oscuro */
+  color: white;
+  width: 50%;
+  padding: 10px;
+  border-radius: 50px;
+  border: none;
+  margin-top: 20px;
+}
+
+.aparece {
+  animation: animaparece 1s;
+  animation-fill-mode: forwards;
+}
+@keyframes animaparece {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+.desaparece {
+  animation: animdesaparece 1s;
+  animation-fill-mode: forwards;
+}
+@keyframes animdesaparece {
+  0% {
+    opacity: 100%;
+  }
+  100% {
+    opacity: 0%;
+  }
+}
