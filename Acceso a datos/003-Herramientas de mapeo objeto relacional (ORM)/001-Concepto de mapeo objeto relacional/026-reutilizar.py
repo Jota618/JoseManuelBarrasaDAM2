@@ -5,11 +5,13 @@ class Producto:
                     nuevonombre,
                     nuevadescripcion,
                     nuevoprecio,
+                     nuevascalidades,
                      nuevascategorias):
         self.nombre = nuevonombre
         self.descripcion = nuevadescripcion
         self.precio = nuevoprecio
         self.categorias =  nuevascategorias
+        self.calidad =  nuevascalidades
 clase = "Producto"
 
 ##################################### PREPARO UNA CONEXIÓN CON EL SERVIDOR
@@ -23,12 +25,17 @@ conexion = mysql.connector.connect(
 
 cursor = conexion.cursor() 
 
-##################################### CREO UNA LISTA DE zS
+##################################### CREO UNA LISTA DE PRODUCTOS
 
 personas = []
 
-personas.append(Producto("Camiseta","Camiseta fenomenal para el dia a dia",34.56,['ropa','caballero']))
-personas.append(Producto("Pantalon","Pantalon para vestir de noche",56.43,['ropa','señora']))
+personas.append(Producto("Camiseta","Camiseta fenomenal para el dia a dia",35.99,"basic",['ropa','caballero']))
+personas.append(Producto("Pantalon","Pantalon para vestir de noche",55.99,"basic",['ropa','señora']))
+personas.append(Producto("Abrigo","Abrigo elegante",69.99,"premium",['ropa','unisex']))
+personas.append(Producto("Abrigo","Abrigo elegante femenino",59.99,"basic",['ropa','señora']))
+personas.append(Producto("Abrigo","Abrigo elegante masculino",59.99,"basic",['ropa','caballero']))
+personas.append(Producto("Guantes","Guantes de vestir",24.99,"premium",['ropa','unisex']))
+personas.append(Producto("Sombrero","Sombrero elegante",29.99,"premium",['ropa','unisex']))
 
 ##################################### BORRAMOS LA TABLA ANTERIOR POR SI ACASO HAY DATOS ANTERIOR
 
@@ -76,16 +83,38 @@ for indice, persona in enumerate(personas):
 conexion.commit()                                                                       # Lo lanzo todo contra el servidor
 
 
+##################   CONSULTA DE PRODUCTOS
+
+def consultar_productos_por_atributo(atributo, valor):
+    """
+    Consulta productos en la base de datos filtrando por un atributo específico.
+    """
+    query = f"SELECT * FROM Producto WHERE {atributo} = %s"
+    cursor.execute(query, (valor,))
+    resultados = cursor.fetchall()
+    for fila in resultados:
+        print(fila)
 
 
+consultar_productos_por_atributo('nombre', 'Camiseta')
+consultar_productos_por_atributo('calidad', 'basic')
+
+############## ACTUALIZAR PRODUCTOS
+
+def actualizar_producto(id_producto, **kwargs):
+    """
+    Actualiza uno o más atributos de un producto en la base de datos.
+    kwargs puede incluir: nombre, descripcion, precio, calidad, etc.
+    """
+    set_clause = ", ".join(f"{key} = %s" for key in kwargs)
+    valores = tuple(kwargs.values()) + (id_producto,)
+    query = f"UPDATE Producto SET {set_clause} WHERE Identificador = %s"
+    cursor.execute(query, valores)
+    conexion.commit()
+    print(f"Producto con ID {id_producto} actualizado.")
 
 
-
-
-
-
-
-
+#actualizar_producto(2, nombre="Pantalón", precio=61.99)
 
 
 

@@ -1,4 +1,5 @@
 import mysql.connector
+import json
 ###################################### CREO UNA CLASE QUE ES EL MODELO DE DATOS
 class Profesor:
     def __init__(self):
@@ -36,7 +37,7 @@ for fila in filas:                                                              
         if valor == None:                                                                           # Si su valor es None es que debe ser tabla externa
             setattr(profesor, clave, [])                                                            # Le cambio none por una lista vacia
             print("parece que hay una tabla externa en :",clave)                        
-            peticion2 = "SELECT "+clave+" FROM "+clave+" WHERE FK = "+str(profesor.Identificador)   # Realizo una peticion a esa otra tabla
+            peticion2 = "SELECT "+clave+" FROM "+clave+" WHERE Asignacion = "+str(profesor.Identificador)   # Realizo una peticion a esa otra tabla
             cursor.execute(peticion2)                                                               # Ejecuto la peticion
             filas2 = cursor.fetchall()                                                              # recupero los datos
             for fila2 in filas2:                                                                    # Itero los datos
@@ -46,8 +47,23 @@ for fila in filas:                                                              
     profesores.append(profesor)                                                                      # Añado el producto a la lista 
 
 print(vars(profesores[0]))
+print(vars(profesores[1]))
     
-    
+
+########## Nueva funcionalidad: Exportar datos a un archivo JSON
+def exportar_a_json(profesores, archivo="profesores.json"):
+    datos_a_exportar = []  # Lista para almacenar los datos en formato serializable
+    for profesor in profesores:
+        datos_a_exportar.append(vars(profesor))  # Convierto cada objeto a un diccionario
+
+    # Escribo los datos en un archivo JSON
+    with open(archivo, "w", encoding="utf-8") as archivo_json:
+        json.dump(datos_a_exportar, archivo_json, indent=4, ensure_ascii=False)  # Formato legible con indentación
+    print(f"Datos exportados exitosamente a {archivo}")
+
+######### Llamo a la función para exportar los datos actuales
+exportar_a_json(profesores)
+
 
 profesores = []
 conexion.commit()                                                                       # Lo lanzo todo contra el servidor

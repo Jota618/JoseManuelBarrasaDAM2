@@ -2,190 +2,222 @@
   font-family: Ubuntu;
   src: url(../Ubuntu-R.ttf);
 }
-body,html{
-  font-family:Ubuntu,sans-serif;
-  background:crimson;
-  padding:0px;
-  height:100%;
-  margin:0px;
-  color:white;
-}
-header{
-  padding:20px;
-}
-main{
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: center;
-	align-items: stretch;
-	align-content: stretch;
-	height:100%;
-}
-main nav{
-  width:20%;
-  height:100%;
-}
-main section{
-  width:80%;
-  background:white;
-  height:100%;
-  border-radius:20px 0px 0px 0px;
-  color:black;
-  padding:20px;
-  overflow-y:scroll;
-}
-main section table{
-  width:100%;
-  height:100%;
-  position:relative;
-}
-main section table thead{
-  background:crimson;
-  color:white;
-  
-  width:100%;
+
+body, html {
+  font-family: Ubuntu, sans-serif;
+  background-color: #1e3a8a; /* Azul oscuro */
+  padding: 0px;
+  height: 100%;
+  margin: 0px;
+  color: #caf0f8; /* Texto azul claro */
 }
 
-main section table thead tr th:first-child{
-  border-radius:20px 0px 0px 20px;
+
+header {
+  padding: 20px;
 }
-main section table thead tr th:last-child{
-  border-radius:0px 20px 20px 0px;
+
+main {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+  align-content: stretch;
+  height: 100%;
 }
-main section table td,main section table th{
-  padding:10px;
+
+main nav {
+  width: 20%;
+  height: 100%;
 }
-main section table tbody tr:nth-child(even){
-  background:#f0e0e3;
+
+main section {
+  width: 80%;
+  background: #4895ef; /* Azul mediano */
+  height: 100%;
+  border-radius: 20px 0px 0px 0px;
+  color: #caf0f8; /* Azul claro */
+  padding: 20px;
+  overflow-y: scroll;
 }
-nav ul{
-  list-style-type:none;
-  padding:0px;
+
+main section table {
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
-nav ul li{
-  padding:15px;
-  cursor:pointer;
+
+main section table thead {
+  background: #4361ee; /* Azul intenso */
+  color: #caf0f8; /* Azul claro */
+  width: 100%;
 }
-#modal{
-  width:100%;
-  height:100%;
-  position:fixed;
-  top:0px;
-  left:0px;
-  background:rgba(0,0,0,0.5);
-  display:none;
-  backdrop-filter:blur(5px);
+
+main section table thead tr th:first-child {
+  border-radius: 20px 0px 0px 20px;
 }
-#contienemodal{
-  width:800px;
-  height:800px;
-  position:absolute;
-  top:50%;
-  left:50%;
-  background:white;
-  margin-left:-400px;
-  margin-top:-400px;
-  border-radius:10px;
-  box-sizing:border-box;
-  padding:40px;
-  box-shadow:0px 5px 10px rgba(0,0,0,0.5);
-  color:black;
-  text-align:center;
+
+main section table thead tr th:last-child {
+  border-radius: 0px 20px 20px 0px;
 }
-#contienemodal section{
-  column-count:2;
-  column-gap:60px;
-  text-align:left;
+
+main section table td,
+main section table th {
+  padding: 10px;
 }
-#contienemodal div{
+
+main section table tbody tr:nth-child(even) {
+  background: #a0c4ff; /* Azul claro */
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0px;
+}
+
+nav ul li {
+  padding: 15px;
+  cursor: pointer;
+}
+
+#modal {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  backdrop-filter: blur(5px);
+}
+
+#contienemodal {
+  width: 800px;
+  height: 800px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: #4895ef; /* Azul mediano */
+  margin-left: -400px;
+  margin-top: -400px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 40px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+  color: #caf0f8; /* Azul claro */
+  text-align: center;
+}
+
+#contienemodal section {
+  column-count: 2;
+  column-gap: 60px;
+  text-align: left;
+}
+
+#contienemodal div {
   break-inside: avoid-column;
 }
 
-#insertar{
-  width:30px;
-  height:30px;
-  background:crimson;
-  color:white;
-  border:none;
-  border-radius:30px;
-  margin-bottom:10px;
-  font-size:30px;
-  text-align:center;
-  line-height:30px;
-  font-weight:bold;
-}
-#contienemodal input{
-  width:100%;
-  padding:10px 0px;
-  margin:10px 0px;
-  border:0px;
-  border-bottom:1px solid grey;
-}
-#contienemodal input:focus{
-  outline:none;
-  background:rgb(240,240,240);
-}
-#contienemodal p{
-  color:black;
-  padding:0px;
-  margin:0px;
-}
-#contienemodal button{
-  background:crimson;
-  color:white;
-  width:50%;
-  padding:10px;
-  border-radius:50px;
-  border:none;
-  margin-top:20px;
+#insertar {
+  width: 30px;
+  height: 30px;
+  background: #4361ee; /* Azul intenso */
+  color: #caf0f8; /* Azul claro */
+  border: none;
+  border-radius: 30px;
+  margin-bottom: 10px;
+  font-size: 30px;
+  text-align: center;
+  line-height: 30px;
+  font-weight: bold;
 }
 
-.aparece{
-  animation:animaparece 1s;
-  animation-fill-mode:forwards;
-}
-@keyframes animaparece{
-  0%{opacity:0%;}
-  100%{opacity:100%;}
-}
-.desaparece{
-  animation:animdesaparece 1s;
-  animation-fill-mode:forwards;
-}
-@keyframes animdesaparece{
-  0%{opacity:100%;}
-  100%{opacity:0%;}
-}
-.titulotabla{
-  display:inline-block;
-  padding-left:10px;
-}
-.titulotabla *{
-  margin:0px;
-}
-.titulotabla h5{
-  font-size:16px;
-}
-.titulotabla p{
-  font-size:12px;
-}
-.menuseleccionado{
-  background:white;
-  color:crimson;
-}
-td{
-	transition:all 1s;
-}
-td:focus{
-	background:yellow;
-	transform:scale(1.4,1.4);
+#contienemodal input {
+  width: 100%;
+  padding: 10px 0px;
+  margin: 10px 0px;
+  border: 0px;
+  border-bottom: 1px solid #4cc9f0; /* Azul brillante */
 }
 
+#contienemodal input:focus {
+  outline: none;
+  background: #caf0f8; /* Azul claro */
+}
 
+#contienemodal p {
+  color: #caf0f8; /* Azul claro */
+  padding: 0px;
+  margin: 0px;
+}
 
+#contienemodal button {
+  background: #4361ee; /* Azul intenso */
+  color: #caf0f8; /* Azul claro */
+  width: 50%;
+  padding: 10px;
+  border-radius: 50px;
+  border: none;
+  margin-top: 20px;
+}
 
+.aparece {
+  animation: animaparece 1s;
+  animation-fill-mode: forwards;
+}
 
+@keyframes animaparece {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
 
+.desaparece {
+  animation: animdesaparece 1s;
+  animation-fill-mode: forwards;
+}
 
+@keyframes animdesaparece {
+  0% {
+    opacity: 100%;
+  }
+  100% {
+    opacity: 0%;
+  }
+}
+
+.titulotabla {
+  display: inline-block;
+  padding-left: 10px;
+}
+
+.titulotabla * {
+  margin: 0px;
+}
+
+.titulotabla h5 {
+  font-size: 16px;
+}
+
+.titulotabla p {
+  font-size: 12px;
+}
+
+.menuseleccionado {
+  background: #caf0f8; /* Azul claro */
+  color: #4361ee; /* Azul intenso */
+}
+
+td {
+  transition: all 1s;
+}
+
+td:focus {
+  background: #4cc9f0; /* Azul brillante */
+  transform: scale(1.4, 1.4);
+}
 

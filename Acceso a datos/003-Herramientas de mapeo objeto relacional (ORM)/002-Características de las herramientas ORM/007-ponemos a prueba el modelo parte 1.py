@@ -27,6 +27,8 @@ cursor = conexion.cursor()
 profesores = []
 
 profesores.append(Profesor("Jose Vicente","Profesor de informatica",['Albert','Jose Manuel','Dragos']))
+profesores.append(Profesor("Andres","Profesor de marketing",['Juan','Felipe','Anna']))
+
 
 
 ##################################### BORRAMOS LA TABLA ANTERIOR POR SI ACASO HAY DATOS ANTERIOR
@@ -46,7 +48,7 @@ for atributo in atributos:                                                      
     else:
         peticion2 = "DROP TABLE IF EXISTS "+atributo+""
         cursor.execute(peticion2)
-        peticion2 = "CREATE TABLE IF NOT EXISTS "+atributo+" (Identificador INT NOT NULL AUTO_INCREMENT,FK INT(255),"+atributo+" VARCHAR(255),PRIMARY KEY (Identificador))"
+        peticion2 = "CREATE TABLE IF NOT EXISTS "+atributo+" (Identificador INT NOT NULL AUTO_INCREMENT,Asignacion INT(255),"+atributo+" VARCHAR(255),PRIMARY KEY (Identificador))"
         cursor.execute(peticion2)
 
 

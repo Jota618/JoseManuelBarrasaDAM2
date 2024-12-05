@@ -2,28 +2,49 @@
   font-family: personalizada;
   src: url(personalizada.ttf);
 }
-*{transition:all 1s;}
-.jvampliador{
-	position:fixed;
-	top:10px;
-	right:10px;
+
+* {
+  transition: all 1s;
 }
-.jvampliador button{
-	border:none;
-	margin:0px;
-	padding:5px;
-	background:black;
-	color:white;
-	width:30px;
-	height:30px;
-	font-weight:bold;
-	font-size:26px;
-	line-height:16px;
-	
+
+.jvampliador {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: radial-gradient(circle, #a0c4ff, #4361ee); /* Degradado azul claro a azul intenso */
+  border: 5px solid #4cc9f0; /* Borde azul brillante */
+  border-radius: 15px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  padding: 10px;
 }
-.jvampliador button:first-child{
-	border-radius:30px 0px 0px 30px;
+
+.jvampliador button {
+  border: none;
+  margin: 0px;
+  padding: 5px;
+  background: #4361ee; /* Fondo azul intenso */
+  color: #caf0f8; /* Texto azul claro */
+  width: 30px;
+  height: 30px;
+  font-weight: bold;
+  font-size: 26px;
+  line-height: 16px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.jvampliador button:last-child{
-	border-radius:0px 30px 30px 0px;
+
+.jvampliador button:hover {
+  transform: scale(1.1); /* Efecto de crecimiento al pasar el cursor */
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3); /* Más sombra para destacar */
+  background: #4cc9f0; /* Azul brillante al pasar el cursor */
+}
+
+.jvampliador button:first-child {
+  border-radius: 30px 0px 0px 30px;
+  background: #4895ef; /* Azul mediano */
+}
+
+.jvampliador button:last-child {
+  border-radius: 0px 30px 30px 0px;
+  background: #3a0ca3; /* Azul oscuro */
 }

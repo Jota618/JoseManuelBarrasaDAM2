@@ -1,0 +1,22 @@
+[
+    {
+        "nombre": "Jose Vicente",
+        "descripcion": "Profesor de informatica",
+        "alumnos": [
+            "Albert",
+            "Jose Manuel",
+            "Dragos"
+        ],
+        "Identificador": 1
+    },
+    {
+        "nombre": "Andres",
+        "descripcion": "Profesor de marketing",
+        "alumnos": [
+            "Juan",
+            "Felipe",
+            "Anna"
+        ],
+        "Identificador": 2
+    }
+]
