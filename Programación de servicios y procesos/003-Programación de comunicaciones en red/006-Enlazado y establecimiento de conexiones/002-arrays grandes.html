@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script>
+      const inicial = performance.memory.usedJSHeapSize;
+
+	   let coleccion = [];
+	   for(let i = 0;i<1000000;i++){
+	   	coleccion.push(0)
+	   }
+
+      setTimeout(() => {
+        const final = performance.memory.usedJSHeapSize;
+        let memoriaUtilizada = final - inicial;
+        console.log(memoriaUtilizada);
+      }, 100);
+    </script>
+  </body>
+</html>
+

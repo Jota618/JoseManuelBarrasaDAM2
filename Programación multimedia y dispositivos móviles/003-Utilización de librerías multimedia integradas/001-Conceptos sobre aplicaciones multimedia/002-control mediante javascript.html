@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+	<head>
+	</head>
+	<body>
+		<video src="entrevista.mp4"></video>
+		<button id="play">Play</button>
+		<button id="pausa">Pausa</button>
+		<script>
+			let video = document.querySelector("video")
+			let botonplay = document.querySelector("#play")
+			let botonpausa = document.querySelector("#pausa")
+			
+			botonplay.onclick = function(){
+				video.play()
+			}
+			botonpausa.onclick = function(){
+				video.pause()
+			}
+		</script>
+	</body>
+</html>
+

@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      body {
+        background: black;
+        text-align: center;
+      }
+      canvas {
+        background: white;
+        margin: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      /////////////////// VARIABLES GLOBALES ////////////////////////////////
+      let lienzo = document.querySelector("canvas"); // Selecciono el lienzo en el que vamos a dibujar
+      let contexto = lienzo.getContext("2d"); // Creo un contexto para dibujar en 2D
+      let rojo = Math.round(Math.random() * 255);
+      let verde = Math.round(Math.random() * 255);
+      let azul = Math.round(Math.random() * 255);
+      let jugador = {
+        posx: Math.random() * 1024,
+        posy: Math.random() * 1024,
+        color: "rgb(" + rojo + "," + verde + "," + azul + ")",
+        direccion: 0
+      }; // Defino un jugador inicial
+      const socket = new WebSocket("wss://jotauve.es:3000"); // Creo una nueva conexión de sockets
+      let paso = 2; // Defino el paso de velocidad del personaje
+      /////////////////// VARIABLES GLOBALES ////////////////////////////////
+
+      /////////////////// PROPIEDADES DEL LIENZO ////////////////////////////////
+
+      lienzo.width = 1024; // El lienzo tiene x pixeles de anchura
+      lienzo.height = 1024; // El lienzo tiene y pixeles de altura
+      dibujaJugador(jugador.posx, jugador.posy, jugador.color); // Al comenzar el juego dibujo al jugador
+
+      /////////////////// PROPIEDADES DEL LIENZO ////////////////////////////////
+
+      /////////////////// TRABAJO CON SOCKETS ////////////////////////////////
+
+      socket.addEventListener("open", (event) => {
+        // Cuando alguien me abre una conexion
+        console.log("WebSocket connection opened"); // Se ha abierto una conexion
+      });
+
+      socket.addEventListener("error", (event) => {
+        // en el caso de que haya un error
+        console.error("WebSocket error:", event); // intenta decirme donde esta el error
+      });
+
+      socket.addEventListener("message", (event) => {
+        // Cuando el servidor envíe un mensjae
+        let datos = JSON.parse(event.data); // Datos es lo que me envie el servidor, pero pasalo a json
+        console.log("El servidor me dice:");
+        console.log(datos);
+        dibujaJugador(datos.posx, datos.posy, datos.color);
+      });
+
+      /////////////////// TRABAJO CON SOCKETS ////////////////////////////////
+
+      /////////////////// FUNCION DE DIBUJO DE LOS PERSONAJES ////////////////////////////////
+
+      function dibujaJugador(x, y, color) {
+        // La funcion admite tres parametros
+        contexto.fillStyle = color; // configuro el color de la brocha
+        contexto.beginPath(); // Empiezo a dibujar
+        contexto.arc(x, y, 3, 0, Math.PI * 2); // Dibujo un circulo
+        contexto.fill(); // Relleno el circulo de color
+      }
+
+      /////////////////// FUNCION DE DIBUJO DE LOS PERSONAJES ////////////////////////////////
+
+      /////////////////// CONTROLES DE TECLADO ////////////////////////////////
+
+      document.addEventListener("keydown", function (event) {
+        switch (event.key) {
+          case "w":
+          case "W":
+            jugador.posy -= paso; // Actualizo la posicion del personaje
+            jugador.direccion = 0;
+            break;
+          case "a":
+          case "A":
+            jugador.posx -= paso; // Actualizo la posicion del personaje
+            jugador.direccion = 1;
+            break;
+          case "s":
+          case "S":
+            jugador.posy += paso; // Actualizo la posicion del personaje
+            jugador.direccion = 2;
+            break;
+          case "d":
+          case "D":
+            jugador.posx += paso; // Actualizo la posicion del personaje
+            jugador.direccion = 3;
+            break;
+        }
+        dibujaJugador(jugador.posx, jugador.posy, jugador.color); // Dibujo al personaje con su posicion actualizada
+        socket.send(JSON.stringify(jugador)); // envio al resto de jugadores mi posicion y mi color
+        let pixel; // Declaro un pixel
+        jugador.posx = parseInt(Math.round(jugador.posx)); // ME aseguro que las posiciones sean numero enteros
+        jugador.posy = parseInt(Math.round(jugador.posy));
+
+        switch (
+          jugador.direccion // Evaluo cual es la direccion del personaje
+        ) {
+          case 0: // en el caso de que vaya hacia arriba
+            pixel = contexto.getImageData(jugador.posx, jugador.posy - paso * 2, 1, 1); // Mira el pixel que esta un poco mas arriba
+            break;
+          case 1: // en el caso de que vaya hacia izquierda
+            pixel = contexto.getImageData(jugador.posx - paso * 4, jugador.posy, 1, 1); // Mira el pixel que esta un poco mas a la izquierda
+            break;
+          case 2: // en el caso de que vaya hacia abajo
+            pixel = contexto.getImageData(jugador.posx, jugador.posy + paso * 4, 1, 1); // Mira el pixel que esta un poco mas abajo
+            break;
+          case 3: // en el caso de que vaya hacia derecha
+            pixel = contexto.getImageData(jugador.posx + paso * 4, jugador.posy, 1, 1); // Mira el pixel que esta un poco mas a la derecha
+            break;
+        }
+
+        if (pixel.data[3] > 0) {
+          // Si el pixel no es transparente, quiero decir que alguien ha pasado por ahi
+          window.location = window.location; // Recarga la pagina lo que quiere decir que has perdido
+        }
+      });
+
+      /////////////////// CONTROLES DE TECLADO ////////////////////////////////
+    </script>
+  </body>
+</html>

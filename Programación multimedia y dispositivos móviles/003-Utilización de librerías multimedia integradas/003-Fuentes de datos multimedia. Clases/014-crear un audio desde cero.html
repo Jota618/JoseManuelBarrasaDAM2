@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sine Wave at 440Hz</title>
+</head>
+<body>
+    
+<canvas></canvas>
+<button id="play">play</button>
+<button id="pausa">pausa</button>
+
+<script>
+    let lienzo = document.querySelector("canvas");
+    lienzo.width = 1920;
+    lienzo.height = 100;
+    let contexto = lienzo.getContext("2d");
+    
+    let audioContext;
+    let audioBuffer;
+    let source;
+    let startTime = 0;
+    let pauseTime = 0;
+    let isPlaying = false;
+
+    window.onload = function() {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        // Sine wave parameters
+        let frequency = 220; // Frequency in Hz (A4)
+        let sampleRate = audioContext.sampleRate;
+        let duration = 2; // Duration of 2 seconds for playback
+
+        // Create an empty buffer and fill it with sine wave data
+        audioBuffer = audioContext.createBuffer(1, sampleRate * duration, sampleRate);
+        let channelData = audioBuffer.getChannelData(0);
+        
+        for (let i = 0; i < channelData.length; i++) {
+            channelData[i] = Math.sin(2 * Math.PI * frequency * i / sampleRate);
+        }
+
+        // Draw the waveform on the canvas
+        contexto.clearRect(0, 0, lienzo.width, lienzo.height);
+        for (let i = 0; i < channelData.length; i++) {
+            let x = i / (sampleRate * duration / lienzo.width);
+            let y = 50 + channelData[i] * 50; // Centered at y=50
+            contexto.fillRect(x, y, 1, 1);
+        }
+    }
+
+    document.querySelector("#play").onclick = function() {
+        if (!isPlaying) {
+            source = audioContext.createBufferSource();
+            source.buffer = audioBuffer;
+            source.connect(audioContext.destination);
+            startTime = audioContext.currentTime - pauseTime; // Calculate the offset to resume
+            source.start(0, pauseTime); // Start playing from the last pause time
+            isPlaying = true;
+
+            source.onended = function() {
+                isPlaying = false;
+                pauseTime = 0; // Reset pause time
+            }
+        }
+    }
+
+    document.querySelector("#pausa").onclick = function() {
+        if (isPlaying) {
+            source.stop();
+            pauseTime = audioContext.currentTime - startTime; // Save the current playback time
+            isPlaying = false;
+        }
+    }
+</script>
+</body>
+</html>
+

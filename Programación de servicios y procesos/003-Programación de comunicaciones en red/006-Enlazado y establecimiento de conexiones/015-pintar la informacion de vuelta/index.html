@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <body>
+  <script src="funciones.js"></script>
+  <canvas></canvas>
+    <script>
+
+		const lienzo = document.querySelector("canvas")															// Apuntamos al lienzo
+		const contexto = lienzo.getContext("2d")																	// Creamos un contexto
+		lienzo.width = 1920																								// Anchura del lienzo
+		lienzo.height = 1080																								// Altura del lienzo
+		
+		let imagen = new Image()																						// Creo una nueva imagen
+		imagen.src = "../captura.png"																						// apunto a una imagen real
+		imagen.onload = function(){
+			contexto.drawImage(imagen,0,0)																			// Dibuja la imagen en el lienzo
+			const coleccion = contexto.getImageData(0,0,1920,1080).data										// carga los datos en un array	
+			console.log("array original:")
+			console.log(coleccion)
+			console.log("array comprimido:")
+
+			let comprimido = comprimir(coleccion)
+			console.log(comprimido)
+			console.log("array descomprimido:")
+			let descomprimido = descomprimir(comprimido)
+			console.log(descomprimido)
+			
+			let datos  = contexto.getImageData(0,0,1920,1080)
+			for(let i = 0;i<datos.data.length;i++){
+				datos.data[i] = descomprimido[i]
+			}
+			contexto.putImageData(datos,0,0)
+		}
+		
+		
+    </script>
+  </body>
+</html>
+

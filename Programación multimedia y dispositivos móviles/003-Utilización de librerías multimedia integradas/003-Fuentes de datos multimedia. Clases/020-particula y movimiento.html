@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle with Musical Tones and Particle</title>
+</head>
+<body>
+<canvas id="musicCanvas" width="1024" height="1024"></canvas>
+
+<script>
+const canvas = document.getElementById('musicCanvas');
+const ctx = canvas.getContext('2d');
+
+// Colors for the Cmaj scale using international color coding
+const noteColors = {
+    C: '#FF0000', // Red
+    D: '#FF7F00', // Orange
+    E: '#FFFF00', // Yellow
+    F: '#00FF00', // Green
+    G: '#0000FF', // Blue
+    A: '#4B0082', // Indigo
+    B: '#9400D3'  // Violet
+};
+
+// Center and radius for the circle
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+const radius = 400;
+const startAngle = -Math.PI / 2; // Start at the top of the circle
+
+// Draw the outer circle and note segments
+function drawCircleAndSegments() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    const notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+    const angleIncrement = (2 * Math.PI) / notes.length;
+
+    notes.forEach((note, i) => {
+        const startSegment = startAngle + i * angleIncrement;
+        const endSegment = startSegment + angleIncrement;
+
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, startSegment, endSegment);
+        ctx.strokeStyle = noteColors[note];
+        ctx.lineWidth = 10;
+        ctx.stroke();
+
+        const labelAngle = startSegment + angleIncrement / 2;
+        const labelX = centerX + (radius + 30) * Math.cos(labelAngle);
+        const labelY = centerY + (radius + 30) * Math.sin(labelAngle);
+
+        ctx.fillStyle = noteColors[note];
+        ctx.font = "24px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(note, labelX, labelY);
+    });
+}
+
+// Particle class
+class Particle {
+    constructor(x, y, directionAngle, speed = 2) {
+        this.x = x;
+        this.y = y;
+        this.directionAngle = directionAngle;
+        this.speed = speed;
+        this.radius = 5;
+        this.color = '#000000';
+    }
+
+    move() {
+        this.x += this.speed * Math.cos(this.directionAngle);
+        this.y += this.speed * Math.sin(this.directionAngle);
+
+        // Calculate distance from center to determine if it hits the circle boundary
+        const distanceFromCenter = Math.sqrt((this.x - centerX) ** 2 + (this.y - centerY) ** 2);
+        if (distanceFromCenter >= radius) {
+            this.bounce();
+        }
+    }
+
+    bounce() {
+        // Reflect angle based on collision with circular boundary
+        const angleToCenter = Math.atan2(this.y - centerY, this.x - centerX);
+        this.directionAngle = 2 * angleToCenter - this.directionAngle + Math.PI;
+    }
+
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+    }
+}
+
+// Initialize particle
+const particle = new Particle(centerX + 200, centerY, Math.PI / 4);
+
+// Animation loop
+function animate() {
+    drawCircleAndSegments();
+    particle.move();
+    particle.draw();
+    requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+</body>
+</html>
+

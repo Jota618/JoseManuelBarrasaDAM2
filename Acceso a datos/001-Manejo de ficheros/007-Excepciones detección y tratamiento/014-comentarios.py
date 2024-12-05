@@ -86,10 +86,3 @@ tk.Button(marco,text="Guardamos todos los clientes a base de datos",command=guar
 
 
 ventana.mainloop()                                                      # Esto impide que la ventana se cierre y ejecuta el bucle
-
-
-
-
-        
-
-

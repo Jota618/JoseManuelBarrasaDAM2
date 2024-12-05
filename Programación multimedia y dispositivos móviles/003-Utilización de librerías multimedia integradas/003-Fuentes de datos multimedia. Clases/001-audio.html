@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load MP3 to AudioContext</title>
+</head>
+<body>
+    
+
+    <script>
+        let audioContext;
+        let audioBuffer;
+
+        window.onload = function() {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+            fetch('0802.mp3')
+                .then(response => response.arrayBuffer())
+                .then(arrayBuffer => {
+                    return audioContext.decodeAudioData(arrayBuffer);
+                })
+                .then(decodedData => {
+                    audioBuffer = decodedData;
+                    console.log(audioBuffer)
+                })
+                .catch(error => {
+                    console.error("Error loading or decoding audio file", error);
+                });
+        }
+
+    </script>
+</body>
+</html>
+
+

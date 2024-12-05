@@ -13,5 +13,3 @@ for i in range(0,numero):
 
 for i in range(0,numero):
     print(npcs[i].x,npcs[i].y)
-
-

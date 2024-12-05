@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <body>
+  <canvas></canvas>
+    <script>
+    
+      
+		const lienzo = document.querySelector("canvas")
+		const contexto = lienzo.getContext("2d")
+		lienzo.width = 1920
+		lienzo.height = 1080
+		
+		let imagen = new Image()
+		imagen.src = "captura.png"
+		imagen.onload = function(){
+			contexto.drawImage(imagen,0,0)
+			
+			const coleccion = contexto.getImageData(0,0,1920,1080).data
+			
+			const sintransparencia = []
+			for(let i = 0;i<coleccion.length;i+=4){
+				sintransparencia.push(coleccion[i])
+				sintransparencia.push(coleccion[i+1])
+				sintransparencia.push(coleccion[i+2])
+			}
+			
+			const inicial = performance.memory.usedJSHeapSize;
+			
+			const sintransparencia8 = new Uint8Array(sintransparencia);
+		   setTimeout(() => {
+		     const final = performance.memory.usedJSHeapSize;
+		     let memoriaUtilizada = final - inicial;
+		     console.log(memoriaUtilizada);
+		     console.log(sintransparencia8)
+		   }, 100);
+		   
+		}
+		
+		
+    </script>
+  </body>
+</html>
+

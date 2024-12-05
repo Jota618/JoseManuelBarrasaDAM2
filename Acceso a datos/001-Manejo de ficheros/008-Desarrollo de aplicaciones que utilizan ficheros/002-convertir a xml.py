@@ -18,7 +18,3 @@ with open('cliente.json', 'r') as archivo:
 
 print(datos)
 save_dict_to_xml('cliente.xml', 'cliente', datos)
-
-
-
-

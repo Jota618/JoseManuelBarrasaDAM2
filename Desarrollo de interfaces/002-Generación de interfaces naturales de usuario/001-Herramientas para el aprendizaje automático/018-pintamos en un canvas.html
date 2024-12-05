@@ -1,18 +1,14 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8">
     <style>
-      #canvas4 {
-        width: 512px;
-        height: 512px;
-        border: 1px solid grey;
-      }
+      #canvas4{width:512px;height:512px;border:1px solid grey;}
     </style>
-  </head>
-  <body>
-    <input type="text" id="cajaentrenamiento" />
-    <button id="procesa">Procesa!</button><br />
+</head>
+<body>
+    <input type="text" id="cajaentrenamiento">
+    <button id="procesa">Procesa!</button><br>
     <video id="webcam" autoplay></video>
     <canvas id="canvas"></canvas>
     <canvas id="canvas2"></canvas>
@@ -20,142 +16,128 @@
     <canvas id="canvas4"></canvas>
     <h1>Esto es...<span id="resultado"></span></h1>
     <script>
-      ///////////////////////////////////////////// DECLARACIÓN DE VARIABLES GLOBALES //////////////////////////////////////////////////////
+        ///////////////////////////////////////////// DECLARACIÓN DE VARIABLES GLOBALES //////////////////////////////////////////////////////
+        
+        var memoria = [];                                                                   // Creo una memoria vacía
+        var neuronas = []                                                                   // Creo un conjunto de neuronas vacío
+        
+        var anchura = 3;                                                                    // Defino la anchura en pixeles de la memoria
+        var combinaciones = Math.pow(2,anchura*anchura)                                     // Defino la cantidad de combinaciones binarias para esa memoria
+        console.log("Las combinaciones son: ",combinaciones)
+        
+         ///////////////////////////////////////////// DECLARACIÓN DE VARIABLES GLOBALES //////////////////////////////////////////////////////
+         
+        ///////////////////////////////////////////// LIENZOS Y CONTEXTOS//////////////////////////////////////////////////////
+        
+        const video = document.getElementById('webcam');                                    // Selecciono el video en el HTML    
+        const canvas = document.getElementById('canvas');                                   // Ahora selecciono el lienzo
+        const contexto = canvas.getContext('2d');                                           // Creo un contexto
+        
+        const canvas2 = document.getElementById('canvas2');                                   // Ahora selecciono el lienzo
+        const contexto2 = canvas2.getContext('2d');                                           // Creo un contexto
+        
+        const canvas3 = document.getElementById('canvas3');                                   // Ahora selecciono el lienzo
+        const contexto3 = canvas3.getContext('2d');                                           // Creo un contexto
+        
+        const canvas4 = document.getElementById('canvas4');                                   // Ahora selecciono el lienzo
+        const contexto4 = canvas4.getContext('2d');                                           // Creo un contexto
+        
+       ///////////////////////////////////////////// LIENZOS Y CONTEXTOS//////////////////////////////////////////////////////
+       
+        ///////////////////////////////////////////// STREAM DE CAMARA//////////////////////////////////////////////////////
 
-      var memoria = []; // Creo una memoria vacía
-      var neuronas = []; // Creo un conjunto de neuronas vacío
-
-      var anchura = 3; // Defino la anchura en pixeles de la memoria
-      var combinaciones = Math.pow(2, anchura * anchura); // Defino la cantidad de combinaciones binarias para esa memoria
-      console.log("Las combinaciones son: ", combinaciones);
-
-      ///////////////////////////////////////////// DECLARACIÓN DE VARIABLES GLOBALES //////////////////////////////////////////////////////
-
-      ///////////////////////////////////////////// LIENZOS Y CONTEXTOS//////////////////////////////////////////////////////
-
-      const video = document.getElementById("webcam"); // Selecciono el video en el HTML
-      const canvas = document.getElementById("canvas"); // Ahora selecciono el lienzo
-      const contexto = canvas.getContext("2d"); // Creo un contexto
-
-      const canvas2 = document.getElementById("canvas2"); // Ahora selecciono el lienzo
-      const contexto2 = canvas2.getContext("2d"); // Creo un contexto
-
-      const canvas3 = document.getElementById("canvas3"); // Ahora selecciono el lienzo
-      const contexto3 = canvas3.getContext("2d"); // Creo un contexto
-
-      const canvas4 = document.getElementById("canvas4"); // Ahora selecciono el lienzo
-      const contexto4 = canvas4.getContext("2d"); // Creo un contexto
-
-      ///////////////////////////////////////////// LIENZOS Y CONTEXTOS//////////////////////////////////////////////////////
-
-      ///////////////////////////////////////////// STREAM DE CAMARA//////////////////////////////////////////////////////
-
-      navigator.mediaDevices
-        .getUserMedia({ video: true }) // Del navegador, atrapo el feed de la camara
-        .then((stream) => {
-          // Y entonces
-          video.srcObject = stream; // El contenido del video es el feed de la camara
-          video.addEventListener("loadedmetadata", () => {
-            // Cuando el video ha cargado
-            canvas.width = video.videoWidth; // Ajusto la anchura del canvas a la anchura del video
-            canvas.height = video.videoHeight; // Ajusto la altura del canvas a la altura del video
-
-            canvas2.width = video.videoWidth; // Ajusto la anchura del canvas a la anchura del video
-            canvas2.height = video.videoHeight; // Ajusto la altura del canvas a la altura del video
-
-            canvas3.width = video.videoWidth; // Ajusto la anchura del canvas a la anchura del video
-            canvas3.height = video.videoHeight; // Ajusto la altura del canvas a la altura del video
-
-            canvas4.width = 24; // Ajusto la anchura del canvas a la anchura del video
-            canvas4.height = 24; // Ajusto la altura del canvas a la altura del video
-
-            ///////////////////////////////////////////// FUNCIOŃ DE DIBUJO //////////////////////////////////////////////////////
-
-            function draw() {
-              // Creo una funcion de dibujo que:
-
-              ///////////////////////////////////////////// HALLAR BORDES //////////////////////////////////////////////////////
-
-              contexto.drawImage(video, 0, 0, canvas.width, canvas.height); // Pinta el contenido del video en el canvas
-              var datos = contexto.getImageData(0, 0, canvas.width, canvas.height); // Cargo en memoria todos los datos del canvas 1
-              let umbral = 25;
-              for (let i = 0; i < datos.data.length; i += 4) {
-                // Y ahora los proceso pixel a pixel
-                if (
-                  Math.abs(datos.data[i] - datos.data[i + 4]) > umbral ||
-                  Math.abs(datos.data[i] - datos.data[i + canvas.width * 4]) > umbral
-                ) {
-                  // Creo un borde vertical
-                  datos.data[i] = 0; // O bien los pinto negro
-                  datos.data[i + 1] = 0;
-                  datos.data[i + 2] = 0;
-                } else {
-                  datos.data[i] = 255; // O bien los pinto blanco
-                  datos.data[i + 1] = 255;
-                  datos.data[i + 2] = 255;
-                }
-              }
-              contexto2.putImageData(datos, 0, 0); // Pongo la imagen en blanco y negro
-
-              ///////////////////////////////////////////// PROCESAR NEURONAS UNA A UNA //////////////////////////////////////////////////////
-
-              neuronas = [];
-              for (let x = 0; x < video.videoWidth; x += anchura) {
-                // Repaso toda la imagen en X
-                for (let y = 0; y < video.videoHeight; y += anchura) {
-                  // Repaso toda la imagen en Y
-                  let bloque = contexto2.getImageData(x, y, anchura, anchura); // Cojo de momento un bloque de 2x2
-                  let cadena = ""; // Creo una cadena
-                  for (let i = 0; i < bloque.data.length; i += 4) {
-                    // Cojo un ese bloque de 2x2
-                    if (bloque.data[i] == 255) {
-                      // Si el pixel rojo es 255
-                      cadena += "1"; // Pues le pongo un uno a la cadena
-                    } else {
-                      // En caso contrario
-                      cadena += "0"; // Le pongo un cero
-                    }
-                  }
-                  if (neuronas[cadena] == undefined) {
-                    // Si la neurona no tenia ese registro
-                    neuronas[cadena] = 1; // En ese caso inicializa el registro
-                  } else {
-                    // Y si sí que lo tenía
-                    neuronas[cadena]++; // En ese caso súmale un valor
-                  }
-                }
-              }
-              console.log(neuronas);
-
-              ///////////////////////////////////////////// PINTAR LAS NEURONAS EN UN MAPA //////////////////////////////////////////////////////
-
-              for (let i = 0; i < combinaciones; i++) {
-                if (neuronas[decimalToBinary(i)] > 5) {
-                  console.log("si");
-                } else {
-                  console.log("no");
-                }
-              }
-
-              ///////////////////////////////////////////// REPASAR SI YA LO TENÍA EN MEMORIA //////////////////////////////////////////////////////
-
-              for (let i = 0; i < memoria.length; i++) {
-                // Ahora revisamos la memoria
-                if (arraysEqual(neuronas, memoria[i].datos)) {
-                  // Compruebo si lo que estoy viendo ahora mismo lo tenia en la memoria
-                  document.querySelector("#resultado").textContent = memoria[i].identificador; // Digo lo que estoy viendo
-                } else {
-                  // En caso contrario
-                  document.querySelector("#resultado").textContent = ""; // Vacío el resultado
-                }
-              }
-              /*contexto3.clearRect(0,0,video.videoWidth,video.videoHeight)       // Borro el contexto
+        navigator.mediaDevices.getUserMedia({ video: true })                                // Del navegador, atrapo el feed de la camara
+            .then((stream) => {                                                             // Y entonces
+                video.srcObject = stream;                                                   // El contenido del video es el feed de la camara
+                video.addEventListener('loadedmetadata', () => {                            // Cuando el video ha cargado
+                    canvas.width = video.videoWidth;                                        // Ajusto la anchura del canvas a la anchura del video
+                    canvas.height = video.videoHeight;                                      // Ajusto la altura del canvas a la altura del video
+                    
+                    canvas2.width = video.videoWidth;                                        // Ajusto la anchura del canvas a la anchura del video
+                    canvas2.height = video.videoHeight;                                      // Ajusto la altura del canvas a la altura del video
+                    
+                    canvas3.width = video.videoWidth;                                        // Ajusto la anchura del canvas a la anchura del video
+                    canvas3.height = video.videoHeight;                                      // Ajusto la altura del canvas a la altura del video
+                    
+                    canvas4.width = 24;                                        // Ajusto la anchura del canvas a la anchura del video
+                    canvas4.height = 24;                                      // Ajusto la altura del canvas a la altura del video
+                    
+                     ///////////////////////////////////////////// FUNCIOŃ DE DIBUJO //////////////////////////////////////////////////////
+                     
+                    function draw() {                                                       // Creo una funcion de dibujo que:
+                    
+                        ///////////////////////////////////////////// HALLAR BORDES //////////////////////////////////////////////////////
+                        
+                        contexto.drawImage(video, 0, 0, canvas.width, canvas.height);       // Pinta el contenido del video en el canvas
+                        var datos = contexto.getImageData(0,0,canvas.width, canvas.height)  // Cargo en memoria todos los datos del canvas 1
+                        let umbral = 25;
+                        for(let i = 0;i<datos.data.length;i+=4){                            // Y ahora los proceso pixel a pixel
+                          if(
+                          Math.abs(datos.data[i] - datos.data[i+4]) > umbral
+                          ||
+                          Math.abs(datos.data[i] - datos.data[i+canvas.width*4]) > umbral
+                          ){                                                                // Creo un borde vertical
+                            datos.data[i] = 0                                               // O bien los pinto negro
+                            datos.data[i+1] = 0
+                            datos.data[i+2] = 0
+                          }else{
+                            datos.data[i] = 255                                             // O bien los pinto blanco
+                            datos.data[i+1] = 255
+                            datos.data[i+2] = 255
+                          }
+                        }
+                        contexto2.putImageData(datos,0,0)                                   // Pongo la imagen en blanco y negro
+                        
+                        ///////////////////////////////////////////// PROCESAR NEURONAS UNA A UNA //////////////////////////////////////////////////////
+                        
+                        neuronas = []
+                        for(let x = 0;x<video.videoWidth;x+=anchura){                             // Repaso toda la imagen en X
+                          for(let y = 0;y<video.videoHeight;y+=anchura){                          // Repaso toda la imagen en Y
+                            let bloque = contexto2.getImageData(x,y,anchura,anchura)                     // Cojo de momento un bloque de 2x2
+                            let cadena = ""                                                 // Creo una cadena
+                            for(let i = 0;i<bloque.data.length;i+=4){                       // Cojo un ese bloque de 2x2
+                              if(bloque.data[i] == 255){                                    // Si el pixel rojo es 255
+                                cadena += "1"                                               // Pues le pongo un uno a la cadena
+                              }else{                                                        // En caso contrario
+                                cadena += "0"                                               // Le pongo un cero
+                              }
+                            }
+                            if(neuronas[cadena] == undefined){                              // Si la neurona no tenia ese registro
+                              neuronas[cadena] = 1                                          // En ese caso inicializa el registro
+                            }else{                                                          // Y si sí que lo tenía
+                              neuronas[cadena]++;                                           // En ese caso súmale un valor
+                            }
+                            
+                          }
+                        }
+                        console.log(neuronas)
+                        
+                        ///////////////////////////////////////////// PINTAR LAS NEURONAS EN UN MAPA //////////////////////////////////////////////////////
+                        
+                        for(let i = 0;i<combinaciones;i++){
+                          if(neuronas[decimalToBinary(i)] > 5){
+                            console.log("si")
+                          }else{
+                            console.log("no")
+                          }
+                        }
+                        
+                        ///////////////////////////////////////////// REPASAR SI YA LO TENÍA EN MEMORIA //////////////////////////////////////////////////////
+                        
+                        for(let i = 0;i<memoria.length;i++){                              // Ahora revisamos la memoria
+                          if(arraysEqual(neuronas, memoria[i].datos)){                    // Compruebo si lo que estoy viendo ahora mismo lo tenia en la memoria
+                            document.querySelector("#resultado").textContent = memoria[i].identificador // Digo lo que estoy viendo
+                          }else{                                                          // En caso contrario
+                            document.querySelector("#resultado").textContent = ""         // Vacío el resultado
+                          }
+                        }
+                        /*contexto3.clearRect(0,0,video.videoWidth,video.videoHeight)       // Borro el contexto
                         
                         for (let i = 0; i < combinaciones; i++) {                                    // Para cada uno de los registros en memoria
                             let binary = i.toString(2).padStart(8, '0');                  // Convierto decimal a binario
                             contexto3.fillRect(0,i*16,neuronas[binary],14)                // Pinto una gráfica de barras
                         }*/
-              /*
+                        /*
                         contexto4.clearRect(0,0,512,512)
                         for (let i = 0; i < combinaciones; i++) {
                           let binary = i.toString(2).padStart(8, '0');// Para cada uno de los registros en memoria
@@ -165,42 +147,43 @@
                         }
                         // Forma muy poco elegante de parar la ejecucion
                         */
-              caca;
-              requestAnimationFrame(draw); // Una vez lo ha hecho, se llama a si misma, (Es decir, un bucle)
+                        caca
+                        requestAnimationFrame(draw);                                        // Una vez lo ha hecho, se llama a si misma, (Es decir, un bucle)
+                    }
+                    
+                    ///////////////////////////////////////////// FUNCIOŃ DE DIBUJO //////////////////////////////////////////////////////
+                    
+                    draw();                                                                 // Llamo una primera vez a la funcion
+                });
+            })
+            .catch((err) => {                                                               // En el caso de que el navegador me de algun tipo de error
+                console.error('Error accessing the webcam:', err);                          // Lanzo el error
+            });
+            
+            document.querySelector("button").onclick = function(){                          // Cuando pulse el boton
+            
+              memoria.push(
+                {
+                  "identificador":document.querySelector("input").value,
+                  "datos":neuronas
+                }
+              )                                                                             // Le aumento un registro a la memoria (aqui esta aprendiendo)
+              console.log(memoria)
             }
-
-            ///////////////////////////////////////////// FUNCIOŃ DE DIBUJO //////////////////////////////////////////////////////
-
-            draw(); // Llamo una primera vez a la funcion
-          });
-        })
-        .catch((err) => {
-          // En el caso de que el navegador me de algun tipo de error
-          console.error("Error accessing the webcam:", err); // Lanzo el error
-        });
-
-      document.querySelector("button").onclick = function () {
-        // Cuando pulse el boton
-
-        memoria.push({
-          identificador: document.querySelector("input").value,
-          datos: neuronas
-        }); // Le aumento un registro a la memoria (aqui esta aprendiendo)
-        console.log(memoria);
-      };
-
-      function arraysEqual(arr1, arr2) {
-        if (arr1.length !== arr2.length) return false;
-
-        for (let i = 0; i < arr1.length; i++) {
-          if (arr1[i] !== arr2[i]) return false;
-        }
-
-        return true;
-      }
-      function decimalToBinary(decimal) {
-        return decimal.toString(2);
-      }
+            
+            function arraysEqual(arr1, arr2) {
+              if (arr1.length !== arr2.length) return false;
+              
+              for (let i = 0; i < arr1.length; i++) {
+                  if (arr1[i] !== arr2[i]) return false;
+              }
+              
+              return true;
+          }
+          function decimalToBinary(decimal) {
+              return decimal.toString(2);
+          }
     </script>
-  </body>
+</body>
 </html>
+

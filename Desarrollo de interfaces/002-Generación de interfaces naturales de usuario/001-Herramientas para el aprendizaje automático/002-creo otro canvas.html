@@ -1,46 +1,42 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-    </head>
-    <body>
-        <video id="webcam" autoplay></video>
-        <canvas id="canvas"></canvas>
-        <canvas id="canvas2"></canvas>
-        <script>
-            const video = document.getElementById("webcam"); // Selecciono el video en el HTML
-            const canvas = document.getElementById("canvas"); // Ahora selecciono el lienzo
-            const contexto = canvas.getContext("2d"); // Creo un contexto
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <video id="webcam" autoplay></video>
+    <canvas id="canvas"></canvas>
+    <canvas id="canvas2"></canvas>
+    <script>
+        const video = document.getElementById('webcam');                                    // Selecciono el video en el HTML    
+        const canvas = document.getElementById('canvas');                                   // Ahora selecciono el lienzo
+        const contexto = canvas.getContext('2d');                                           // Creo un contexto
+        
+        const canvas2 = document.getElementById('canvas2');                                   // Ahora selecciono el lienzo
+        const contexto2 = canvas2.getContext('2d');                                           // Creo un contexto
 
-            const canvas2 = document.getElementById("canvas2"); // Ahora selecciono el lienzo
-            const contexto2 = canvas2.getContext("2d"); // Creo un contexto
-
-            navigator.mediaDevices
-                .getUserMedia({ video: true }) // Del navegador, atrapo el feed de la camara
-                .then((stream) => {
-                    // Y entonces
-                    video.srcObject = stream; // El contenido del video es el feed de la camara
-                    video.addEventListener("loadedmetadata", () => {
-                        // Cuando el video ha cargado
-                        canvas.width = video.videoWidth; // Ajusto la anchura del canvas a la anchura del video
-                        canvas.height = video.videoHeight; // Ajusto la altura del canvas a la altura del video
-
-                        canvas2.width = video.videoWidth; // Ajusto la anchura del canvas a la anchura del video
-                        canvas2.height = video.videoHeight; // Ajusto la altura del canvas a la altura del video
-
-                        function draw() {
-                            // Creo una funcion de dibujo que:
-                            contexto.drawImage(video, 0, 0, canvas.width, canvas.height); // Pinta el contenido del video en el canvas
-
-                            requestAnimationFrame(draw); // Una vez lo ha hecho, se llama a si misma, (Es decir, un bucle)
-                        }
-                        draw(); // Llamo una primera vez a la funcion
-                    });
-                })
-                .catch((err) => {
-                    // En el caso de que el navegador me de algun tipo de error
-                    console.error("Error accessing the webcam:", err); // Lanzo el error
+        navigator.mediaDevices.getUserMedia({ video: true })                                // Del navegador, atrapo el feed de la camara
+            .then((stream) => {                                                             // Y entonces
+                video.srcObject = stream;                                                   // El contenido del video es el feed de la camara
+                video.addEventListener('loadedmetadata', () => {                            // Cuando el video ha cargado
+                    canvas.width = video.videoWidth;                                        // Ajusto la anchura del canvas a la anchura del video
+                    canvas.height = video.videoHeight;                                      // Ajusto la altura del canvas a la altura del video
+                    
+                    canvas2.width = video.videoWidth;                                        // Ajusto la anchura del canvas a la anchura del video
+                    canvas2.height = video.videoHeight;                                      // Ajusto la altura del canvas a la altura del video
+                    
+                    function draw() {                                                       // Creo una funcion de dibujo que:
+                        contexto.drawImage(video, 0, 0, canvas.width, canvas.height);       // Pinta el contenido del video en el canvas
+                        
+                        requestAnimationFrame(draw);                                        // Una vez lo ha hecho, se llama a si misma, (Es decir, un bucle)
+                    }
+                    draw();                                                                 // Llamo una primera vez a la funcion
                 });
-        </script>
-    </body>
+            })
+            .catch((err) => {                                                               // En el caso de que el navegador me de algun tipo de error
+                console.error('Error accessing the webcam:', err);                          // Lanzo el error
+            });
+    </script>
+</body>
 </html>
+

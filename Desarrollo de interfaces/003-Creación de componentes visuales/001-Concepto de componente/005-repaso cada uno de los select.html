@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <select>
+      <option value="Juan">Juan</option>
+      <option value="Jorge">Jorge</option>
+      <option value="Javier">Javier</option>
+      <option value="Jose">Jose</option>
+      <option value="Julian">Julian</option>
+      <option value="Jaime">Jaime</option>
+    </select>
+    <script>
+      let selectores = document.querySelectorAll("select");
+      selectores.forEach(function(selector){
+        console.log(selector)
+        let contenedor = document.createElement("div")
+        contenedor.classList.add("selectjv")
+        document.querySelector("body").appendChild(contenedor)
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <select>
+      <option value="Juan">Juan</option>
+      <option value="Jorge">Jorge</option>
+      <option value="Javier">Javier</option>
+      <option value="Jose">Jose</option>
+      <option value="Julian">Julian</option>
+      <option value="Jaime">Jaime</option>
+    </select>
+    <script>
+      let selectores = document.querySelectorAll("select");       // Selecciono todos los selectores de la pagina
+      selectores.forEach(function(selector){                      // Para cada uno de los selectores               
+        let contenedor = document.createElement("div")            // Creo un div
+        contenedor.classList.add("selectjv")                      // Le pongo una clase
+        document.querySelector("body").appendChild(contenedor)    // En el body añado el contenedor
+        contenedor.innerHTML = selector.outerHTML                 // En el contenedor pongo el contenido del select
+        selector.remove()                                         // Y elimino el select original
+      })
+    </script>
+  </body>
+</html>

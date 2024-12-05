@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle with Musical Tones and Particle Sound</title>
+    <style>
+        body {
+            background: black;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<canvas id="musicCanvas" width="1024" height="1024"></canvas>
+
+<script>
+const canvas = document.getElementById('musicCanvas');
+const ctx = canvas.getContext('2d');
+
+// Audio setup
+let audioContext;
+let mainGainNode;
+
+document.querySelector('body').onclick = () => {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        mainGainNode = audioContext.createGain();
+        mainGainNode.gain.value = 0.2;
+        mainGainNode.connect(audioContext.destination);
+    }
+};
+
+// Parameters for the musical setup
+const octaves = 3;
+const octaveOffset = -1;
+const baseFrequencies = { C: 261.63, E: 329.63, G: 392.00 }; // C Major chord
+const noteColors = { C: '#FF0000', E: '#FFFF00', G: '#0000FF' };
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+const radius = 400;
+const startAngle = -Math.PI / 2;
+const activeArcs = [];
+const notePositions = [];
+
+// Generate frequencies for multiple octaves with octave offset
+const frequencies = {};
+for (let octave = 1; octave <= octaves; octave++) {
+    for (let note in baseFrequencies) {
+        frequencies[`${note}${octave}`] = baseFrequencies[note] * Math.pow(2, octave + octaveOffset - 1);
+    }
+}
+
+// Draw pentagram in the center
+function drawPentagram() {
+    const staffSpacing = 20;
+    const staffCenterY = canvas.height / 2 - 40;
+
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 2;
+
+    for (let i = 0; i < 5; i++) {
+        ctx.beginPath();
+        ctx.moveTo(100, staffCenterY + i * staffSpacing);
+        ctx.lineTo(canvas.width - 100, staffCenterY + i * staffSpacing);
+        ctx.stroke();
+    }
+
+    ctx.font = 'bold 80px Arial';
+    ctx.fillStyle = 'white';
+    ctx.fillText('𝄞', 200, staffCenterY + 3 * staffSpacing);
+}
+
+// Draw and update sliding notes on the pentagram
+function drawNotes() {
+    notePositions.forEach((noteObj, index) => {
+        const x = noteObj.x;
+        const note = noteObj.note;
+        const noteBase = note.charAt(0);
+
+        ctx.beginPath();
+        ctx.arc(x, centerY - 100 + index * 30, 10, 0, 2 * Math.PI);
+        ctx.fillStyle = noteColors[noteBase];
+        ctx.fill();
+    });
+
+    // Move notes leftward
+    for (let i = 0; i < notePositions.length; i++) {
+        notePositions[i].x -= 2;
+        if (notePositions[i].x < 50) {
+            notePositions.shift();
+            i--;
+        }
+    }
+}
+
+// Draw circle and segments for chord notes
+function drawCircleAndSegments() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawPentagram();
+    drawNotes();
+
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    const notes = Object.keys(baseFrequencies);
+    const angleIncrement = (2 * Math.PI) / (notes.length * octaves);
+
+    for (let octave = 1; octave <= octaves; octave++) {
+        notes.forEach((note, i) => {
+            const index = (octave - 1) * notes.length + i;
+            const startSegment = startAngle + index * angleIncrement + Math.PI / 2;
+            const endSegment = startSegment + angleIncrement;
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, startSegment, endSegment);
+            ctx.strokeStyle = noteColors[note];
+            ctx.lineWidth = 160 / octaves;
+            ctx.stroke();
+
+            const labelAngle = startSegment + angleIncrement / 2;
+            const labelX = centerX + (radius + 90) * Math.cos(labelAngle);
+            const labelY = centerY + (radius + 90) * Math.sin(labelAngle);
+
+            ctx.fillStyle = noteColors[note];
+            ctx.font = "48px Arial";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(`${note}${octave}`, labelX, labelY);
+        });
+    }
+}
+
+function playSound(frequency, note) {
+    if (!audioContext) return;
+
+    const osc = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    osc.frequency.value = frequency;
+    osc.type = 'sine';
+
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+    gainNode.gain.linearRampToValueAtTime(1, audioContext.currentTime + 0.01);
+    gainNode.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.1);
+    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime + 0.2);
+    gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.5);
+
+    osc.connect(gainNode);
+    gainNode.connect(mainGainNode);
+
+    osc.start();
+    osc.stop(audioContext.currentTime + 0.5);
+
+    notePositions.push({ note, x: canvas.width - 100 });
+}
+
+class Particle {
+    constructor(x, y, directionAngle, speed = 10) {
+        this.x = x;
+        this.y = y;
+        this.directionAngle = directionAngle;
+        this.speed = speed;
+        this.radius = 25;
+        this.color = '#000000';
+    }
+
+    move() {
+        this.x += this.speed * Math.cos(this.directionAngle);
+        this.y += this.speed * Math.sin(this.directionAngle);
+
+        const distanceFromCenter = Math.sqrt((this.x - centerX) ** 2 + (this.y - centerY) ** 2);
+        if (distanceFromCenter >= radius) {
+            this.handleCollision();
+        }
+    }
+
+    handleCollision() {
+        const angleToCenter = Math.atan2(this.y - centerY, this.x - centerX);
+        this.directionAngle = 2 * angleToCenter - this.directionAngle + Math.PI;
+
+        const notes = Object.keys(baseFrequencies);
+        const segmentIndex = Math.floor((angleToCenter + Math.PI) / (2 * Math.PI) * notes.length);
+        const note = notes[segmentIndex % notes.length] + "1";
+
+        playSound(frequencies[note], note);
+        this.color = noteColors[note[0]];
+
+        setTimeout(() => activeArcs.shift(), 100);
+    }
+
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+    }
+}
+
+let particles = Array.from({ length: 4 }, (_, i) => new Particle(centerX + i * 50, centerY + 300, Math.random() - 0.5));
+
+function animate() {
+    drawCircleAndSegments();
+    particles.forEach(p => {
+        p.move();
+        p.draw();
+    });
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+</body>
+</html>
+

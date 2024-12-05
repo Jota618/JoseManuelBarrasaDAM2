@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      .selectjv{
+        width:200px;
+      }
+      .selectjv .caja{
+        border:1px solid grey;
+        border-radius:10px;
+        display:inline-block;
+        min-width:200px;
+        padding:5px;
+      }
+      .resultados{
+        display:inline-block;
+        border:1px solid lightgrey;
+        padding:5px;
+        min-width:200px;
+        min-height:300px;
+        border-radius:0px 0px 10px 10px;
+      }
+      .radio2{
+        border-radius:10px 10px 0px 0px !important;
+      }
+    </style>
+  </head>
+  <body>
+    <select>
+      <option value="Juan">Juan</option>
+      <option value="Jorge">Jorge</option>
+      <option value="Javier">Javier</option>
+      <option value="Jose">Jose</option>
+      <option value="Julian">Julian</option>
+      <option value="Jaime">Jaime</option>
+    </select>
+    <script>
+      let selectores = document.querySelectorAll("select");                     // Selecciono todos los selectores de la pagina
+      selectores.forEach(function(selector){                                    // Para cada uno de los selectores               
+        let contenedor = document.createElement("div")                          // Creo un div
+        contenedor.classList.add("selectjv")                                    // Le pongo una clase
+        document.querySelector("body").appendChild(contenedor)                  // En el body añado el contenedor
+        //contenedor.innerHTML = selector.outerHTML                             // En el contenedor pongo el contenido del select
+        selector.remove()                                                       // Y elimino el select original
+        let caja = document.createElement("div")                                // Creo una caja
+        caja.classList.add("caja")                                              // Le pongo una clase
+        caja.textContent = selector.querySelector("option:first-child").value   // Le pongo el texto del primero option
+        contenedor.appendChild(caja)                                            // Lo añado al contenedor
+        caja.onclick = function(){                                              // Cuando haga click en la caja
+          caja.classList.add("radio2")                                          // Le cambio la clase del radio
+          let resultados = document.createElement("div")                        // Creo un div de resultados
+          resultados.classList.add("resultados")                                // Le pongo la clase
+          contenedor.appendChild(resultados)                                    // Lo añado al contenedor
+        }
+      })
+    </script>
+  </body>
+</html>

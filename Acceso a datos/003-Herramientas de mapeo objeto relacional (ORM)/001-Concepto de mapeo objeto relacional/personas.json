@@ -1,0 +1,20 @@
+[
+    {
+        "nombre": "Jose Vicente",
+        "apellidos": "Carratala Sanchis",
+        "edad": 46,
+        "emails": [
+            {
+                "tipo": "personal",
+                "valor": "info@josevicentecarratala.com"
+            },
+            {
+                "tipo": "trabajo",
+                "valor": [
+                    "info@jocarsa.com",
+                    "jocarsa2@gmail.com"
+                ]
+            }
+        ]
+    }
+]
