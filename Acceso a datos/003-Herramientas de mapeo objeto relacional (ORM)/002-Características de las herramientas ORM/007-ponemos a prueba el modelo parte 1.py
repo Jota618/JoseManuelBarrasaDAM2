@@ -26,7 +26,7 @@ cursor = conexion.cursor()
 
 profesores = []
 
-profesores.append(Profesor("Jose Vicente","Profesor de informatica",['Albert','Jose Manuel','Dragos']))
+profesores.append(Profesor("Jose Manuel","Profesor de informatica",['Albert','Jose Manuel','Dragos']))
 profesores.append(Profesor("Andres","Profesor de marketing",['Juan','Felipe','Anna']))
 
 
@@ -75,21 +75,3 @@ for indice, profesor in enumerate(profesores):
     cursor.execute(peticion)                                                            # Ejecuto la peticion
     
 conexion.commit()                                                                       # Lo lanzo todo contra el servidor
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

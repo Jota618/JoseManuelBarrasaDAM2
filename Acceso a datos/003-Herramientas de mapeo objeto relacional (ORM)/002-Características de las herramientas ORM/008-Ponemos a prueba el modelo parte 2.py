@@ -68,20 +68,3 @@ exportar_a_json(profesores)
 profesores = []
 conexion.commit()                                                                       # Lo lanzo todo contra el servidor
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
