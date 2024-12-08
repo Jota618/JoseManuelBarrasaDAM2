@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+	<head>
+		<style>
+			*{transition:all 1s;}
+		</style>
+		<script>
+			window.onload = function(){
+				let elemento = document.querySelector("body")
+				let tamanio = 1;
+				let contenedor = document.createElement("div")
+				let aumentar = document.createElement("button")
+				aumentar.textContent = "+"
+				contenedor.appendChild(aumentar)
+				aumentar.onclick = function(){
+					tamanio *= 1.1;
+					elemento.style.fontSize = tamanio+"em"
+				}
+				
+				let disminuir = document.createElement("button")
+				disminuir.textContent = "-"
+				contenedor.appendChild(disminuir)
+				
+				disminuir.onclick = function(){
+					tamanio *= 0.9;
+					elemento.style.fontSize = tamanio+"em"
+				}
+				document.querySelector("body").appendChild(contenedor)
+				contenedor.style.position = "fixed"
+				contenedor.style.top = "10px"
+				contenedor.style.right = "10px"
+				
+				document.onclick = function(event) {
+					 
+					 
+					 if (elemento.tagName.toLowerCase() !== 'button') { 
+						  console.log("no es boton");
+						  const elemento = event.target;
+					 } else {
+						  console.log("si es boton");
+					 }
+				};
+				
+			}
+			
+			
+			
+		</script>
+	</head>
+	
+	<body>
+		<h1>La web de Jose Vicente</h1>
+		<nav>
+			<ul>
+				<li>Inicio</li>
+				<li>Sobre mi</li>
+				<li>Proyectos</li>
+				<li>Contacto</li>
+			</ul>
+		</nav>
+	</body>
+</html>
