@@ -1,0 +1,8 @@
+excel,mysql
+Nombre del cliente,nombre
+Apellidos del cliente,apellidos
+Direccion del cliente,direccion
+Email del cliente,email
+Codigo Postal,cp
+Poblacion del cliente,poblacion
+Pais del cliente,pais
