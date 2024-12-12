@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+	<head>
+		<style>
+			*{padding:0px;margin:0px;}
+			body{
+				background:rgb(220,220,220);
+			}
+			article{
+				background:white;
+				padding:20px;
+				border-radius:10px;
+				box-shadow:0px 4px 10px rgba(0,0,0,0.3);
+				margin:10px;
+			}
+		</style>
+	</head>
+	<body>
+		<main>
+		</main>
+		<template id="correo">
+			<article>
+				<h3>Asunto</h3>
+				<h4>De:</h4>
+				<p>Cuerpo del correo</p>
+			</article>
+		</template>
+		<script>
+			const plantilla = document.getElementById('correo');
+			const contenedor = document.querySelector('main');
+			fetch("http://localhost:5000/recibir")
+			.then(function(response){
+				return response.json()
+			})
+			.then(function(datos){
+				console.log(datos)
+				datos.forEach(function(dato){
+					let tarjeta = plantilla.content.cloneNode(true);
+					tarjeta.querySelector("h3").textContent = dato.Asunto
+					tarjeta.querySelector("h4").textContent = dato.De
+					tarjeta.querySelector("p").textContent = dato.Cuerpo
+					contenedor.appendChild(tarjeta)
+				})
+			})
+		</script>
+		
+	</body>
+</html>

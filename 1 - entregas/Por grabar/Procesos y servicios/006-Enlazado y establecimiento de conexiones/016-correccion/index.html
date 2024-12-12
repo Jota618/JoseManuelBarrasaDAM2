@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+	<body>
+		<canvas></canvas> <!-- Aquí va el lienzo -->
+		<script src="funciones.js"></script> <!-- Este script se carga después del canvas -->
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+				const lienzo = document.querySelector("canvas"); // Apuntamos al lienzo
+				const contexto = lienzo.getContext("2d"); // Creamos un contexto
+
+				let imagen = new Image(); // Creo una nueva imagen
+				imagen.src = "../need for speed.jpg"; // apunto a una imagen real
+				imagen.onload = function () {
+					definirDimensiones(imagen, lienzo); // Ajusta dimensiones según la imagen
+					contexto.drawImage(imagen, 0, 0); // Dibuja la imagen en el lienzo
+					const coleccion = contexto.getImageData(0, 0, lienzo.width, lienzo.height).data; // carga los datos en un array
+					console.log("array original:");
+					console.log(coleccion);
+					console.log("array comprimido:");
+
+					let comprimido = comprimir(coleccion); // Asegúrate de que la función comprimir esté definida
+					console.log(comprimido);
+					console.log("array descomprimido:");
+					let descomprimido = descomprimir(comprimido); // Asegúrate de que la función descomprimir esté definida
+					console.log(descomprimido);
+
+					let datos = contexto.getImageData(0, 0, lienzo.width, lienzo.height);
+					for (let i = 0; i < datos.data.length; i++) {
+						datos.data[i] = descomprimido[i];
+					}
+					contexto.putImageData(datos, 0, 0);
+				};
+			});
+		</script>
+	</body>
+</html>

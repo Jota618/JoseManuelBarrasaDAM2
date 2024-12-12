@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+	<head>
+		<!-- Enlace al archivo de estilos CSS -->
+		<link rel="stylesheet" href="estilocorreo.css" />
+	</head>
+	<body>
+		<!-- Barra de navegación con opciones de correo -->
+		<nav>
+			<ul>
+				<li id="nuevocorreo">Nuevo correo</li>
+				<li id="recibidos">Recibidos</li>
+				<li>Enviados</li>
+			</ul>
+		</nav>
+		<main>
+			<!-- Formulario para enviar un correo -->
+			<div id="enviar">
+				<article>
+					<!-- Campo para ingresar el asunto del correo -->
+					<h3>Asunto:<input type="text" id="asunto" /></h3>
+					<!-- Campo para ingresar el destinatario del correo -->
+					<h4>Para:<input type="text" id="para" /></h4>
+					<!-- Campo para ingresar el mensaje del correo -->
+					<p>Mensaje: <textarea id="mensaje"></textarea> <button>Enviar</button></p>
+				</article>
+			</div>
+			<!-- Contenedor donde se mostrarán los correos recibidos -->
+			<div id="bandeja"></div>
+		</main>
+		<!-- Plantilla para representar un correo recibido -->
+		<template id="correo">
+			<article>
+				<!-- Título del asunto del correo -->
+				<h3>Asunto</h3>
+				<!-- Información de quién envió el correo -->
+				<h4>De:</h4>
+				<!-- Cuerpo del correo -->
+				<p>Cuerpo del correo</p>
+			</article>
+		</template>
+		<script>
+			// Obtener elementos de la plantilla y el contenedor de la bandeja
+			const plantilla = document.getElementById("correo");
+			const contenedor = document.querySelector("#bandeja");
+			
+			// Realizar una solicitud para obtener los correos recibidos desde el servidor
+			fetch("http://localhost:5000/recibir")
+				.then(function (response) {
+					return response.json(); // Parsear la respuesta JSON
+				})
+				.then(function (datos) {
+					// Mostrar los correos en la consola para depuración
+					console.log(datos);
+					
+					// Iterar sobre los datos de los correos recibidos
+					datos.forEach((dato) => {
+						// Clonar la plantilla de correo
+						let tarjeta = plantilla.content.cloneNode(true);
+						let article = tarjeta.querySelector("article");
+						
+						// Insertar los datos del correo en la plantilla clonada
+						article.querySelector("h3").textContent = dato.Asunto;
+						article.querySelector("h4").textContent = "De: " + dato.De;
+						article.querySelector("p").textContent = dato.Cuerpo;
+						
+						// Asignar un identificador único al artículo (correo) como atributo de datos
+						article.dataset.mailId = dato.mail_id;
+						console.log("el id que voy a enviar es:", dato.mail_id);
+						
+						// Agregar un evento de clic para mostrar detalles del correo
+						article.onclick = function () {
+							const fecha = dato.Fecha;
+							console.log("Voy a buscar por fecha:", fecha);
+							
+							// Realizar una solicitud para obtener el correo filtrado por fecha
+							fetch(`http://localhost:5000/recibir_por_fecha/${encodeURIComponent(fecha)}`)
+								.then((response) => response.json())
+								.then((data) => {
+									console.log("Email data:", data); // Mostrar los datos del correo por fecha
+								})
+								.catch((error) => console.error("Error fetching email by date:", error)); // Manejar errores
+						};
+						
+						// Añadir el correo a la bandeja de entrada
+						contenedor.appendChild(tarjeta);
+					});
+				});
+			
+			// Configurar el botón de "Enviar" para enviar el correo
+			let boton = document.querySelector("button");
+			boton.onclick = function () {
+				// Obtener los valores ingresados en el formulario
+				mensaje = {
+					asunto: document.querySelector("#asunto").value,
+					para: document.querySelector("#para").value,
+					mensaje: document.querySelector("#mensaje").value
+				};
+				
+				// Enviar el correo a través de una solicitud POST
+				fetch("http://localhost:5000/enviar", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json" // Indicar que los datos son JSON
+					},
+					body: JSON.stringify(mensaje) // Convertir el mensaje a formato JSON
+				})
+					.then(function (response) {
+						return response.text(); // Obtener la respuesta como texto
+					})
+					.then(function (datos) {
+						// Ocultar el formulario de envío y mostrar la bandeja de entrada
+						document.querySelector("#enviar").style.display = "none";
+						document.querySelector("#bandeja").style.display = "block";
+					});
+			};
+
+			// Configurar el enlace para mostrar el formulario de nuevo correo
+			let nuevocorreo = document.querySelector("#nuevocorreo");
+			nuevocorreo.onclick = function () {
+				document.querySelector("#enviar").style.display = "block"; // Mostrar el formulario de envío
+				document.querySelector("#bandeja").style.display = "none"; // Ocultar la bandeja de entrada
+			};
+
+			// Configurar el enlace para mostrar la bandeja de entrada al hacer clic
+			let bandejaentrada = document.querySelector("#bandeja");
+			bandejaentrada.onclick = function () {
+				document.querySelector("#enviar").style.display = "none"; // Ocultar el formulario de envío
+				document.querySelector("#bandeja").style.display = "block"; // Mostrar la bandeja de entrada
+			};
+		</script>
+		<!-- Incluir librería para el editor de texto enriquecido -->
+		<script src="/public/lib/jvwysiwyg/jvwysiwyg.js"></script>
+		<link rel="Stylesheet" href="/public/lib/jvwysiwyg/jvwysiwyg.css" />
+	</body>
+</html>

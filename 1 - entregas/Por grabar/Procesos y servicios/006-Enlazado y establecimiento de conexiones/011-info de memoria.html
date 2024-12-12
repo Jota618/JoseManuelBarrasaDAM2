@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <body>
+  <canvas></canvas>
+    <script>
+    
+      
+		const lienzo = document.querySelector("canvas")															// Apuntamos al lienzo
+		const contexto = lienzo.getContext("2d")																	// Creamos un contexto
+		lienzo.width = 1920																								// Anchura del lienzo
+		lienzo.height = 1080																								// Altura del lienzo
+		
+		let imagen = new Image()																						// Creo una nueva imagen
+		imagen.src = "captura.png"																						// apunto a una imagen real
+		imagen.onload = function(){																					// Cuando la imagen haya cargado
+			contexto.drawImage(imagen,0,0)																			// Dibuja la imagen en el lienzo
+			
+			const coleccion = contexto.getImageData(0,0,1920,1080).data										// carga los datos en un array
+			
+			const sintransparencia = []																				// Creo un array vacio
+			for(let i = 0;i<coleccion.length;i+=4){																// Para cada pixel
+				sintransparencia.push(coleccion[i]*255*255+coleccion[i+1]*255+coleccion[i+2])			// descarto la transparencia y unifico
+			}
+			
+			const inicial = performance.memory.usedJSHeapSize;													// Memoria inicial
+			comprimido = rleCompressArray(sintransparencia)
+			
+		   setTimeout(() => {																							// Dentro de 100 milisegundos
+		     const final = performance.memory.usedJSHeapSize;													// Memoria final
+		     let memoriaUtilizada = final - inicial;																// Haz una diferencia
+		     console.log(memoriaUtilizada);																			// Saca la diferencia
+		   }, 100);
+		   
+		}
+		
+		function rleCompressArray(arr) {
+			 const compressed = [];
+			 let count = 1;
+			 for (let i = 1; i < arr.length; i++) {
+				  if (arr[i] === arr[i - 1]) {
+				      count++;
+				  } else {
+				      compressed.push([arr[i - 1], count]); 
+				      count = 1; 
+				  }
+			 }
+			 compressed.push([arr[arr.length - 1], count]);
+			 return compressed;
+		}
+    </script>
+  </body>
+</html>
+
