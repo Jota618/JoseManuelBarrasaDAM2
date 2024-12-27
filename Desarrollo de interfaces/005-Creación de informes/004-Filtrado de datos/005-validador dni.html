@@ -1,0 +1,31 @@
+<html>
+	<head>
+		<style>
+			.ok{background:rgb(200,255,200);}
+			.ko{background:rgb(255,200,200);}
+		</style>
+	</head>
+	<body>	
+		<input type="text">
+		<input type="text" jvvalidador="dni" title="Introduce un DNI: 11111111J">
+		<script>
+			const entradas = document.querySelectorAll('input');
+			const validadores = Array.from(entradas).filter(input => input.getAttribute('jvvalidador') !== null);
+			validadores.forEach(function(validador){
+				validador.onblur = function(){
+					if(this.getAttribute("jvvalidador") == "dni"){
+						const regex = /^[0-9]{8}[A-Z]$/;
+						if(regex.test(this.value)){
+							this.classList.remove("ko")
+							this.classList.add("ok")
+						}else{
+							this.classList.remove("ok")
+							this.classList.add("ko")
+						}
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
+

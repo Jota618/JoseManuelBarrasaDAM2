@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+	<head>
+	</head>
+	<body>
+		<canvas id="lienzo"></canvas>
+		<script>
+			let anchura = 512;
+			let altura = 512
+			let lienzo = document.querySelector("#lienzo")
+			lienzo.width = anchura;
+			lienzo.height = altura;
+			lienzo.style.border = "1px solid grey"
+			let contexto = lienzo.getContext("2d")
+			contexto.fillStyle = "red"
+			contexto.beginPath()
+			contexto.moveTo(anchura/2,altura/2)
+			contexto.arc(anchura/2,altura/2,anchura/2-50,0,Math.PI*0.33)
+			contexto.lineTo(anchura/2,altura/2)
+			contexto.fill()
+		</script>
+	</body>
+</html>

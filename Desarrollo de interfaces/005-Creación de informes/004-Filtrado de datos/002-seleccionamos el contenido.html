@@ -1,0 +1,19 @@
+<html>
+	<head>
+	</head>
+	<body>	
+		<input type="text">
+		<input type="text" jvvalidador="dni">
+		<script>
+			const entradas = document.querySelectorAll('input');
+			const validadores = Array.from(entradas).filter(input => input.getAttribute('jvvalidador') !== null);
+			validadores.forEach(function(validador){
+				validador.onblur = function(){
+					console.log("Te has salido del campo")
+					console.log(this.value)
+				}
+			})
+		</script>
+	</body>
+</html>
+

@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+	<head>
+	</head>
+	<body>
+		<table class="jvtabla">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>John Doe</td>
+                <td>john.doe@example.com</td>
+                <td>(555) 123-4567</td>
+                <td>123 Elm St, Springfield</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Jane Smith</td>
+                <td>jane.smith@example.com</td>
+                <td>(555) 987-6543</td>
+                <td>456 Oak St, Metropolis</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Emily Johnson</td>
+                <td>emily.johnson@example.com</td>
+                <td>(555) 222-3344</td>
+                <td>789 Pine St, Gotham</td>
+            </tr>
+            <!-- Add more rows as needed up to 20 -->
+            <tr>
+                <td>20</td>
+                <td>Chris Evans</td>
+                <td>chris.evans@example.com</td>
+                <td>(555) 333-2211</td>
+                <td>987 Maple St, Star City</td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+    	 let tablas = document.querySelectorAll(".jvtabla");
+		 tablas.forEach(function(tabla) {
+		     let contenido = [];
+		     // Selecciono cabeceras como índices de array
+		     let indices = [];
+		     let cabeceras = tabla.querySelectorAll("thead tr th");
+		     cabeceras.forEach(function(cabecera) {
+		         indices.push(cabecera.textContent.trim());
+		         cabecera.onclick = function(){
+		         	console.log("Vamos a ordenar segun la columna: "+cabecera.textContent)
+		         }
+		     });
+		     console.log(indices);
+		     // Ahora vamos con los datos
+		     let registros = tabla.querySelectorAll("tbody tr");
+		     registros.forEach(function(registro) {
+		         let linea = {}; // Crear un nuevo objeto en cada iteración
+		         let celdas = registro.querySelectorAll("td");
+		         celdas.forEach(function(celda, index) {
+		             linea[indices[index]] = celda.textContent.trim();
+		         });
+		         contenido.push(linea);
+		     });
+		     console.log(contenido);
+		 });
+		 
+    </script>
+	</body>
+</html>
+

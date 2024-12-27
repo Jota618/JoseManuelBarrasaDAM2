@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+	<head>
+	</head>
+	<body>
+		<canvas id="lienzo"></canvas>
+		<script>
+		
+			let datos = [
+				{"texto":"porcion1","valor":50},
+				{"texto":"porcion2","valor":40},
+				{"texto":"porcion3","valor":140}
+			]
+			
+			let total = 0
+			datos.forEach(function(dato){
+				total += dato.valor
+			})
+			console.log("El numero de elementos en el conjunto es de:",datos.length)
+			console.log("El total del valor de la gráfica es de:",total)
+			
+			let anchura = 512;
+			let altura = 512
+			let lienzo = document.querySelector("#lienzo")
+			lienzo.width = anchura;
+			lienzo.height = altura;
+			lienzo.style.border = "1px solid grey"
+			let contexto = lienzo.getContext("2d")
+			contexto.fillStyle = "red"
+			contexto.beginPath()
+			contexto.moveTo(anchura/2,altura/2)
+			contexto.arc(anchura/2,altura/2,anchura/2-50,0,Math.PI*0.33)
+			contexto.lineTo(anchura/2,altura/2)
+			contexto.fill()
+		</script>
+	</body>
+</html>
