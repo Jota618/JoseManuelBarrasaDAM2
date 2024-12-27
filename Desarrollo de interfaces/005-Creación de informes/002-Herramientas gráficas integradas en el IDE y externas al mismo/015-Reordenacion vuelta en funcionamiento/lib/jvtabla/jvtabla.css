@@ -1,19 +1,62 @@
-.jvtabla{
-	width:100%;
-	font-family:monospace;
+.jvtabla {
+	width: 100%;
+	font-family: monospace;
 	border-collapse: collapse;
 }
-.jvtabla thead tr{
-	background:crimson;
-	color:white;
-	
+
+.jvtabla thead tr {
+	background: crimson;
+	color: white;
 }
-.jvtabla thead tr th{
-	padding:10px;
+
+.jvtabla thead tr th {
+	padding: 10px;
 }
-.jvtabla tbody tr td{
-	padding:10px;
+
+.jvtabla tbody tr td {
+	padding: 10px;
 }
-.jvtabla tbody tr:nth-child(odd){
-	background:rgb(240,240,240);
+
+.jvtabla tbody tr:nth-child(odd) {
+	background: rgb(240, 240, 240);
+}
+
+/* Estilo para el buscador */
+#buscador {
+	width: 50%; /* Ajusta el ancho según lo que prefieras */
+	padding: 10px;
+	margin: 15px 0; /* Margen superior e inferior */
+	border: 1px solid crimson;
+	border-radius: 5px;
+	font-size: 16px;
+}
+
+/* Estilo para el contenedor de paginación */
+#paginacion {
+	text-align: center;
+	margin: 20px 0;
+}
+
+/* Estilo para los botones de paginación */
+.boton-pagina {
+	background: crimson;
+	color: white;
+	border: none;
+	padding: 10px 15px;
+	margin: 0 5px;
+	cursor: pointer;
+	border-radius: 5px;
+	font-size: 14px;
+	transition: background 0.3s ease;
+}
+
+.boton-pagina:hover {
+	background: darkred;
+}
+
+/* Estilo para el botón activo */
+.boton-pagina.activo {
+	background: darkred;
+	font-weight: bold;
+	cursor: default;
 }

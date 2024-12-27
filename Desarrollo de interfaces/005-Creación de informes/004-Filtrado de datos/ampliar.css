@@ -1,0 +1,82 @@
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9; /* Fondo claro y moderno */
+    color: #333; /* Color del texto */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Contenedor del formulario */
+.formulario {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    max-width: 400px;
+}
+
+/* Etiquetas encima de cada input */
+label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+/* Inputs */
+input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px; /* Espacio entre los campos */
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus {
+    border-color: #007bff; /* Color azul moderno al enfocarse */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+    outline: none;
+}
+
+/* Validación correcta */
+.ok {
+    border-color: #28a745 !important; /* Verde moderno */
+    background-color: rgba(40, 167, 69, 0.1);
+}
+
+/* Validación incorrecta */
+.ko {
+    border-color: #dc3545 !important; /* Rojo moderno */
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+/* Mensajes de error */
+.mensaje-error {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+    display: none; /* Ocultar por defecto */
+    text-align: left;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 480px) {
+    .formulario {
+        width: 90%;
+    }
+    input {
+        width: 100%;
+    }
+    .mensaje-error {
+        width: 100%;
+    }
+}
