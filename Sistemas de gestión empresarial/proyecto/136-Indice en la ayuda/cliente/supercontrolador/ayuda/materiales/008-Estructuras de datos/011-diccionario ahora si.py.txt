@@ -1,0 +1,38 @@
+Para resolver el problema de ambigüedad que presentan las listas al almacenar datos, podemos utilizar los diccionarios. Los diccionarios nos permiten asociar cada dato con una clave descriptiva, eliminando cualquier confusión sobre lo que representa cada elemento.
+
+Creando un Diccionario
+Un diccionario en Python se define utilizando llaves ({}). Recordemos:
+
+Lista: Usa corchetes ([]).
+Tupla: Usa paréntesis (()).
+Diccionario: Usa llaves ({}).
+Por ejemplo, podemos crear una agenda para almacenar información de contacto de una persona:
+
+python
+Copiar código
+# Crear un diccionario
+agenda = {
+    "nombre": "José Vicente",
+    "apellidos": "Carrat Sánchez",
+    "teléfono": "123456789",
+    "email": "correo@example.com"
+}
+
+# Mostrar el diccionario
+print(agenda)
+La salida será:
+
+arduino
+Copiar código
+{'nombre': 'José Vicente', 'apellidos': 'Carrat Sánchez', 'teléfono': '123456789', 'email': 'correo@example.com'}
+Desglose del Diccionario
+En este caso:
+
+"nombre": "José Vicente" indica que el nombre es "José Vicente".
+"apellidos": "Carrat Sánchez" almacena los apellidos.
+"teléfono": "123456789" guarda el número de teléfono.
+"email": "correo@example.com" contiene la dirección de correo electrónico.
+Cada dato en el diccionario está claramente identificado por una clave (nombre, apellidos, teléfono, email), lo que hace que la estructura sea clara y fácil de interpretar.
+
+Reflexión sobre el Uso de Diccionarios
+A diferencia de las listas o tuplas, los diccionarios eliminan la ambigüedad sobre qué representa cada dato al usar claves descriptivas. Esto los convierte en una herramienta esencial cuando trabajamos con datos estructurados y necesitamos acceder a ellos de manera eficiente.

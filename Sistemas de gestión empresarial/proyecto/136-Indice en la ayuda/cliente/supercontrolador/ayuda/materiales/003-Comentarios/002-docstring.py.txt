@@ -1,0 +1,26 @@
+En Python, a diferencia de otros lenguajes de programación, no existen comentarios multilínea como tal. Sin embargo, Python tiene un concepto similar llamado docstring (documentation string). Un docstring es una cadena de caracteres que se utiliza para documentar un archivo, módulo, clase o función. Aunque técnicamente no es un comentario en sí, se comporta de manera similar porque no se ejecuta como parte del programa.
+
+Para crear un docstring, utilizamos tres comillas dobles (""") o tres comillas simples (''') al principio y al final del bloque de texto. Todo lo que se encuentra entre estas comillas se considera parte del docstring y, por tanto, queda excluido de la ejecución del programa. Por ejemplo:
+
+python
+Copiar código
+"""
+Programa súper chulo
+Por José Vicente Carratalá
+Copyright 2024
+"""
+En este caso, el docstring comienza con tres comillas dobles y termina con otras tres comillas dobles. Lo que se escribe entre estas comillas tiene como objetivo documentar el archivo, describiendo su propósito, autoría o cualquier otro detalle relevante.
+
+Muchos archivos de Python comienzan con un docstring que explica qué se puede encontrar en el archivo. Esto es especialmente útil para proporcionar contexto y claridad al código, tanto para los desarrolladores que lo leen como para quienes puedan colaborar en el futuro. Por ejemplo:
+
+python
+Copiar código
+'''
+Módulo de utilidades matemáticas
+Este archivo contiene funciones para realizar cálculos básicos
+Autor: José Vicente Carratalá
+Fecha: 2024
+'''
+En resumen, los docstrings no son solo útiles como comentarios multilínea, sino que también son esenciales para documentar y estructurar adecuadamente un archivo o proyecto. Aunque no forman parte de la ejecución del programa, cumplen un rol crucial en la comunicación entre desarrolladores y en la organización del código.
+
+En los próximos capítulos, profundizaremos en otros conceptos clave para escribir código bien documentado y legible.

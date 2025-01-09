@@ -1,0 +1,79 @@
+<style>
+	#contenedor{
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		align-items: stretch;
+		align-content: stretch;
+	}
+	.izquierda{
+		width:30%;
+	}
+	.derecha{
+		width:70%;
+	}
+	input[type=checkbox],p{
+		display:inline-block;
+	}
+	label{
+		width:100%;
+		display:block;
+	}
+	#contienecampos{
+		column-count:2;
+	}
+</style>
+<h1></h1>
+<div id="contenedor">
+	<div class="izquierda">
+		<p>1.-Selecciona la tabla para trabajar</p>
+		<select id="tablas">
+			<option>Selecciona una tabla...</option>
+		</select>
+		<p>2.-Selecciona los campos con los que quieres trabajar</p>
+		<div id="contienecampos">
+		
+		</div>
+		<script>
+			fetch("../../servidor/?o=listatablas")
+			.then(function(response){
+				return response.json()
+			})
+			.then(function(datos){
+				datos.forEach(function(tabla){
+					let elemento = document.createElement("option")
+					elemento.value = tabla.Tables_in_crimson
+					elemento.textContent = tabla.Tables_in_crimson
+					document.querySelector("#tablas").appendChild(elemento)
+				})
+			})
+			document.querySelector("#tablas").onchange = function(){
+				console.log("Tabla seleccionada, vamos con el siguiente paso")
+				fetch("../../servidor/?o=columnastabla&tabla="+this.value)
+				.then(function(response){
+				return response.json()
+			})
+			.then(function(datos){
+
+				let contenedor = document.querySelector("#contienecampos")
+				contenedor.innerHTML = "";
+				datos.forEach(function(dato){
+				  	let etiqueta = document.createElement("label")
+				  	
+					let elemento = document.createElement("input")
+					elemento.setAttribute("type","checkbox")
+					
+					etiqueta.appendChild(elemento)
+					etiqueta.innerHTML += "<p>"+dato.Field+"</p>"
+					contenedor.appendChild(etiqueta)
+					
+				})
+			})
+			}
+		</script>
+	</div>
+	<div class="derecha">
+	b
+	</div>
+</div>

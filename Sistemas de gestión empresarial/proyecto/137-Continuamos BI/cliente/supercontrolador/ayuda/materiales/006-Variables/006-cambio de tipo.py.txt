@@ -1,0 +1,31 @@
+Yo tengo que alguna forma de cambiar los tipos de datos, de que yo pueda especificar el tipo de dato. Para ello, en un archivo llamado 006_cambio_de_tipo, puedo venir aquí y decir:
+
+python
+Copiar código
+edad_numero = int(edad)  # Convierto la edad a un número entero
+A continuación, calculo el triple de la edad:
+
+python
+Copiar código
+triple = edad_numero * 3  # Calculo el triple
+Y ahora muestro el resultado en pantalla:
+
+python
+Copiar código
+print("El triple es", triple)
+Entonces, ¿qué estoy haciendo aquí? Este programa tiene tres partes bien definidas:
+
+Entrada: Capturo el dato del usuario utilizando input.
+Operaciones: Convierto la entrada, que originalmente es una cadena de texto (string), en un número entero utilizando int. Luego realizo el cálculo del triple.
+Salida: Finalmente, muestro el resultado en pantalla utilizando print.
+Ahora, al probar el programa, podría introducir:
+
+yaml
+Copiar código
+Indica tu edad: 46
+Sin embargo, me encuentro con un error si intento concatenar una cadena con un número directamente, como aquí:
+
+python
+Copiar código
+print("El triple es " + triple)
+El sistema me da un error porque no se puede concatenar una cadena con un número directamente. Para resolver este problema, es necesario convertir el número en una cadena utilizando str(triple). De esta forma, evitamos errores y el programa funciona correctamente.

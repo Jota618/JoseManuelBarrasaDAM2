@@ -1,0 +1,23 @@
+Después de aprender a generar salidas con el comando print, es momento de explorar el concepto de entradas. Las entradas son esenciales porque permiten a los usuarios interactuar con nuestra aplicación, introduciendo información que el programa utilizará para realizar sus tareas.
+
+Introducción al Comando input
+En Python, el comando input es la herramienta principal para capturar información del usuario. Este comando muestra un mensaje en la consola (si lo especificamos) y espera a que el usuario introduzca un dato. Por ejemplo:
+
+python
+Copiar código
+input("Dime tu nombre: ")
+Cuando ejecutamos este código, el programa mostrará en la consola el mensaje "Dime tu nombre: ". A continuación, aparecerá un cursor parpadeando que indica que el programa está esperando a que el usuario introduzca algo. Una vez que el usuario escribe su respuesta y presiona Enter, el programa continuará.
+
+Probando el Comando input
+Vamos a guardar este ejemplo en un archivo llamado 001_entrada_con_input.py, dentro de una carpeta nueva llamada entradas. Este será nuestro punto de partida para trabajar con entradas en Python.
+
+Al ejecutar el programa con F5, veremos el siguiente comportamiento en la consola:
+
+yaml
+Copiar código
+Dime tu nombre:
+El cursor parpadeando espera nuestra respuesta. Por ejemplo, si escribimos:
+
+Copiar código
+José Vicente
+y presionamos Enter, el programa continuará, pero no hará nada visible. ¿Por qué? Porque aunque el comando input recoge la entrada del usuario, no le hemos indicado al programa qué hacer con esa información.

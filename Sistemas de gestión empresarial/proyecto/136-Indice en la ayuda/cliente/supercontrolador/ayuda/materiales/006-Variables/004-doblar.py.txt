@@ -1,0 +1,39 @@
+Hasta ahora hemos trabajado con variables básicas y hemos utilizado entradas y salidas. Sin embargo, cuando intentamos realizar operaciones matemáticas con datos introducidos por el usuario, es posible que nos encontremos con resultados inesperados. Esto nos lleva a un concepto clave en Python (y en cualquier lenguaje de programación): los tipos de datos.
+
+Problema: Operaciones con Datos de Entrada
+Imaginemos que queremos calcular el doble de la edad ingresada por el usuario. Nuestro código podría ser algo como esto:
+
+python
+Copiar código
+# Entrada
+edad = input("Indica tu edad: ")
+
+# Operación
+doble = edad * 2
+
+# Salida
+print("Tu edad es de", edad)
+print("El doble de tu edad es de", doble)
+Cuando ejecutamos este programa y respondemos con "46", obtenemos lo siguiente:
+
+yaml
+Copiar código
+Indica tu edad: 46
+Tu edad es de 46
+El doble de tu edad es de 4646
+El resultado 4646 no es lo que esperábamos. Lo que queríamos era el número 92, pero el programa concatenó la cadena "46" dos veces en lugar de realizar una operación matemática.
+
+Entendiendo los Tipos de Datos
+El problema aquí está en cómo Python interpreta los datos introducidos por el usuario. En Python, la función input() siempre devuelve una cadena de caracteres (string), independientemente de lo que el usuario introduzca. Por eso, aunque introduzcamos un número como "46", Python lo tratará como texto.
+
+Para comprobar esto, podemos usar la función type():
+
+python
+Copiar código
+print("El tipo de edad es", type(edad))
+Si ejecutamos este código después de introducir "46", la salida será:
+
+arduino
+Copiar código
+El tipo de edad es <class 'str'>
+Esto confirma que Python está tratando edad como una cadena (string).

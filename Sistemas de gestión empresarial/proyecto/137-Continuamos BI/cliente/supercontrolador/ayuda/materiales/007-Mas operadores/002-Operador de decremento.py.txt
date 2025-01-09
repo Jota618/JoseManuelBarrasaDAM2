@@ -1,0 +1,41 @@
+Además del operador de incremento, Python también nos ofrece el operador de decremento, que permite reducir el valor de una variable de manera similar, pero restando en lugar de sumando. Esto es especialmente útil cuando queremos disminuir un valor de forma progresiva.
+
+Por ejemplo, si queremos reducir la edad almacenada en una variable, podríamos escribir:
+
+python
+Copiar código
+# Entrada inicial
+edad = 46
+
+# Operación de decremento
+edad -= 1
+
+# Salida
+print("Tu edad ahora es de", edad, "años")
+Cuando ejecutamos este código, el resultado sería:
+
+css
+Copiar código
+Tu edad ahora es de 45 años
+Ejemplo con Varias Operaciones
+Podemos repetir la operación para disminuir el valor de la variable varias veces:
+
+python
+Copiar código
+# Disminuir dos veces
+edad -= 1  # Ahora edad es 44
+print("Tu edad ahora es de", edad, "años")
+El flujo completo del programa sería:
+
+css
+Copiar código
+Tu edad ahora es de 45 años
+Tu edad ahora es de 44 años
+Reflexión
+El operador -= funciona de manera idéntica al operador de incremento +=, pero en lugar de sumar, resta el valor especificado. Este tipo de operadores abreviados nos permiten escribir código más compacto y legible, especialmente cuando realizamos operaciones repetitivas.
+
+En resumen:
+
++= suma un valor a la variable.
+-= resta un valor a la variable.
+Más adelante veremos otros operadores abreviados que nos permiten realizar multiplicaciones, divisiones y otras operaciones matemáticas de manera eficiente.

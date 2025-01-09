@@ -1,0 +1,23 @@
+A continuación, vamos a crear una nueva carpeta llamada 003_comentarios, y dentro de ella un archivo titulado 001_comentario_una_linea.py. En este archivo, vamos a hablar de los comentarios en Python, específicamente los comentarios de una única línea.
+
+En Python, siempre que queramos escribir un comentario, debemos empezar con una almohadilla (#). Se recomienda poner un espacio después de la almohadilla, aunque no es obligatorio. Por ejemplo:
+
+python
+Copiar código
+# Esto es un comentario de una única línea
+Un comentario en Python nos permite escribir texto en lenguaje humano que el intérprete no ejecutará. Esto significa que un comentario está destinado únicamente a ser leído por humanos. Su propósito es documentar el código, especificar qué es lo que hace cada línea o parte del programa. Esto resulta especialmente útil para facilitar la comprensión del código, tanto para quien lo escribe como para otros programadores que puedan trabajar en el proyecto.
+
+Los comentarios nos sirven, en esencia, para excluir texto del programa ejecutable, dejando instrucciones claras para otros desarrolladores o notas para nosotros mismos. Por ejemplo:
+
+python
+Copiar código
+# Calculamos el área de un rectángulo
+base = 10
+altura = 5
+area = base * altura  # Multiplicamos base por altura
+print(area)
+En este caso, las líneas con # son comentarios que explican el propósito del código, mientras que las otras líneas contienen instrucciones ejecutables.
+
+Por tanto, es importante recordar que los comentarios no son interpretados por la máquina y no afectan la ejecución del programa. Su única función es proporcionar claridad y contexto para quien lea el código.
+
+En los próximos capítulos, seguiremos explorando otros aspectos de los comentarios y cómo usarlos de manera efectiva en programas más complejos.

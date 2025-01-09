@@ -1,0 +1,58 @@
+En el capítulo anterior, vimos cómo las listas pueden utilizarse para almacenar múltiples elementos relacionados. Sin embargo, las listas tienen una limitación importante: no siempre queda claro qué representa cada dato almacenado, lo que puede generar ambigüedad en ciertos escenarios.
+
+Ejemplo de Ambigüedad
+Supongamos que queremos almacenar la información de una persona llamada "Antón Martín Andrés". Podríamos usar una lista para organizar los datos:
+
+python
+Copiar código
+# Información utilizando una lista
+persona = ["Antón", "Martín", "Andrés"]
+
+# Mostrar la lista
+print(persona)
+La salida sería:
+
+css
+Copiar código
+['Antón', 'Martín', 'Andrés']
+El problema es que no sabemos qué representa cada elemento:
+
+¿Es "Antón" el nombre, o es un apellido?
+¿Es "Martín" el primer apellido, o es parte del nombre completo?
+¿Es "Andrés" un segundo apellido, o es el segundo nombre?
+Por ejemplo:
+
+"Antón Martín Andrés" podría ser:
+Nombre: Antón
+Primer apellido: Martín
+Segundo apellido: Andrés
+O también podría ser:
+Nombre: Martín Andrés
+Apellido: Antón
+Limitación de las Listas
+La ambigüedad surge porque las listas solo almacenan datos secuenciales, sin proporcionar información sobre lo que representa cada dato. Esto significa que, aunque los datos están presentes, la lista no nos dice qué es cada cosa, solo nos muestra los datos en sí.
+
+Solución: Diccionarios
+Para resolver este problema, podemos usar un diccionario en lugar de una lista. Los diccionarios nos permiten etiquetar cada dato con una clave, lo que elimina la ambigüedad. Por ejemplo:
+
+python
+Copiar código
+# Información utilizando un diccionario
+persona = {
+    "nombre": "Martín Andrés",
+    "apellido": "Antón"
+}
+
+# Mostrar el diccionario
+print(persona)
+La salida sería:
+
+arduino
+Copiar código
+{'nombre': 'Martín Andrés', 'apellido': 'Antón'}
+Con el diccionario, sabemos exactamente qué representa cada dato:
+
+"nombre": "Martín Andrés" indica que el nombre completo es "Martín Andrés".
+"apellido": "Antón" indica que el apellido es "Antón".
+Reflexión
+Este ejemplo ilustra cómo las listas pueden ser inadecuadas en situaciones donde necesitamos claridad sobre lo que representa cada dato. En esos casos, los diccionarios son una mejor opción, ya que nos permiten etiquetar y organizar los datos de forma mucho más clara y precisa.

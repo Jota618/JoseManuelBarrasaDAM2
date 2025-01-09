@@ -1,0 +1,26 @@
+Dentro del tema de entradas y salidas, vamos a comenzar con las salidas, ya que representan la manera en que un programa comunica información al usuario. En Python, la forma más sencilla y común de generar una salida es mediante la función print.
+
+Nuestro Primer Programa
+El siguiente ejemplo es un clásico para cualquier persona que se inicia en la programación: escribir en pantalla "Hola mundo". Este programa, aunque sencillo, es un gran punto de partida porque representa la primera interacción real con el lenguaje.
+
+Para escribirlo, simplemente usamos la función print de la siguiente manera:
+
+python
+Copiar código
+print("Hola mundo desde Python")
+Este código indica al intérprete de Python que muestre el texto "Hola mundo desde Python" en la consola. Es un programa completamente ejecutable, y representa nuestra primera línea de código funcional en Python.
+
+Cómo Ejecutar el Programa
+Una vez que hemos escrito este código en nuestro editor de texto, como IDLE, necesitamos ejecutarlo. Para hacerlo, seguimos estos pasos:
+
+Guarda el archivo con un nombre relevante, como primer_programa.py.
+En el menú superior de IDLE, selecciona Run > Run Module o simplemente presiona la tecla de acceso rápido F5.
+El intérprete de Python ejecutará el programa y mostrará el resultado en la consola.
+El resultado será algo como esto:
+
+Copiar código
+Hola mundo desde Python
+Este sencillo mensaje en la consola es el primer paso en el viaje de aprendizaje de Python. Es un ejemplo de una salida, que es la manera en que un programa nos devuelve información tras realizar una tarea.
+
+Reflexión Inicial
+Aunque este programa es extremadamente simple, representa un logro importante: hemos escrito, guardado y ejecutado código por primera vez. En los próximos pasos, exploraremos cómo personalizar las salidas y cómo utilizarlas junto con entradas para crear programas más dinámicos y útiles.
