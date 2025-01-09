@@ -1,0 +1,16 @@
+[
+	{
+		"nombre":"Nombre",
+		"tipo":"text",
+		"min":5,
+		"max":30,
+		"valorejemplo":"p.ej.: Juan"
+	},
+	{
+		"nombre":"Apellidos",
+		"tipo":"text",
+		"min":5,
+		"max":30,
+		"valorejemplo":"p.ej: Garcia Lopez"
+	}
+]

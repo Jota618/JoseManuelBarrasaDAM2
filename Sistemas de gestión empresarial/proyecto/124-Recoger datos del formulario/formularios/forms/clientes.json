@@ -1,0 +1,35 @@
+[
+	{
+		"nombre":"Nombre",
+		"tipo":"text",
+		"min":5,
+		"max":30,
+		"valorejemplo":"p.ej.: Juan",
+		"titulo":"Nombre",
+		"descripcion": "A continuación introduce el nombre propio del cliente",
+		"tabla":"clientes",
+		"campo":"nombre"
+	},
+	{
+		"nombre":"Apellidos",
+		"tipo":"text",
+		"min":5,
+		"max":30,
+		"valorejemplo":"p.ej: Garcia Lopez",
+		"titulo":"Apellidos",
+		"descripcion": "A continuación introduce los apellidos del cliente",
+		"tabla":"clientes",
+		"campo":"apellidos"
+	},
+	{
+		"nombre":"Email",
+		"tipo":"email",
+		"min":5,
+		"max":30,
+		"valorejemplo":"p.ej: info@jocarsa.com",
+		"titulo":"Email",
+		"descripcion": "A continuación introduce el email del cliente",
+		"tabla":"clientes",
+		"campo":"email"
+	}
+]

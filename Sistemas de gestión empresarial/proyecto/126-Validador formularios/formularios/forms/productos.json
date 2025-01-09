@@ -1,0 +1,14 @@
+[
+	{
+		"nombre":"Titulo",
+		"tipo":"text",
+		"min":5,
+		"max":30
+	},
+	{
+		"nombre":"Precio",
+		"tipo":"number",
+		"min":1,
+		"max":4
+	}
+]
