@@ -1,0 +1,20 @@
+[
+	{	
+		"nombre":"nombre",
+		"tipo":"text",
+		"tabla":"clientes",
+		"campo":"nombre"
+	},
+	{	
+		"nombre":"apellidos",
+		"tipo":"text",
+		"tabla":"clientes",
+		"campo":"apellidos"
+	},
+	{	
+		"nombre":"edad",
+		"tipo":"number",
+		"tabla":"clientes",
+		"campo":"edad"
+	}
+]

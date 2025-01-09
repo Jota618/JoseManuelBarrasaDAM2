@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+	<head>
+	</head>
+	<body>
+		<canvas id="lienzo"></canvas>
+		<script>
+			function tarta(datos){
+				// Condiciones iniciales
+				
+				let anchura = 512;										// Anchura del lienzo
+				let altura = 512											// Altura del lienzo
+				let lienzo = document.querySelector("#lienzo")	// Selecciono el lienzo
+				lienzo.width = anchura;									// Le pongo la anchura
+				lienzo.height = altura;									// Le pongo la altura
+				lienzo.style.border = "1px solid grey"				// Un poco de estilo
+				let contexto = lienzo.getContext("2d")				// creo un contexto en el que dibujar
+				
+				// Conjunto de datos a representar
+				
+				
+				
+				// Cálculo de totales y longitud
+				
+				let total = 0												// Arranco total a cero
+				datos.forEach(function(dato){							// Para cada un de los datos
+					total += dato.valor									// Actualizo el total
+				})
+				
+				// Ahora si, dibujamos quesos
+				let anguloinicial = 0									// Creo un angulo inicial que obviamente vale 0
+				
+				datos.forEach(function(dato){							// Para cada uno de los quesos
+					let r = Math.round(Math.random()*255)			// Creo un rojo aleatorio
+					let g = Math.round(Math.random()*255)			// Creo un verde aleatorio
+					let b = Math.round(Math.random()*255)			// Creo un azul aleatorio
+					let angulofinal = (dato.valor/total)*Math.PI*2	// Calculo el porcentaje de angulo final
+					contexto.fillStyle = "rgb("+r+","+g+","+b+")"	// Pinto el queso
+					contexto.beginPath()										// Arranco el dibujo
+					contexto.moveTo(anchura/2,altura/2)					// Muevo el cursor hasta el centro
+					contexto.arc(
+						anchura/2,
+						altura/2,
+						anchura/2-50,
+						anguloinicial,
+						anguloinicial+angulofinal
+					)															// Dibujo un circulo
+					contexto.lineTo(anchura/2,altura/2)				// Vuelvo al centro
+					contexto.fill()										// Lo relleno de color
+					anguloinicial += angulofinal						// Actualizo el cursor
+				})
+			}
+			
+			
+			let datos = [
+					{"texto":"porcion1","valor":33},
+					{"texto":"porcion2","valor":33},
+					{"texto":"porcion3","valor":33}
+				]
+			
+		</script>
+	</body>
+</html>

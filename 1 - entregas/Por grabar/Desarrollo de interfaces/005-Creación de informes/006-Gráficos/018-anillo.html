@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráfico Circular Interactivo</title>
+  <link rel="stylesheet" href="estilos.css"> <!-- Enlace al archivo CSS -->
+</head>
+<body>
+  <h1>Gráfico de Tarta Interactivo</h1>
+  <div id="contienegraficas"></div>
+
+  <div class="inputs-container">
+    <div>
+      <label for="porcion1">Porción 1</label><br>
+      <input id="porcion1" type="number" value="50">
+    </div>
+    <div>
+      <label for="porcion2">Porción 2</label><br>
+      <input id="porcion2" type="number" value="30">
+    </div>
+    <div>
+      <label for="porcion3">Porción 3</label><br>
+      <input id="porcion3" type="number" value="20">
+    </div>
+    <button onclick="actualizarGrafico()">Actualizar Gráfico</button>
+  </div>
+
+  <div class="color-picker-container">
+    <div>
+      <label for="color1">Color Porción 1</label><br>
+      <input id="color1" type="color" value="#ff6347">
+    </div>
+    <div>
+      <label for="color2">Color Porción 2</label><br>
+      <input id="color2" type="color" value="#ffcc00">
+    </div>
+    <div>
+      <label for="color3">Color Porción 3</label><br>
+      <input id="color3" type="color" value="#32cd32">
+    </div>
+  </div>
+
+  <script>
+    class JVGrafica {
+      constructor(datos, colores, selector) {
+        this.datos = datos;
+        this.colores = colores;
+        this.selector = selector;
+        this.total = this.datos.reduce((acc, dato) => acc + dato.valor, 0); // Calcular total de los valores
+      }
+
+      tarta() {
+        // Condiciones iniciales
+        let anchura = 512;
+        let altura = 512;
+        let lienzo = document.createElement("canvas");
+        lienzo.width = anchura;
+        lienzo.height = altura;
+        lienzo.style.border = "1px solid grey";
+        let contexto = lienzo.getContext("2d");
+
+        document.querySelector(this.selector).innerHTML = ''; // Limpiar el contenedor
+        document.querySelector(this.selector).appendChild(lienzo);
+
+        let anguloinicial = 0;
+
+        this.datos.forEach((dato, index) => {
+          let angulofinal = (dato.valor / this.total) * Math.PI * 2;
+
+          // Usar los colores fijos
+          let color = this.colores[index];
+
+          // Dibujar el gráfico
+          contexto.fillStyle = color;
+          contexto.beginPath();
+          contexto.moveTo(anchura / 2, altura / 2);
+          contexto.arc(anchura / 2, altura / 2, anchura / 2 - 50, anguloinicial, anguloinicial + angulofinal);
+          contexto.lineTo(anchura / 2, altura / 2);
+          contexto.fill();
+
+          // Actualizar el ángulo inicial
+          anguloinicial += angulofinal;
+        });
+
+        // Llamar a la función de leyenda
+        this.dibujarLeyenda();
+      }
+
+      // Función para dibujar leyenda
+      dibujarLeyenda() {
+        const leyendaContenedor = document.createElement("div");
+        leyendaContenedor.classList.add("leyenda");
+
+        // Crear la leyenda para cada dato
+        this.datos.forEach((dato, index) => {
+          const leyendaElemento = document.createElement("div");
+          leyendaElemento.style.display = "flex";
+          leyendaElemento.style.alignItems = "center";
+          leyendaElemento.innerHTML = `
+            <div style="width: 20px; height: 20px; background-color: ${this.colores[index]}; margin-right: 10px;"></div>
+            <span>${dato.texto}: ${dato.valor} (${((dato.valor / this.total) * 100).toFixed(2)}%)</span>
+          `;
+          leyendaContenedor.appendChild(leyendaElemento);
+        });
+
+        document.querySelector(this.selector).appendChild(leyendaContenedor);
+      }
+
+      // Método para actualizar los datos desde los inputs
+      actualizarDatos() {
+        this.datos = [
+          { texto: "Porción 1", valor: parseInt(document.getElementById("porcion1").value) },
+          { texto: "Porción 2", valor: parseInt(document.getElementById("porcion2").value) },
+          { texto: "Porción 3", valor: parseInt(document.getElementById("porcion3").value) }
+        ];
+        this.total = this.datos.reduce((acc, dato) => acc + dato.valor, 0); // Recalcular el total
+      }
+
+      // Método para actualizar los colores
+      actualizarColores() {
+        this.colores = [
+          document.getElementById("color1").value,
+          document.getElementById("color2").value,
+          document.getElementById("color3").value
+        ];
+      }
+    }
+
+    // Ejemplo de uso con colores fijos
+    let datos = [
+      { texto: "Porción 1", valor: 50 },
+      { texto: "Porción 2", valor: 30 },
+      { texto: "Porción 3", valor: 20 }
+    ];
+
+    let colores = ["#ff6347", "#ffcc00", "#32cd32"];  // Colores fijos para cada porción
+    let nuevografico = new JVGrafica(datos, colores, "#contienegraficas");
+    nuevografico.tarta();
+
+    function actualizarGrafico() {
+      // Actualizamos los datos y colores, luego redibujamos el gráfico
+      nuevografico.actualizarDatos();
+      nuevografico.actualizarColores();
+      nuevografico.tarta();
+    }
+  </script>
+</body>
+</html>

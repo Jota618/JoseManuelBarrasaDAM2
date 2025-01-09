@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<script>
+			async function captureScreen() {
+				 try {																						// Intento hacer algo
+				 	 
+					  const stream = await navigator.mediaDevices.getDisplayMedia(
+					  	{ 
+					  		video: true 
+					  	}
+					  	);																						// Atrapo la captura de pantalla
+					  const video = document.createElement('video');							// Creo un vodeo
+					  video.srcObject = stream;														// el contenido del video es la captura de pantalla
+					  let lienzo = document.createElement("canvas")								// Creo un lienzo
+					  let contexto = lienzo.getContext("2d")										// Creo un contexto
+					  	lienzo.width = 1920																// Anchura del lienzo
+						lienzo.height = 1080																// Altura del lienzo
+					document.body.appendChild(lienzo);												// Lo añado al documento
+					  
+					  let estado = contexto.getImageData(0,0,1920,1080)
+					  
+					  let lienzo2 = document.createElement("canvas")								// Creo un lienzo
+					  let contexto2 = lienzo2.getContext("2d")										// Creo un contexto
+					  lienzo2.width = 1920																// Anchura del lienzo
+						lienzo2.height = 1080																// Altura del lienzo
+						document.body.appendChild(lienzo2);												// Lo añado al documento
+						
+						let lienzo3 = document.createElement("canvas")								// Creo un lienzo
+					  let contexto3 = lienzo2.getContext("2d")										// Creo un contexto
+					  lienzo3.width = 1920																// Anchura del lienzo
+						lienzo3.height = 1080																// Altura del lienzo
+						document.body.appendChild(lienzo3);												// Lo añado al documento
+					  
+					  video.onloadedmetadata = function(){												// Cuando la captura de pantalla este teparada
+					  		video.play();																		// Pon el vido en marcha
+					  }
+					  document.body.appendChild(video);													// Añado el video al documento
+					  video.addEventListener('timeupdate', () => {									// Cada vez que el video se actualice
+						 	contexto.drawImage(video,0,0)													// Refresca el canvas
+						 	
+						 	let nuevoestado = contexto.getImageData(0,0,1920,1080)
+						 	
+						 	
+					  });
+					  
+				 } catch (error) {
+					  console.error("Error al capturar la pantalla:", error);
+				 }
+				 
+			}
+
+			captureScreen();
+
+		</script>
+	</body>
+</html>
+

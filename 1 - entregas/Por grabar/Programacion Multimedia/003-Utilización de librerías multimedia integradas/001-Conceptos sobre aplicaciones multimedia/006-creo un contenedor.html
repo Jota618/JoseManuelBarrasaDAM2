@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<video src="entrevista.mp4"></video>
+
+		<script>
+		
+			window.onload = function(){										// ME espero a que todo en la web haya cargado
+				let videos = document.querySelectorAll("video")			// Selecciono todos los videos que me encuentre en la web
+				videos.forEach(function(video){								// Para cada uno de los videos que me encuentre
+					let tagvideo = video											// Meto el video en la memoria
+					let contienevideo = document.createElement("div")	// Creo un contenedor
+					contienevideo.classList.add("jvideo")					// Al contenedor le añado una clase
+					tagvideo.replaceWith(contienevideo);					// Reemplazo el video con el contenedor
+					contienevideo.appendChild(tagvideo)						// Añado el contenedor de video al DOM
+				})
+			}
+			/*
+			var estado = "pause"												// Defino el estado original del reproductor
+			var video = document.querySelector("video")				// Selecciono el video
+			var botonplay = document.querySelector("#play")			// Selecciono el boton de play
+			
+			botonplay.onclick = function(){								// Cuando haga click en el boton de play
+				if(estado == "pause"){										// En el caso de que esté en pausa
+					botonplay.textContent = "⏸️"							// Le pongo el boton de pausa
+					estado = "play"											// Cambio el estado
+					video.play()												// Reproduzco el video
+				}else{															// En caso contrario
+					botonplay.textContent = "▶️"							// Le pongo el icono de play
+					estado = "pause"											// Le cambio el estado
+					video.pause()												// Pauso el video
+				}
+			}
+			*/
+		</script>
+	</body>
+</html>
+

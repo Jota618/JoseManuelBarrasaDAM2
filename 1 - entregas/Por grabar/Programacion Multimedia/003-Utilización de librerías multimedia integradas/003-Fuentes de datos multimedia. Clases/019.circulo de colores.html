@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle with Musical Tones</title>
+</head>
+<body>
+<canvas id="musicCanvas" width="1024" height="1024"></canvas>
+
+<script>
+const canvas = document.getElementById('musicCanvas');
+const ctx = canvas.getContext('2d');
+
+// Colors for the Cmaj scale using international color coding
+const noteColors = {
+    C: '#FF0000', // Red
+    D: '#FF7F00', // Orange
+    E: '#FFFF00', // Yellow
+    F: '#00FF00', // Green
+    G: '#0000FF', // Blue
+    A: '#4B0082', // Indigo
+    B: '#9400D3'  // Violet
+};
+
+// Center and radius for the circle
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+const radius = 400;
+const startAngle = -Math.PI / 2; // Start at the top of the circle
+
+// Draw the outer circle
+ctx.beginPath();
+ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+ctx.strokeStyle = '#000000'; // Circle outline color
+ctx.lineWidth = 3;
+ctx.stroke();
+
+// Draw each segment with corresponding note color
+const notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+const angleIncrement = (2 * Math.PI) / notes.length;
+
+notes.forEach((note, i) => {
+    // Start and end angles for each segment
+    const startSegment = startAngle + i * angleIncrement;
+    const endSegment = startSegment + angleIncrement;
+
+    // Draw the segment line
+    ctx.beginPath();
+    //ctx.moveTo(centerX, centerY);
+    ctx.arc(centerX, centerY, radius, startSegment, endSegment);
+    //ctx.closePath();
+    ctx.strokeStyle = noteColors[note];
+    ctx.lineWidth = 10;
+    ctx.stroke();
+
+    // Label each segment with the note
+    const labelAngle = startSegment + angleIncrement / 2;
+    const labelX = centerX + (radius + 30) * Math.cos(labelAngle);
+    const labelY = centerY + (radius + 30) * Math.sin(labelAngle);
+
+    ctx.fillStyle = noteColors[note];
+    ctx.font = "24px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(note, labelX, labelY);
+});
+</script>
+</body>
+</html>
+

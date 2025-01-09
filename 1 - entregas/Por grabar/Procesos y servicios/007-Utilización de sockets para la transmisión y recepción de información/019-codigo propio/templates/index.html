@@ -43,7 +43,7 @@
 			// Obtener elementos de la plantilla y el contenedor de la bandeja
 			const plantilla = document.getElementById("correo");
 			const contenedor = document.querySelector("#bandeja");
-			
+
 			// Realizar una solicitud para obtener los correos recibidos desde el servidor
 			fetch("http://localhost:5000/recibir")
 				.then(function (response) {
@@ -52,27 +52,27 @@
 				.then(function (datos) {
 					// Mostrar los correos en la consola para depuración
 					console.log(datos);
-					
+
 					// Iterar sobre los datos de los correos recibidos
 					datos.forEach((dato) => {
 						// Clonar la plantilla de correo
 						let tarjeta = plantilla.content.cloneNode(true);
 						let article = tarjeta.querySelector("article");
-						
+
 						// Insertar los datos del correo en la plantilla clonada
 						article.querySelector("h3").textContent = dato.Asunto;
 						article.querySelector("h4").textContent = "De: " + dato.De;
 						article.querySelector("p").textContent = dato.Cuerpo;
-						
+
 						// Asignar un identificador único al artículo (correo) como atributo de datos
 						article.dataset.mailId = dato.mail_id;
 						console.log("el id que voy a enviar es:", dato.mail_id);
-						
+
 						// Agregar un evento de clic para mostrar detalles del correo
 						article.onclick = function () {
 							const fecha = dato.Fecha;
 							console.log("Voy a buscar por fecha:", fecha);
-							
+
 							// Realizar una solicitud para obtener el correo filtrado por fecha
 							fetch(`http://localhost:5000/recibir_por_fecha/${encodeURIComponent(fecha)}`)
 								.then((response) => response.json())
@@ -81,12 +81,12 @@
 								})
 								.catch((error) => console.error("Error fetching email by date:", error)); // Manejar errores
 						};
-						
+
 						// Añadir el correo a la bandeja de entrada
 						contenedor.appendChild(tarjeta);
 					});
 				});
-			
+
 			// Configurar el botón de "Enviar" para enviar el correo
 			let boton = document.querySelector("button");
 			boton.onclick = function () {
@@ -96,7 +96,7 @@
 					para: document.querySelector("#para").value,
 					mensaje: document.querySelector("#mensaje").value
 				};
-				
+
 				// Enviar el correo a través de una solicitud POST
 				fetch("http://localhost:5000/enviar", {
 					method: "POST",

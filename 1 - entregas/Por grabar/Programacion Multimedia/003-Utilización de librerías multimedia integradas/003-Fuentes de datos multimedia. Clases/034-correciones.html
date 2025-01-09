@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle with Musical Tones and Particle Sound</title>
+    <style>
+        body {
+            background: black;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<canvas id="musicCanvas" width="1024" height="1024"></canvas>
+
+<script>
+const canvas = document.getElementById('musicCanvas');
+const ctx = canvas.getContext('2d');
+
+// Audio setup
+let audioContext;
+let mainGainNode;
+
+document.querySelector('body').onclick = () => {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        mainGainNode = audioContext.createGain();
+        mainGainNode.gain.value = 0.2;
+        mainGainNode.connect(audioContext.destination);
+    }
+};
+
+// Parameters for the musical setup
+const octaves = 3;
+const octaveOffset = -1;
+const baseFrequencies = { C: 261.63, D: 293.66, E: 329.63, F: 349.23, G: 392.00, A: 440.00, B: 493.88 };
+const noteColors = { C: '#FF0000', D: '#FF7F00', E: '#FFFF00', F: '#00FF00', G: '#0000FF', A: '#4B0082', B: '#9400D3' };
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+const radius = 400;
+const startAngle = -Math.PI / 2;
+const activeArcs = [];
+const notePositions = [];
+
+// Generate frequencies for multiple octaves with octave offset
+const frequencies = {};
+for (let octave = 1; octave <= octaves; octave++) {
+    for (let note in baseFrequencies) {
+        frequencies[`${note}${octave}`] = baseFrequencies[note] * Math.pow(2, octave + octaveOffset - 1);
+    }
+}
+
+// Draw pentagram in the center
+function drawPentagram() {
+    const staffSpacing = 20;
+    const staffCenterY = canvas.height / 2 - 40;
+
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 2;
+
+    for (let i = 0; i < 5; i++) {
+        ctx.beginPath();
+        ctx.moveTo(100, staffCenterY + i * staffSpacing);
+        ctx.lineTo(canvas.width - 100, staffCenterY + i * staffSpacing);
+        ctx.stroke();
+    }
+
+    ctx.font = 'bold 80px Arial';
+    ctx.fillStyle = 'white';
+    ctx.fillText('𝄞', 200, staffCenterY + 3 * staffSpacing);
+}
+
+// Define base Y positions for each note and adjust by octave
+const noteYBasePositions = { C: 100, D: 90, E: 80, F: 70, G: 60, A: 50, B: 40 };
+
+// Draw and update sliding notes on the pentagram
+function drawNotes() {
+    notePositions.forEach((noteObj, index) => {
+        const x = noteObj.x;
+        const note = noteObj.note;
+        const noteBase = note.charAt(0);
+        const octave = parseInt(note.charAt(1));
+        const octaveOffset = (octave - 3) * 35; // Adjust for octave, 35px per octave as a rough estimate
+        const y = (canvas.height / 2 - 20) + noteYBasePositions[noteBase] + octaveOffset;
+
+        ctx.beginPath();
+        ctx.arc(x, y, 10, 0, 2 * Math.PI);
+        ctx.fillStyle = noteColors[noteBase];
+        ctx.fill();
+    });
+
+    // Move notes leftward
+    for (let i = 0; i < notePositions.length; i++) {
+        notePositions[i].x -= 2;
+        if (notePositions[i].x < 50) {
+            notePositions.shift();
+            i--;
+        }
+    }
+}
+
+// Draw circle and segments
+function drawCircleAndSegments() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawPentagram();
+    drawNotes();
+
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    const notes = Object.keys(baseFrequencies);
+    const angleIncrement = (2 * Math.PI) / (notes.length * octaves);
+
+    for (let octave = 1; octave <= octaves; octave++) {
+        notes.forEach((note, i) => {
+            const index = (octave - 1) * notes.length + i;
+            const startSegment = startAngle + index * angleIncrement + Math.PI / 2;
+            const endSegment = startSegment + angleIncrement;
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, startSegment, endSegment);
+            ctx.strokeStyle = noteColors[note];
+            ctx.lineWidth = 160 / octaves;
+            ctx.stroke();
+
+            activeArcs.forEach((arc) => {
+                if (arc.note === `${note}${octave}`) {
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, radius - 20, arc.start, arc.end);
+                    ctx.strokeStyle = 'white';
+                    ctx.lineWidth = 20;
+                    ctx.stroke();
+                }
+            });
+
+            const labelAngle = startSegment + angleIncrement / 2;
+            const labelX = centerX + (radius + 90) * Math.cos(labelAngle);
+            const labelY = centerY + (radius + 90) * Math.sin(labelAngle);
+
+            ctx.fillStyle = noteColors[note];
+            ctx.font = "48px Arial";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(`${note}${octave}`, labelX, labelY);
+        });
+    }
+}
+
+// (The rest of the script remains unchanged, handling the playSound function, particle movement, and animation loop)
+
+</script>
+</body>
+</html>
+

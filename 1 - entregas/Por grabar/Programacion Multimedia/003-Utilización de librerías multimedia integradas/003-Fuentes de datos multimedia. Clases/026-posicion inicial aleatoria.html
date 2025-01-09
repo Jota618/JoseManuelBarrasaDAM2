@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle with Musical Tones and Particle Sound</title>
+</head>
+<body>
+<canvas id="musicCanvas" width="1024" height="1024"></canvas>
+<button id="startSound">Initialize Sound</button>
+
+<script>
+const canvas = document.getElementById('musicCanvas');
+const ctx = canvas.getContext('2d');
+
+// Audio setup
+let audioContext;
+let mainGainNode;
+
+document.getElementById('startSound').onclick = () => {
+    // Crear el contexto de audio si no existe
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        // Configurar el nodo de ganancia principal para controlar el volumen general
+        mainGainNode = audioContext.createGain();
+        mainGainNode.gain.value = 0.2; // Ajusta el volumen general (puedes reducirlo aún más si es necesario)
+        
+        // Conectar el nodo de ganancia principal al destino (salida de audio)
+        mainGainNode.connect(audioContext.destination);
+    }
+};
+
+// Cmaj scale frequencies
+const frequencies = {
+    C: 261.63,
+    D: 293.66,
+    E: 329.63,
+    F: 349.23,
+    G: 392.00,
+    A: 440.00,
+    B: 493.88
+};
+
+// Colors for the Cmaj scale using international color coding
+const noteColors = {
+    C: '#FF0000', // Red
+    D: '#FF7F00', // Orange
+    E: '#FFFF00', // Yellow
+    F: '#00FF00', // Green
+    G: '#0000FF', // Blue
+    A: '#4B0082', // Indigo
+    B: '#9400D3'  // Violet
+};
+
+// Center and radius for the circle
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+const radius = 400;
+const startAngle = -Math.PI / 2; // Start at the top of the circle
+
+// Draw the outer circle and note segments
+function drawCircleAndSegments() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    const notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+    const angleIncrement = (2 * Math.PI) / notes.length;
+
+    notes.forEach((note, i) => {
+        const startSegment = startAngle + i * angleIncrement;
+        const endSegment = startSegment + angleIncrement;
+
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, startSegment, endSegment);
+        ctx.strokeStyle = noteColors[note];
+        ctx.lineWidth = 60;
+        ctx.stroke();
+
+        const labelAngle = startSegment + angleIncrement / 2;
+        const labelX = centerX + (radius + 90) * Math.cos(labelAngle);
+        const labelY = centerY + (radius + 90) * Math.sin(labelAngle);
+
+        ctx.fillStyle = noteColors[note];
+        ctx.font = "48px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(note, labelX, labelY);
+    });
+}
+
+function playSound(frequency) {
+    if (!audioContext) return;
+
+    const osc = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    osc.frequency.value = frequency;
+    osc.type = 'sine';
+
+    // ADSR envelope parameters
+    const attackTime = 0.1;
+    const decayTime = 0.2;
+    const sustainLevel = 0.2; // Ajustar el sustain si es necesario
+    const releaseTime = 0.5;
+
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+    gainNode.gain.linearRampToValueAtTime(1, audioContext.currentTime + attackTime); // Volumen bajo por nota
+    gainNode.gain.linearRampToValueAtTime(sustainLevel, audioContext.currentTime + attackTime + decayTime);
+    gainNode.gain.setValueAtTime(sustainLevel, audioContext.currentTime + attackTime + decayTime + 0.1);
+    gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + attackTime + decayTime + 0.1 + releaseTime);
+
+    // Conectar el oscilador al nodo de ganancia individual
+    osc.connect(gainNode);
+
+    // Conectar el nodo de ganancia individual al mainGainNode para el control global de volumen
+    gainNode.connect(mainGainNode);
+
+    osc.start();
+    osc.stop(audioContext.currentTime + attackTime + decayTime + 0.1 + releaseTime);
+}
+
+// Particle class
+class Particle {
+    constructor(x, y, directionAngle, speed = 5) {
+        this.x = x;
+        this.y = y;
+        this.directionAngle = directionAngle;
+        this.speed = speed;
+        this.radius = 25;
+        this.color = '#000000';
+    }
+
+    move() {
+        this.x += this.speed * Math.cos(this.directionAngle);
+        this.y += this.speed * Math.sin(this.directionAngle);
+
+        // Calculate distance from center to determine if it hits the circle boundary
+        const distanceFromCenter = Math.sqrt((this.x - centerX) ** 2 + (this.y - centerY) ** 2);
+        if (distanceFromCenter >= radius) {
+            this.handleCollision();
+        }
+    }
+
+    handleCollision() {
+        // Reflect angle based on collision with circular boundary
+        const angleToCenter = Math.atan2(this.y - centerY, this.x - centerX);
+        this.directionAngle = 2 * angleToCenter - this.directionAngle + Math.PI;
+
+        // Determine which segment the particle hit
+        const collisionAngle = (angleToCenter + 2 * Math.PI) % (2 * Math.PI);
+        const notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+        const segmentAngle = (2 * Math.PI) / notes.length;
+        const segmentIndex = Math.floor(collisionAngle / segmentAngle);
+        const note = notes[segmentIndex];
+
+        // Play the corresponding sound
+        playSound(frequencies[note]);
+    }
+
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+    }
+}
+
+let particulas = []
+
+let numeroparticulas = 5
+
+for(let i = 0;i<numeroparticulas;i++){
+	particulas.push(new Particle(centerX + (Math.random()-0.5)*500, centerY+ (Math.random()-0.5)*500, Math.random()*Math.PI*2))
+}
+
+// Animation loop
+function animate() {
+    drawCircleAndSegments();
+    particulas.forEach(function(particula){
+		 particula.move();
+		 particula.draw();
+    })
+    
+    requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+</body>
+</html>
+

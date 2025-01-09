@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load MP3 to AudioContext</title>
+</head>
+<body>
+    
+<canvas></canvas>
+
+    <script>
+    
+    	let lienzo = document.querySelector("canvas")
+    	lienzo.width = 1920
+    	lienzo.height = 100
+    	let contexto = lienzo.getContext("2d")
+    
+        let audioContext;
+        let audioBuffer;
+
+        window.onload = function() {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+            fetch('0802.mp3')
+                .then(response => response.arrayBuffer())
+                .then(arrayBuffer => {
+                    return audioContext.decodeAudioData(arrayBuffer);
+                })
+                .then(decodedData => {
+                    audioBuffer = decodedData;
+                    console.log("Audio Buffer Information:");
+                    console.log("Duration (seconds):", audioBuffer.duration);
+                    console.log("Sample Rate (Hz):", audioBuffer.sampleRate);
+                    console.log("Number of Channels:", audioBuffer.numberOfChannels);
+                    console.log("Number of Samples per Channel:", audioBuffer.length);
+                    
+                   
+                    // Por el momento me quedo solo con el canal primero
+		               let channelData = audioBuffer.getChannelData(0);
+		               for(let i = 0;i<channelData.length;i++){
+		               	contexto.fillRect(i/4160,50,1,channelData[i]*50)
+		               }
+                
+                })
+                .catch(error => {
+                    console.error("Error loading or decoding audio file", error);
+                });
+        }
+
+    </script>
+</body>
+</html>
+

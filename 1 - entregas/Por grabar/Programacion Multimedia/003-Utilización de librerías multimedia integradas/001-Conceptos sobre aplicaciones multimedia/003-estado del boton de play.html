@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<video src="entrevista.mp4"></video>
+		<button id="play">▶️</button>
+		<script>
+			var estado = "pause"
+			var video = document.querySelector("video")
+			var botonplay = document.querySelector("#play")
+			
+			botonplay.onclick = function(){
+			console.log(estado)
+				if(estado == "pause"){
+					botonplay.textContent = "⏸️"
+					estado = "play"
+					video.play()
+				}else{
+					botonplay.textContent = "▶️"
+					estado = "pause"
+					video.pause()
+				}
+				
+			}
+			
+		</script>
+	</body>
+</html>
+

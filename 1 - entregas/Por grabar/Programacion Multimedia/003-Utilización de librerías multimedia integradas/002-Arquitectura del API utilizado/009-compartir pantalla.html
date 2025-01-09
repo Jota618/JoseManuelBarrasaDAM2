@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compartir Pantalla</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Aplicación de Captura de Pantalla</h1>
+        <div class="controls">
+            <label for="resolution">Selecciona la resolución:</label>
+            <select id="resolution">
+                <option value="original">Original</option>
+                <option value="1920x1080">1920x1080</option>
+                <option value="1280x720">1280x720</option>
+                <option value="640x480">640x480</option>
+            </select>
+            <button id="capture">Hacer Captura</button>
+        </div>
+        
+        <!-- Vista en tiempo real del stream -->
+        <div id="streaming" class="streaming">
+            <video id="video" autoplay muted></video>
+        </div>
+
+        <!-- Canvas para la captura final -->
+        <div id="preview"></div>
+    </div>
+
+    <script src="funciones.js"></script>
+</body>
+</html>

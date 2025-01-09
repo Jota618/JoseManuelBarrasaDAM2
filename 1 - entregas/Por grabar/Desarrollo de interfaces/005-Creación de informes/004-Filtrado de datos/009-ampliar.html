@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validación de Formularios</title>
+    <link rel="stylesheet" href="ampliar.css"> <!-- Enlace al CSS externo -->
+</head>
+<body>
+    <div class="formulario">
+        <label for="dni">DNI</label>
+        <input type="text" id="dni" jvvalidador="dni" title="Introduce un DNI: 11111111J" />
+
+        <label for="iban">IBAN</label>
+        <input type="text" id="iban" jvvalidador="iban" title="Introduce un IBAN: ES9121000418450200051332" />
+
+        <label for="cp">Código Postal</label>
+        <input type="text" id="cp" jvvalidador="cp" title="Introduce un Código postal: 12345" />
+
+        <label for="email">Email</label>
+        <input type="text" id="email" jvvalidador="email" title="Introduce un Email: ejemplo@dominio.com" />
+
+        <div id="mensajes"></div>
+    </div>
+
+	<script>
+		const entradas = document.querySelectorAll("input");
+		const validadores = Array.from(entradas).filter((input) => input.getAttribute("jvvalidador") !== null);
+
+		validadores.forEach(function (validador) {
+			validador.onblur = function () {
+				let mensaje = "";
+				switch (this.getAttribute("jvvalidador")) {
+					case "dni":
+						validar(/^[0-9]{8}[A-Z]$/, this, this.value, "El DNI debe tener 8 dígitos y una letra mayúscula.");
+						break;
+					case "iban":
+						validar(/^ES\d{22}$/, this, this.value, "El IBAN debe empezar por 'ES' seguido de 22 números.");
+						break;
+					case "cp":
+						validar(/^\d{5}$/, this, this.value, "El Código Postal debe tener 5 dígitos.");
+						break;
+					case "email":
+						validar(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, this, this.value, "El email debe tener un formato válido (ejemplo@dominio.com).");
+						break;
+					default:
+						break;
+				}
+			};
+		});
+
+		function validar(miregex, elemento, valor, mensajeError) {
+			const regex = miregex;
+			let mensajeElemento = obtenerMensajeError(elemento);
+
+			if (regex.test(valor)) {
+				elemento.classList.remove("ko");
+				elemento.classList.add("ok");
+				mensajeElemento.style.display = "none"; // Oculta el mensaje si es válido
+			} else {
+				elemento.classList.remove("ok");
+				elemento.classList.add("ko");
+				mensajeElemento.textContent = mensajeError;
+				mensajeElemento.style.display = "block"; // Muestra el mensaje de error
+			}
+		}
+
+		function obtenerMensajeError(elemento) {
+			let mensajeElemento = elemento.nextElementSibling;
+			if (!mensajeElemento || !mensajeElemento.classList.contains("mensaje-error")) {
+				// Crea el mensaje de error si no existe
+				mensajeElemento = document.createElement("div");
+				mensajeElemento.classList.add("mensaje-error");
+				elemento.parentNode.insertBefore(mensajeElemento, elemento.nextSibling);
+			}
+			return mensajeElemento;
+		}
+	</script>
+</body>
+</html>

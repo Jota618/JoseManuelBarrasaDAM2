@@ -1,10 +1,12 @@
 <!doctype html>
 <html>
 	<body>
-		<canvas></canvas> <!-- Aquí va el lienzo -->
-		<script src="funciones.js"></script> <!-- Este script se carga después del canvas -->
+		<canvas></canvas>
+		<!-- Aquí va el lienzo -->
+		<script src="funciones.js"></script>
+		<!-- Este script se carga después del canvas -->
 		<script>
-			document.addEventListener("DOMContentLoaded", function() {
+			document.addEventListener("DOMContentLoaded", function () {
 				const lienzo = document.querySelector("canvas"); // Apuntamos al lienzo
 				const contexto = lienzo.getContext("2d"); // Creamos un contexto
 
