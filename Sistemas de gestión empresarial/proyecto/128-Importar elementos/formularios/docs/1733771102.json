@@ -1,0 +1,8 @@
+{
+    "token": "MTczMzc3MTA2MQ==",
+    "formulario": "clientes",
+    "Nombre": "Nombre desde el formulario",
+    "Apellidos": "Apellidos desde el formulario",
+    "Email": "info@formulario.com",
+    "CodigoPostal": "12345"
+}
