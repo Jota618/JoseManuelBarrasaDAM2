@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="297mm"
+   height="210mm"
+   viewBox="0 0 297 210"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.1 (9b9bdc1480, 2023-11-25, custom)"
+   sodipodi:docname="app movil.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.0179639"
+     inkscape:cx="597.76184"
+     inkscape:cy="433.2177"
+     inkscape:window-width="1920"
+     inkscape:window-height="1011"
+     inkscape:window-x="1920"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.564999;stroke-linecap:round;stroke-linejoin:round"
+       id="rect1"
+       width="61.700443"
+       height="122.84964"
+       x="20.274452"
+       y="23.530544"
+       ry="3.1105814" />
+    <circle
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.564999;stroke-linecap:round;stroke-linejoin:round"
+       id="path1"
+       cx="50.794678"
+       cy="139.24182"
+       r="3.7523074" />
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.564999;stroke-linecap:round;stroke-linejoin:round"
+       id="rect2"
+       width="52.689339"
+       height="93.938072"
+       x="24.578747"
+       y="32.59811"
+       ry="3.1105814" />
+    <ellipse
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.564999;stroke-linecap:round;stroke-linejoin:round"
+       id="path2"
+       cx="152.39413"
+       cy="197.94231"
+       rx="22.564154"
+       ry="5.6410384" />
+    <ellipse
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.564999;stroke-linecap:round;stroke-linejoin:round"
+       id="ellipse2"
+       cx="152.39413"
+       cy="191.76529"
+       rx="22.564154"
+       ry="5.6410384" />
+    <ellipse
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.564999;stroke-linecap:round;stroke-linejoin:round"
+       id="ellipse3"
+       cx="152.39413"
+       cy="185.573"
+       rx="22.564154"
+       ry="5.6410384" />
+    <ellipse
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.564999;stroke-linecap:round;stroke-linejoin:round"
+       id="ellipse4"
+       cx="152.39413"
+       cy="179.39598"
+       rx="22.564154"
+       ry="5.6410384" />
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.564999;stroke-linecap:round;stroke-linejoin:round"
+       id="rect4"
+       width="64.602203"
+       height="18.325239"
+       x="121.04922"
+       y="152.58408"
+       ry="3.1105814" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.03682px;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.718362;stroke-linecap:round;stroke-linejoin:round"
+       x="124.14696"
+       y="157.75645"
+       id="text4"><tspan
+         sodipodi:role="line"
+         id="tspan4"
+         style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.718364"
+         x="124.14696"
+         y="157.75645">python</tspan></text>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.564999;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="rect5"
+       width="116.75163"
+       height="81.979507"
+       x="175.06171"
+       y="61.648972"
+       ry="3.1105814" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.03682px;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.718362;stroke-linecap:round;stroke-linejoin:round"
+       x="179.48573"
+       y="68.227493"
+       id="text5"><tspan
+         sodipodi:role="line"
+         id="tspan5"
+         style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.718364"
+         x="179.48573"
+         y="68.227493">admin</tspan></text>
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.564999;stroke-linecap:round;stroke-linejoin:round"
+       id="rect6"
+       width="71.964775"
+       height="23.444763"
+       x="95.732841"
+       y="83.552292"
+       ry="3.1105814" />
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.564999;stroke-linecap:round;stroke-linejoin:round"
+       id="rect7"
+       width="62.464424"
+       height="54.197277"
+       x="101.65804"
+       y="32.59811"
+       ry="3.1105814" />
+  </g>
+</svg>

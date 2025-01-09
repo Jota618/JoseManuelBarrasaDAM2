@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Listado de coches</title>
+		<script>
+			window.onload = function(){
+				fetch("http://localhost/dam/Segundo/Sistemas%20de%20gesti%C3%B3n%20empresarial/proyecto/114-endpoint%20publico/endpointpublico/")
+				.then(function(result){
+					return result.json()
+				})
+				.then(function(datos){
+				console.log(datos)
+				let contenedor = document.querySelector("body")
+				let plantilla = document.querySelector("#plantillacoche")
+					datos.forEach(function(dato){
+						let instancia = plantilla.content.cloneNode(true)
+						instancia.querySelector("h3").textContent = dato.nombre
+						instancia.querySelector(".descripcion").textContent = dato.descripcion
+						instancia.querySelector(".precio").textContent = dato.precio
+						contenedor.appendChild(instancia)
+					})
+				})
+			}	
+		</script>
+	</head>
+	<body>
+		<template id="plantillacoche">
+			<div class="coche">
+				<img src="https://fotos.quecochemecompro.com/opel-corsa/opel-corsa-dinamismo-carretera.jpg?size=750x400">
+				<h3>Titulo</h3>
+				<p class="descripcion">Descripcion</p>
+				<p class="precio">0.00€</p>
+			</div>
+		</template>
+	</body>
+</html>

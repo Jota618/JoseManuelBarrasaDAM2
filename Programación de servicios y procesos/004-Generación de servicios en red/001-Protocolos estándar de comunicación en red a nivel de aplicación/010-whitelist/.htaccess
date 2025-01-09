@@ -1,0 +1,7 @@
+RewriteEngine On
+
+# Rewrite endpoint for "clientes"
+RewriteRule ^clientes$ http://localhost/dam/Segundo/Programaci%c3%b3n%20de%20servicios%20y%20procesos/004-Generaci%c3%b3n%20de%20servicios%20en%20red/001-Protocolos%20est%c3%a1ndar%20de%20comunicacio%cc%81n%20en%20red%20a%20nivel%20de%20aplicacio%cc%81n/005-htaccess/api.php?o=clientes [QSA,L]
+
+# Rewrite endpoint for "cliente"
+RewriteRule ^cliente/([0-9]+)$ http://localhost/dam/Segundo/Programaci%c3%b3n%20de%20servicios%20y%20procesos/004-Generaci%c3%b3n%20de%20servicios%20en%20red/001-Protocolos%20est%c3%a1ndar%20de%20comunicacio%cc%81n%20en%20red%20a%20nivel%20de%20aplicacio%cc%81n/005-htaccess/api.php?o=cliente&id=$1 [QSA,L]

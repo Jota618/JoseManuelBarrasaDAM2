@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="Stylesheet" href="estilo.css">
+    <title>Invoice Form</title>
+    <style>
+        .invoice-line {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .invoice-line input {
+            flex: 1;
+        }
+        .add-line-btn {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    
+    <form id="invoiceForm">
+        <label for="customerName">Customer Name:</label>
+        <input type="text" id="customerName" name="customerName" required><br><br>
+
+        <div id="invoiceLinesContainer">
+            <div class="invoice-line">
+                <input type="text" name="description[]" placeholder="Description" required>
+                <input type="number" name="quantity[]" placeholder="Quantity" required>
+                <input type="number" name="price[]" placeholder="Price" required>
+                <button type="button" class="remove-line-btn">-</button>
+            </div>
+        </div>
+        <button type="button" id="addLineButton" class="add-line-btn">+ Add Line</button><br><br>
+
+        <button type="submit">Submit Invoice</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const invoiceLinesContainer = document.getElementById('invoiceLinesContainer');
+            const addLineButton = document.getElementById('addLineButton');
+
+            // Add new invoice line
+            addLineButton.addEventListener('click', () => {
+                const newLine = document.createElement('div');
+                newLine.classList.add('invoice-line');
+                newLine.innerHTML = `
+                    <input type="text" name="description[]" placeholder="Description" required>
+                    <input type="number" name="quantity[]" placeholder="Quantity" required>
+                    <input type="number" name="price[]" placeholder="Price" required>
+                    <button type="button" class="remove-line-btn">-</button>
+                `;
+                invoiceLinesContainer.appendChild(newLine);
+
+                // Add event listener to remove button
+                newLine.querySelector('.remove-line-btn').addEventListener('click', function () {
+                    invoiceLinesContainer.removeChild(newLine);
+                });
+            });
+
+            // Remove an invoice line
+            document.querySelectorAll('.remove-line-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    invoiceLinesContainer.removeChild(button.parentElement);
+                });
+            });
+
+            // Handle form submission
+            document.getElementById('invoiceForm').addEventListener('submit', async function (event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                // Collect form data dynamically
+                const customerName = document.getElementById('customerName').value;
+                const invoiceLines = Array.from(document.querySelectorAll('.invoice-line')).map(line => ({
+                    description: line.querySelector('input[name="description[]"]').value,
+                    quantity: line.querySelector('input[name="quantity[]"]').value,
+                    price: line.querySelector('input[name="price[]"]').value,
+                }));
+
+                const formData = {
+                    customerName,
+                    invoiceLines,
+                };
+
+                try {
+                    // Send data to the server using fetch
+                    const response = await fetch('guardaxml.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData),
+                    });
+
+                    const responseData = await response.text();
+                    console.log(responseData);
+                    alert('Invoice submitted successfully!');
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while submitting the invoice.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
