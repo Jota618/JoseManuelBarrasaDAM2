@@ -1,0 +1,25 @@
+Hasta ahora hemos trabajado con datos unitarios, que se pueden almacenar en una variable, un contenedor simple diseñado para guardar una sola pieza de información. Sin embargo, hay ocasiones en las que necesitamos trabajar con un conjunto de datos relacionados. En esos casos, una variable no es suficiente, ya que solo puede contener un único valor.
+
+Para manejar conjuntos de datos, necesitamos contenedores más avanzados, conocidos como estructuras de datos. Estas estructuras nos permiten organizar y almacenar múltiples piezas de información de manera eficiente.
+
+Introducción a las Listas
+Una de las estructuras de datos más comunes en Python es la lista. Las listas nos permiten guardar múltiples elementos en un solo contenedor. Por ejemplo, si vamos al supermercado, nunca compramos solo un producto; en lugar de eso, llevamos una lista con varias cosas que necesitamos.
+
+En Python, podemos representar esa lista de la compra utilizando corchetes ([]) para almacenar los diferentes elementos separados por comas. Aquí tienes un ejemplo:
+
+python
+Copiar código
+# Crear una lista
+lista_de_la_compra = ["manzanas", "peras", "plátanos", "sandía"]
+
+# Mostrar la lista
+print(lista_de_la_compra)
+Cuando ejecutamos este código, la salida es:
+
+css
+Copiar código
+['manzanas', 'peras', 'plátanos', 'sandía']
+Reflexión sobre las Listas
+En este momento, lista_de_la_compra ya no es una variable ordinaria, sino una lista, un contenedor que almacena un conjunto de elementos. Cada elemento de la lista está separado por una coma y puede ser de cualquier tipo: cadenas de texto, números, u otros datos.
+
+El uso de listas es fundamental en programación, ya que nos permite manejar múltiples datos relacionados como una sola unidad. Más adelante, aprenderemos cómo interactuar con los elementos de una lista, añadir nuevos datos, eliminar otros, y realizar operaciones sobre ellas.

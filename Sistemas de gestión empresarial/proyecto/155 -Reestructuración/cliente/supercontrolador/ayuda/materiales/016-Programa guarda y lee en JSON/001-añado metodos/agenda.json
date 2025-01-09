@@ -1,0 +1,12 @@
+[
+    {
+        "nombre": "Camiseta",
+        "descripcion": "Camiseta de deporte",
+        "precio": "15"
+    },
+    {
+        "nombre": "Zapatillas",
+        "descripcion": "Zapatillas de deporte",
+        "precio": "25"
+    }
+]

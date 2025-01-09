@@ -1,0 +1,28 @@
+Una de las grandes ventajas de los diccionarios es que nos permiten acceder directamente a los datos utilizando sus claves. Esto hace que trabajar con ellos sea mucho más limpio y claro en comparación con otras estructuras de datos como listas.
+
+Ejemplo de Acceso a un Dato
+Supongamos que tenemos un diccionario llamado agenda con la siguiente estructura:
+
+python
+Copiar código
+# Crear un diccionario
+agenda = {
+    "nombre": "José Vicente",
+    "apellidos": "Carrat Sánchez",
+    "teléfono": "123456789",
+    "email": "correo@example.com"
+}
+Para acceder a un dato específico, como el nombre, no usamos índices numéricos como en las listas. En su lugar, utilizamos la clave correspondiente:
+
+python
+Copiar código
+# Acceder al dato "nombre"
+print(agenda["nombre"])
+La salida será:
+
+Copiar código
+José Vicente
+Reflexión sobre el Acceso a Datos
+Esta forma de acceder a la información es mucho más limpia y clara, ya que no necesitamos recordar en qué posición se encuentra un dato en particular. En lugar de escribir algo como agenda[0], que sería confuso y dependiente del orden de los datos, usamos una clave descriptiva como "nombre". Esto mejora la legibilidad del código y reduce la probabilidad de errores.
+
+Los diccionarios son ideales para trabajar con datos estructurados donde cada elemento tiene un significado específico y queremos garantizar un acceso eficiente y claro a la información.

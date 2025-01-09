@@ -1,0 +1,53 @@
+Ahora que conocemos cómo declarar variables, veamos cómo utilizarlas para realizar operaciones prácticas. En este ejemplo, usaremos una combinación de entradas y salidas para mostrar cómo interactuar con el usuario y procesar los datos introducidos.
+
+Ejemplo Básico: Entrada y Salida con Variables
+Imaginemos que queremos pedir al usuario que introduzca su edad y luego mostrar un mensaje con esa información. El código sería el siguiente:
+
+python
+Copiar código
+# Entrada
+edad = input("Indica tu edad: ")
+
+# Salida
+print("Tu edad es de", edad, "años")
+Cuando ejecutamos este programa (presionando F5 en IDLE), el flujo es el siguiente:
+
+Entrada: El programa muestra el mensaje "Indica tu edad: " y espera que el usuario introduzca un valor. Por ejemplo:
+yaml
+Copiar código
+Indica tu edad: 46
+Salida: El programa toma el valor introducido por el usuario, lo almacena en la variable edad y lo utiliza en el comando print para mostrar el siguiente mensaje:
+css
+Copiar código
+Tu edad es de 46 años
+Encadenamiento en las Salidas
+En el ejemplo anterior, hemos utilizado una coma (,) para separar los diferentes elementos de la salida. Esto crea lo que llamamos un encadenamiento de valores. Python convierte automáticamente los valores en cadenas y los muestra correctamente.
+
+Sin embargo, también podemos usar el operador de concatenación (+) para unir texto y valores manualmente. Por ejemplo:
+
+python
+Copiar código
+print("Tu edad es de " + edad + " años")
+Cuando ejecutamos este código, el resultado es el mismo:
+
+less
+Copiar código
+Indica tu edad: 46
+Tu edad es de 46 años
+Diferencias entre Coma y Concatenación
+Usando coma (,):
+Python maneja automáticamente los diferentes tipos de datos y añade espacios entre los elementos.
+
+python
+Copiar código
+print("Tu edad es de", edad, "años")
+# Salida: Tu edad es de 46 años
+Usando concatenación (+):
+Todos los elementos deben ser de tipo cadena. Si edad no es una cadena (por ejemplo, si es un número entero), tendremos que convertirlo manualmente usando str():
+
+python
+Copiar código
+print("Tu edad es de " + str(edad) + " años")
+# Salida: Tu edad es de 46 años
+Reflexión
+En este ejemplo, hemos visto cómo combinar variables, entradas y salidas para interactuar con el usuario. Estas herramientas básicas son fundamentales para construir programas dinámicos y personalizables. Más adelante, exploraremos cómo manejar distintos tipos de datos y realizar operaciones más complejas con variables.

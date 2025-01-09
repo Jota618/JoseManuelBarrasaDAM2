@@ -1,0 +1,54 @@
+La tercera estructura de datos que exploraremos en esta clase es el diccionario. Los diccionarios son una de las estructuras más importantes en Python y, como programadores, los necesitarás en numerosas ocasiones.
+
+¿Qué es un Diccionario?
+Un diccionario es una estructura de datos que organiza la información en pares clave-valor. Esto significa que cada dato tiene una clave única que lo identifica y un valor asociado. Este enfoque permite acceder a los datos de forma más clara y eficiente.
+
+Ejemplo: Una Agenda Mal Hecha
+Supongamos que queremos guardar una agenda con información de una persona: su nombre, apellidos, correo electrónico y número de teléfono. Podríamos intentar hacerlo utilizando una lista:
+
+python
+Copiar código
+# Agenda utilizando una lista
+agenda = ["José Vicente", "Carrat Sanchis", "correo@example.com", "123456789"]
+
+# Mostrar la agenda
+print(agenda)
+Cuando ejecutamos este código, la salida es:
+
+css
+Copiar código
+['José Vicente', 'Carrat Sanchis', 'correo@example.com', '123456789']
+Esto funciona técnicamente, pero tiene un problema importante: no es evidente qué representa cada elemento. Aunque podemos deducir que "José Vicente" es un nombre y "Carrat Sanchis" son apellidos, esta interpretación depende del contexto o del sentido común.
+
+¿Por Qué Usar un Diccionario?
+Los diccionarios resuelven este problema al asociar cada dato con una clave que describe lo que representa. Por ejemplo:
+
+python
+Copiar código
+# Agenda utilizando un diccionario
+agenda = {
+    "nombre": "José Vicente",
+    "apellidos": "Carrat Sanchis",
+    "correo": "correo@example.com",
+    "teléfono": "123456789"
+}
+
+# Mostrar la agenda
+print(agenda)
+La salida es:
+
+arduino
+Copiar código
+{'nombre': 'José Vicente', 'apellidos': 'Carrat Sanchis', 'correo': 'correo@example.com', 'teléfono': '123456789'}
+Ahora, cada dato está claramente etiquetado con una clave ("nombre", "apellidos", etc.), lo que hace que el diccionario sea mucho más legible y fácil de usar.
+
+Ventajas de los Diccionarios
+Claridad: Al utilizar claves descriptivas, sabemos exactamente qué representa cada dato.
+Acceso Rápido: Podemos acceder a un valor específico usando su clave, en lugar de recordar su posición en una lista.
+Flexibilidad: Los diccionarios permiten agregar, modificar y eliminar pares clave-valor de manera sencilla.
+Por ejemplo, para acceder al correo electrónico de la agenda, podríamos escribir:
+
+python
+Copiar código
+print(agenda["correo"])  # Salida: correo@example.com
+En resumen, los diccionarios son una herramienta fundamental en Python que permiten organizar datos de forma clara y eficiente. En los próximos capítulos, exploraremos cómo añadir, modificar y eliminar elementos en un diccionario.

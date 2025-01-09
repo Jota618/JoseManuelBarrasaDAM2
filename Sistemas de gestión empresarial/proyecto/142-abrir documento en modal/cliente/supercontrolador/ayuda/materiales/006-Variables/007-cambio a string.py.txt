@@ -1,0 +1,23 @@
+Después de trabajar con tipos de datos, podemos necesitar convertir un número a una cadena para que pueda ser utilizado en un contexto de texto. Este proceso se realiza fácilmente en Python. Por ejemplo, supongamos que queremos mostrar el triple de una edad en un mensaje que incluya texto y el resultado del cálculo. El código sería el siguiente:
+
+python
+Copiar código
+# Entrada
+edad = input("Indica tu edad: ")
+
+# Conversión y Operación
+edad_numero = int(edad)  # Convertimos la edad a un número entero
+triple = edad_numero * 3  # Calculamos el triple
+
+# Cambio a cadena y Salida
+print("El triple de tu edad es de " + str(triple) + " años")
+En este caso, usamos str(triple) para convertir el número almacenado en triple a una cadena (string), lo que permite concatenarlo con el texto del mensaje.
+
+Estructura del Programa
+Este programa sigue una estructura básica que es común en cualquier lenguaje de programación:
+
+Entrada: Introducimos los datos necesarios, en este caso, la edad.
+Uso de Variables: Los datos se almacenan en una variable, que sirve como contenedor para realizar operaciones con ellos.
+Operaciones: Realizamos un cálculo con los datos almacenados en la variable, como calcular el triple.
+Salida: Mostramos el resultado al usuario, ya procesado y formateado.
+Mediante comentarios, podemos documentar cada parte del programa, lo que facilita entender lo que hace cada bloque de código.

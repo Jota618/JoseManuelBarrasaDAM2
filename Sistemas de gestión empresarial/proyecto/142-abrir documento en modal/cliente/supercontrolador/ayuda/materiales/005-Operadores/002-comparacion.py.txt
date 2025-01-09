@@ -1,0 +1,69 @@
+Además de las operaciones aritméticas, en Python podemos realizar operaciones de comparación. Estas operaciones nos permiten comparar valores y determinar si cumplen ciertas condiciones, devolviendo siempre un valor de tipo booleano: True (verdadero) o False (falso). Son fundamentales para implementar lógica condicional en nuestros programas.
+
+Operaciones Básicas de Comparación
+Veamos algunos de los operadores de comparación más comunes y cómo funcionan:
+
+Menor que (<)
+Este operador compara si un valor es menor que otro:
+
+python
+Copiar código
+print(4 < 3)  # Salida: False
+Aquí, Python evalúa si 4 es menor que 3. Como no es cierto, el resultado es False.
+
+Mayor que (>)
+Este operador verifica si un valor es mayor que otro:
+
+python
+Copiar código
+print(4 > 3)  # Salida: True
+En este caso, como 4 es mayor que 3, el resultado es True.
+
+Menor o igual que (<=)
+Este operador combina las condiciones de "menor que" y "igual a":
+
+python
+Copiar código
+print(4 <= 3)  # Salida: False
+Python evalúa si 4 es menor o igual a 3. Como ninguna de las dos condiciones se cumple, el resultado es False.
+
+Mayor o igual que (>=)
+Similar al anterior, pero para las condiciones de "mayor que" o "igual a":
+
+python
+Copiar código
+print(4 >= 3)  # Salida: True
+En este caso, como 4 es mayor que 3, el resultado es True.
+
+Igual a (==)
+Este operador verifica si dos valores son iguales:
+
+python
+Copiar código
+print(4 == 3)  # Salida: False
+Aquí, Python evalúa si 4 es igual a 3. Como no lo es, el resultado es False.
+
+Distinto de (!=)
+Este operador verifica si dos valores son diferentes:
+
+python
+Copiar código
+print(4 != 3)  # Salida: True
+En este caso, como 4 no es igual a 3, el resultado es True.
+
+Aplicación de Operadores de Comparación
+Los operadores de comparación son muy útiles cuando queremos evaluar condiciones en un programa. Por ejemplo, si necesitamos decidir si un usuario tiene acceso a cierto recurso basado en su edad o si dos valores ingresados por el usuario son iguales.
+
+python
+Copiar código
+edad = int(input("Introduce tu edad: "))
+if edad >= 18:
+    print("Eres mayor de edad.")
+else:
+    print("Eres menor de edad.")
+En este programa, usamos el operador >= para verificar si la edad del usuario es mayor o igual a 18. Según el resultado de la comparación, el programa ejecuta una u otra instrucción.
+
+Reflexión
+Los operadores de comparación son esenciales para implementar lógica condicional en Python. Nos permiten realizar preguntas sobre los datos y tomar decisiones basadas en las respuestas. Son una de las herramientas más poderosas del lenguaje y constituyen la base de muchos algoritmos y estructuras de control.
+
+En el próximo capítulo, exploraremos otros tipos de operadores y cómo combinarlos para construir lógica más compleja.

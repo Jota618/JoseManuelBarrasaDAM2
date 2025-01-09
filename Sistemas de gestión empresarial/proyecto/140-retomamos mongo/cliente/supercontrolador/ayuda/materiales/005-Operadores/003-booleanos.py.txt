@@ -1,0 +1,33 @@
+Después de explorar los operadores booleanos, ahora pasaremos a un concepto clave en programación: las variables. Las variables son contenedores de información que nos permiten almacenar datos para usarlos posteriormente en nuestros programas. Puedes imaginar una variable como un carrito o un barco que transporta la información desde el momento en que se recibe hasta que se necesita procesar o presentar al usuario.
+
+¿Qué es una Variable?
+Cuando un dato entra en un programa, a menudo es conveniente almacenarlo en una variable. Esto nos permite reutilizarlo, realizar operaciones sobre él o simplemente mantenerlo accesible durante la ejecución del programa. Una variable actúa como un contenedor que guarda la información y la lleva a lo largo del programa hasta que sale del sistema.
+
+Declarar una Variable
+Crear una variable en Python es muy sencillo. Supongamos que queremos almacenar la edad de una persona. Lo hacemos de la siguiente manera:
+
+python
+Copiar código
+edad = 46
+En este momento han ocurrido varias cosas importantes:
+
+Creación del identificador:
+Hemos creado un identificador, que es el nombre que utilizamos para referirnos a la variable. En este caso, el identificador es edad.
+
+Uso del operador de asignación (=):
+Hemos utilizado el operador de asignación (=), que es diferente del operador de comparación (==). Mientras que el doble igual se utiliza para comparar valores, el igual simple se utiliza para asignar un valor a una variable.
+
+Asignación de un valor:
+Hemos asignado un valor a la variable. En este caso, hemos declarado que la variable edad tiene el valor 46.
+
+Ahora, edad almacena el valor 46, y podemos usar este dato en cualquier parte del programa.
+
+Guardar y Ejecutar
+Si guardamos este código en un archivo llamado 001_declarar_variable.py dentro de una carpeta llamada variables y lo ejecutamos presionando F5, no veremos ningún resultado en la consola. Esto se debe a que solo hemos declarado una variable, pero no hemos hecho ninguna salida. El programa simplemente sabe que edad tiene un valor asignado, pero no realiza ninguna acción visible.
+
+Reflexión
+Declarar variables es uno de los pasos fundamentales en programación. Nos permite gestionar datos de forma estructurada y reutilizarlos en diferentes momentos del programa. Aunque este ejemplo es simple, más adelante veremos cómo utilizar variables en operaciones complejas y cómo interactúan con otros elementos del lenguaje.
+
+En los próximos capítulos, exploraremos más operadores y profundizaremos en el uso práctico de las variables.
+
+

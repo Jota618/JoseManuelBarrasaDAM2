@@ -1,0 +1,28 @@
+Después de iniciar Python y abrir el editor IDLE, el siguiente paso es crear un nuevo archivo donde podamos escribir nuestro código. Para ello, desde la ventana del intérprete de Python, seleccionamos la opción File > New File en el menú superior. Esto abrirá una nueva ventana vacía, lista para que comencemos a trabajar.
+
+Antes de escribir cualquier código, es importante guardar el archivo. Para hacerlo, seleccionamos File > Save As y elegimos la ubicación donde queremos guardar nuestro proyecto. Aunque puedes elegir cualquier carpeta de tu sistema, mi recomendación es crear una carpeta específica para tus proyectos en el escritorio o en otra ubicación accesible. Esto ayudará a mantener organizados todos los archivos que generes durante tu aprendizaje.
+
+Por ejemplo, he decidido guardar este archivo en una carpeta llamada sintaxis y darle el nombre 001_sintaxis.py. Observa que los archivos de Python tienen la extensión .py, que es lo que identifica al archivo como un script de Python.
+
+Python como Lenguaje Multiparadigma
+Python es un lenguaje de programación multiparadigma, lo que significa que permite escribir código utilizando diferentes paradigmas de programación de forma simultánea. Sin embargo, su paradigma principal es el paradigma estructurado, en el cual las instrucciones se ejecutan secuencialmente: una tras otra, en el orden en que las escribimos.
+
+A diferencia de otros lenguajes de programación, en Python no es necesario finalizar cada instrucción con un punto y coma (;). El separador natural entre las instrucciones es el retorno de carro (es decir, cambiar de línea). Esto hace que el código sea más limpio y fácil de leer.
+
+Importancia de la Sangría en Python
+Otra característica fundamental de Python es que utiliza la sangría para definir bloques de código. Cada vez que creemos un bloque, como por ejemplo dentro de una función o un bucle, deberemos terminar la línea anterior con dos puntos (:). Al presionar Enter, Python insertará automáticamente una sangría o tabulación en la siguiente línea. En este espacio indentado, escribiremos las instrucciones correspondientes al bloque.
+
+Por ejemplo, si queremos escribir cuatro instrucciones, podríamos hacerlo de la siguiente manera:
+
+python
+Copiar código
+instrucción_1
+instrucción_2
+if condición:
+    instrucción_3
+    instrucción_4
+En este caso, las instrucciones 3 y 4 están dentro del bloque definido por el if y, por tanto, están indentadas. Esto no es simplemente una cuestión estética: en Python, la sangría es funcional. A diferencia de otros lenguajes de programación donde la sangría es opcional, en Python la correcta indentación del código es obligatoria y forma parte de su sintaxis.
+
+Esta regla hace que el código de Python sea visualmente consistente y fácil de entender. Sin embargo, también significa que debemos ser cuidadosos al usar espacios o tabulaciones, ya que un error en la sangría puede causar problemas de ejecución.
+
+Con estas primeras reglas de sintaxis en mente, ya estamos listos para comenzar a escribir nuestro primer programa en Python.

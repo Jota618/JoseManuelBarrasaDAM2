@@ -1,0 +1,26 @@
+Hasta ahora hemos trabajado con listas, que son estructuras de datos que nos permiten almacenar y manipular múltiples elementos. Ahora veremos otra estructura similar pero con características propias: las tuplas.
+
+¿Qué es una Tupla?
+Una tupla es un contenedor que, al igual que una lista, nos permite almacenar múltiples elementos. Sin embargo, las tuplas se diferencian de las listas en que se crean utilizando paréntesis (()), en lugar de corchetes ([]).
+
+Creando una Tupla
+Supongamos que queremos almacenar los mismos elementos que teníamos en nuestra lista de la compra, pero ahora en una tupla. El código sería:
+
+python
+Copiar código
+# Crear una tupla
+tupla_de_la_compra = ("manzanas", "peras", "plátanos", "sandía")
+
+# Mostrar la tupla
+print(tupla_de_la_compra)
+Al ejecutar este código, obtendremos la siguiente salida:
+
+arduino
+Copiar código
+('manzanas', 'peras', 'plátanos', 'sandía')
+Como puedes observar, la salida utiliza paréntesis para delimitar los elementos de la tupla, en lugar de corchetes como en las listas.
+
+Reflexión sobre las Tuplas
+Las tuplas son estructuras muy útiles cuando queremos almacenar datos que no necesitan ser modificados. Aunque su funcionalidad básica es similar a la de las listas, las tuplas son inmutables, lo que significa que, una vez creadas, no podemos añadir, eliminar ni cambiar sus elementos. Esto las hace ideales para representar conjuntos de datos que deben permanecer constantes a lo largo del programa.
+
+En resumen, mientras que las listas son flexibles y permiten modificaciones, las tuplas son contenedores más rígidos pero útiles para mantener la integridad de los datos.

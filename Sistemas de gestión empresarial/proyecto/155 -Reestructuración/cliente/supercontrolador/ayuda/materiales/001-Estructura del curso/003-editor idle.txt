@@ -1,0 +1,9 @@
+Una vez que hemos instalado Python en nuestro equipo, el siguiente paso es comenzar a trabajar con un editor de código. Al instalar Python, también se incluye un editor básico llamado IDLE. Aunque existen muchas opciones para escribir código, como Visual Studio Code o Sublime Text, recomiendo empezar con IDLE. Este editor es ligero, sencillo y viene preconfigurado con Python, lo que lo hace ideal para principiantes.
+
+Para iniciar IDLE, simplemente haz clic en el icono correspondiente en tu sistema. Al abrirlo, te encontrarás con el intérprete de Python, una consola interactiva donde puedes escribir y ejecutar instrucciones directamente. Esta ventana es una excelente herramienta para realizar pruebas rápidas de código y explorar el lenguaje.
+
+Sin embargo, para proyectos más estructurados, necesitamos crear archivos de Python. Para ello, en el menú superior de IDLE, selecciona la opción File > New File. Esto abrirá una nueva ventana completamente vacía, donde puedes comenzar a escribir código. Es importante guardar este archivo antes de continuar. En mi caso, decidí organizar los archivos del curso en una estructura específica dentro de mi sistema de archivos. Por ejemplo, este proyecto inicial lo guardaré en una carpeta llamada estructura_del_curso, bajo un subdirectorio 001_estructura.
+
+De manera similar, para ejercicios futuros, puedes crear nuevas carpetas y archivos según el tema. Por ejemplo, para trabajar con la sintaxis de Python, puedes guardar tu archivo dentro de una carpeta llamada 002_sintaxis. Este enfoque organizado facilita mantener el control sobre los proyectos y el código que desarrolles durante tu aprendizaje.
+
+Con el archivo guardado, ya estás listo para comenzar a escribir tus primeras líneas de código. En el próximo capítulo, exploraremos los conceptos fundamentales de la sintaxis de Python y cómo escribir programas básicos.

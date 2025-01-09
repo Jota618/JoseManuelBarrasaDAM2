@@ -1,0 +1,69 @@
+Ahora que hemos explorado las entradas y salidas, es momento de introducir los operadores aritméticos, que nos permiten realizar cálculos básicos en Python. Los operadores aritméticos son herramientas fundamentales para procesar datos y transformarlos en resultados útiles, cumpliendo así con el modelo de caja negra: el usuario introduce datos, el programa los procesa y genera una salida.
+
+Operaciones Básicas
+Los operadores aritméticos en Python funcionan de manera muy similar a los que usamos en matemáticas. Veamos algunos ejemplos:
+
+Suma (+)
+El operador + realiza la suma de dos números. Por ejemplo:
+
+python
+Copiar código
+print(4 + 3)  # Salida: 7
+En este caso, el programa suma 4 y 3, devolviendo 7 como resultado.
+
+Resta (-)
+El operador - realiza la resta entre dos números:
+
+python
+Copiar código
+print(4 - 3)  # Salida: 1
+Aquí, el programa resta 3 de 4, dando como resultado 1.
+
+Multiplicación (*)
+El operador * realiza la multiplicación:
+
+python
+Copiar código
+print(4 * 3)  # Salida: 12
+En este caso, el programa multiplica 4 por 3, obteniendo 12.
+
+División (/)
+El operador / realiza la división:
+
+python
+Copiar código
+print(4 / 3)  # Salida: 1.3333333333333333
+La división siempre devuelve un resultado con decimales, incluso si el resultado es un número entero.
+
+Módulo (%)
+El operador % devuelve el resto entero de una división. Por ejemplo:
+
+python
+Copiar código
+print(4 % 3)  # Salida: 1
+Aquí, al dividir 4 entre 3, el cociente es 1 y el resto es 1. El operador % captura este resto y lo devuelve como resultado.
+
+Aplicación del Modelo de Caja Negra
+Estos operadores nos permiten procesar los datos que ingresan en nuestro programa y generar resultados útiles. Por ejemplo, si recibimos dos números como entrada, podemos aplicar cualquiera de estos operadores para realizar cálculos y devolver una salida significativa.
+
+Ejemplo de Aplicación
+Imaginemos un programa que recibe dos números y realiza operaciones aritméticas básicas:
+
+python
+Copiar código
+a = int(input("Introduce el primer número: "))
+b = int(input("Introduce el segundo número: "))
+
+print(f"{a} + {b} = {a + b}")
+print(f"{a} - {b} = {a - b}")
+print(f"{a} * {b} = {a * b}")
+print(f"{a} / {b} = {a / b}")
+print(f"{a} % {b} = {a % b}")
+Al ejecutar este código, el programa solicita al usuario dos números, realiza todas las operaciones mencionadas y muestra los resultados.
+
+Reflexión
+Los operadores aritméticos son fundamentales no solo en matemáticas, sino también en la lógica de los programas que creamos. Combinados con entradas y salidas, nos permiten implementar cálculos que transforman datos en información útil, haciendo que nuestros programas sean interactivos y funcionales.
+
+En el siguiente capítulo, exploraremos otros tipos de operadores y cómo se aplican en Python.
+
+

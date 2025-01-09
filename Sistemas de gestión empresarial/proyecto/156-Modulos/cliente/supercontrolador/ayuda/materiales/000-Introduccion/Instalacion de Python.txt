@@ -1,0 +1,11 @@
+Hola como estais
+
+El primer paso para comenzar a programar en Python es instalar el lenguaje en tu sistema. Para ello, lo primero que debes hacer es acceder a su sitio web oficial, python.org. Esta página es el punto de partida para obtener todos los recursos necesarios relacionados con Python, incluyendo las descargas.
+
+Una vez en la página, localiza la sección de descargas. Aquí encontrarás las versiones disponibles del lenguaje. Es importante que te asegures de descargar una versión estable, ya que estas son más fiables y recomendables para quienes están comenzando. Por ejemplo, al momento de escribir este libro, la última versión estable disponible es Python 3.13.1. Sin embargo, es posible que haya una versión más reciente en el futuro. Simplemente selecciona la versión estable más reciente y descarga el instalador correspondiente a tu sistema operativo.
+
+Cuando la descarga haya finalizado, abre el archivo para iniciar el proceso de instalación. Esto abrirá un asistente que te guiará paso a paso. En esta etapa, hay dos configuraciones clave que debes tener en cuenta antes de proceder. En primer lugar, asegúrate de marcar la casilla que dice “Add Python.exe to PATH” (Añadir Python.exe al PATH del sistema). Este detalle es crucial, ya que permitirá que Python sea reconocido desde cualquier terminal o línea de comandos de tu sistema operativo. En segundo lugar, selecciona la opción “Install Now” (Instalar ahora), a menos que tengas motivos específicos para personalizar la instalación. Para la mayoría de los usuarios, la configuración predeterminada será suficiente.
+
+Durante la instalación, es posible que el sistema solicite permisos de administrador. Cuando esto ocurra, simplemente haz clic en “Aceptar” para continuar. Después de esto, verás una barra de progreso que indicará el estado de la instalación. Solo necesitas esperar a que se complete.
+
+Una vez que el proceso termine, podrás cerrar el instalador. Con esto, habrás instalado Python correctamente en tu sistema. A partir de este momento, estarás listo para empezar a programar. En el próximo capítulo, exploraremos cómo verificar que la instalación se haya realizado con éxito y cómo comenzar a usar Python desde la terminal.

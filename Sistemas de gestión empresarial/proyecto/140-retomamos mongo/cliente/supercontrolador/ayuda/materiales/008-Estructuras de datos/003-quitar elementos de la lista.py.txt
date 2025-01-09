@@ -1,0 +1,55 @@
+Además de añadir elementos, también podemos eliminar elementos de una lista en Python. Esto es útil cuando queremos modificar una lista existente eliminando elementos específicos o el último elemento agregado.
+
+Usando el Método pop()
+El método pop() elimina el último elemento de la lista de manera predeterminada. Veamos un ejemplo:
+
+python
+Copiar código
+# Crear la lista inicial
+lista_de_la_compra = ["manzanas", "peras", "plátanos", "sandía", "fresas"]
+
+# Eliminar el último elemento
+lista_de_la_compra.pop()
+
+# Mostrar la lista actualizada
+print(lista_de_la_compra)
+Cuando ejecutamos este código, la salida será:
+
+css
+Copiar código
+['manzanas', 'peras', 'plátanos', 'sandía']
+En este caso, pop() ha eliminado "fresas", que era el último elemento de la lista.
+
+Eliminar un Elemento Específico
+Si queremos eliminar un elemento concreto de la lista, podemos pasarle un índice al método pop(). Por ejemplo, para eliminar el primer elemento:
+
+python
+Copiar código
+# Eliminar el primer elemento
+lista_de_la_compra.pop(0)
+
+# Mostrar la lista actualizada
+print(lista_de_la_compra)
+La salida será:
+
+css
+Copiar código
+['peras', 'plátanos', 'sandía']
+En este caso, hemos eliminado "manzanas", que estaba en la posición 0 de la lista.
+
+Índices en Informática
+Es importante recordar que, en informática, las listas no comienzan en 1, como en la vida real, sino en 0. Esto significa que:
+
+El primer elemento está en la posición 0.
+El segundo elemento está en la posición 1.
+Y así sucesivamente.
+Por ejemplo, en la lista inicial:
+
+python
+Copiar código
+["manzanas", "peras", "plátanos", "sandía"]
+"manzanas" está en la posición 0.
+"peras" está en la posición 1.
+"plátanos" está en la posición 2.
+"sandía" está en la posición 3.
+Esto es fundamental para trabajar con listas y manejar correctamente los índices.

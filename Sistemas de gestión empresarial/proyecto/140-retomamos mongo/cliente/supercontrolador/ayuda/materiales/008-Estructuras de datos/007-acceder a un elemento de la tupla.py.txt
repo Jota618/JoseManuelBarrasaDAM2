@@ -1,0 +1,36 @@
+Las tuplas en Python son inmutables, lo que significa que su longitud no puede ser modificada después de ser creada. Sin embargo, aún podemos acceder a elementos específicos de una tupla utilizando índices, de la misma manera que lo hacemos con listas.
+
+Accediendo a un Elemento de una Tupla
+Supongamos que tenemos una tupla llamada tupla_de_la_compra y queremos acceder al primer elemento:
+
+python
+Copiar código
+# Crear la tupla
+tupla_de_la_compra = ("manzanas", "peras", "plátanos")
+
+# Acceder al primer elemento
+print(tupla_de_la_compra[0])  # Salida: manzanas
+En este caso, accedemos al elemento en la posición 0, que corresponde a "manzanas".
+
+Intentando Modificar un Elemento
+Si intentamos modificar un elemento de la tupla, como cambiar "manzanas" por "fresas", podríamos escribir:
+
+python
+Copiar código
+tupla_de_la_compra[0] = "fresas"
+Sin embargo, esto generará un error, ya que las tuplas no permiten cambios en sus elementos después de ser creadas. El error sería algo como:
+
+php
+Copiar código
+TypeError: 'tuple' object does not support item assignment
+Reflexión sobre la Modificación de Tuplas
+Aunque las tuplas permiten el acceso a elementos individuales mediante índices, no están diseñadas para ser modificadas. Esto las hace ideales para almacenar datos que no deben cambiar a lo largo del programa.
+
+Si necesitas una estructura similar a una tupla pero con la flexibilidad de modificar sus elementos, probablemente sea mejor usar una lista. Por ejemplo:
+
+python
+Copiar código
+lista_de_la_compra = ["manzanas", "peras", "plátanos"]
+lista_de_la_compra[0] = "fresas"
+print(lista_de_la_compra)  # Salida: ['fresas', 'peras', 'plátanos']
+Este ejemplo demuestra que las listas son mutables y permiten la reasignación de valores, a diferencia de las tuplas.

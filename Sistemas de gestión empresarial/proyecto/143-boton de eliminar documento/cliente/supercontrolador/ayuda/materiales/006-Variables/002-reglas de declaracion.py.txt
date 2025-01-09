@@ -1,0 +1,53 @@
+Antes de continuar explorando las variables, es importante conocer las reglas básicas para declararlas. Estas reglas nos aseguran que nuestras variables sean válidas y sigan las buenas prácticas de programación. Aunque Python es un lenguaje flexible, existen convenciones que debemos respetar para evitar errores y mantener un código limpio y legible.
+
+Reglas Básicas para los Identificadores
+No usar mayúsculas al inicio del nombre de una variable
+Aunque es técnicamente válido declarar una variable comenzando con una letra mayúscula, como en el caso de:
+
+python
+Copiar código
+Edad = 46
+no se recomienda. En Python, las palabras que comienzan con mayúsculas están reservadas generalmente para elementos de la programación orientada a objetos, como clases. Por tanto, evita esta práctica.
+
+Incluir números en el identificador
+Es válido incluir números en el nombre de la variable, pero no pueden estar al principio. Por ejemplo:
+
+python
+Copiar código
+edad2 = 46  # Correcto
+Sin embargo, si intentas declarar una variable comenzando con un número, como en:
+
+python
+Copiar código
+2edad = 46
+el programa generará un error, ya que esta sintaxis no está permitida.
+
+Usar guion bajo (_) para separar palabras
+En Python, puedes declarar variables con varias palabras utilizando el guion bajo como separador:
+
+python
+Copiar código
+mi_edad = 46  # Correcto
+Sin embargo, no puedes utilizar un guion medio (-) porque este símbolo está reservado para la operación aritmética de resta. Por ejemplo:
+
+python
+Copiar código
+mi-edad = 46  # Incorrecto, genera error
+Evitar camelCase en nombres de variables
+Aunque el estilo camelCase, donde cada palabra a partir de la segunda comienza con mayúscula, es aceptado por Python:
+
+python
+Copiar código
+miEdad = 46  # Correcto pero no recomendado
+no es una buena práctica. Este estilo está reservado para métodos y funciones en programación orientada a objetos, por lo que no deberíamos usarlo para variables ordinarias.
+
+Evitar palabras reservadas
+Python tiene un conjunto de palabras reservadas que no puedes usar como identificadores porque están destinadas a funciones específicas del lenguaje. Por ejemplo:
+
+python
+Copiar código
+for = 46  # Incorrecto, genera error
+En este caso, for es una palabra reservada que se utiliza para crear bucles, por lo que no puedes usarla como nombre de una variable. Cuando intentes hacerlo, Python resaltará el identificador en un color especial (como amarillo) y generará un error.
+
+Reflexión sobre las Reglas
+Aunque estas reglas pueden parecer muchas al principio, la mayoría son intuitivas y fáciles de recordar con la práctica. Además, siempre puedes consultar listas de palabras reservadas o buenas prácticas en internet si tienes dudas. Seguir estas reglas no solo evitará errores, sino que también hará que tu código sea más legible y mantenga las convenciones de Python.

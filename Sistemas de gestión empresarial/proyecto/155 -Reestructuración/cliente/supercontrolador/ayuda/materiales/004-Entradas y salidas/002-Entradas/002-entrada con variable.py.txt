@@ -1,0 +1,33 @@
+En el capítulo anterior, introdujimos el comando input como una forma de capturar entradas de los usuarios. Ahora vamos a dar un paso más allá y utilizaremos una variable para almacenar la información proporcionada por el usuario y luego procesarla.
+
+Introduciendo Variables en el Contexto de Entradas y Salidas
+Imaginemos que queremos pedirle al usuario su nombre y luego mostrarlo en pantalla. Para lograrlo, podemos almacenar el valor capturado por input en una variable y, a continuación, usar esa variable para generar una salida. El código sería algo como esto:
+
+python
+Copiar código
+nombre = input("Dime tu nombre: ")
+print(nombre)
+Guardamos este ejemplo en un archivo llamado 002_entrada_con_variable.py. Cuando ejecutamos el programa (presionando F5 en IDLE), veremos el siguiente flujo:
+
+El programa muestra el mensaje:
+yaml
+Copiar código
+Dime tu nombre:
+El usuario introduce su nombre, por ejemplo:
+Copiar código
+José Vicente
+Al presionar Enter, el programa toma la entrada proporcionada, la almacena en la variable nombre y luego la muestra en pantalla como salida:
+Copiar código
+José Vicente
+Este sencillo programa ya cumple con el modelo de caja negra que mencionamos anteriormente. El usuario introduce información (su nombre), el programa la procesa (almacenándola en una variable), y genera una salida (mostrando el nombre en pantalla).
+
+Reflexión sobre el Modelo de Caja Negra
+Lo que acabamos de implementar es un programa básico que sigue el principio fundamental de cualquier aplicación informática: entrada → procesamiento → salida. En este caso:
+
+Entrada: El usuario introduce su nombre a través de input.
+Procesamiento: El programa almacena el dato en la variable nombre.
+Salida: El programa utiliza print para mostrar el nombre introducido.
+Aunque en este ejemplo el procesamiento es mínimo (solo almacenamos y mostramos el dato), más adelante aprenderemos a realizar tareas más complejas, como cálculos, validaciones y transformaciones de datos.
+
+Lo Que Está por Venir
+Este ejemplo es solo el comienzo. A medida que avancemos, construiremos programas más sofisticados, en los que las entradas no solo se almacenen, sino que también se transformen, analicen y utilicen para producir resultados significativos. Sin embargo, este primer paso es crucial para entender cómo funcionan las aplicaciones basadas en el modelo de caja negra.

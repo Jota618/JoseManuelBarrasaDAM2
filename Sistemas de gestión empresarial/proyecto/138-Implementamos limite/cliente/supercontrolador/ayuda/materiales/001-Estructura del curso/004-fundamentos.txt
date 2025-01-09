@@ -1,0 +1,7 @@
+Una vez que hemos iniciado Python y creado un nuevo archivo en el editor, es momento de hablar sobre la estructura del curso y los temas que abordaremos. Lo primero que estamos viendo aquí pertenece a la sección de fundamentos. Esta sección es crucial, ya que establece las bases necesarias para poder construir programas más complejos en el futuro.
+
+Aunque en este momento puede parecer que estamos trabajando con conceptos básicos y poco emocionantes, estos fundamentos son indispensables. Nos permitirán, en etapas posteriores, explorar temas más avanzados y apasionantes, como el diseño de interfaces gráficas de usuario, la programación web con Python, la creación de juegos y otras aplicaciones prácticas del lenguaje.
+
+Es normal que la primera clase pueda parecer un poco densa, ya que nos enfocamos en conceptos esenciales. Sin embargo, quiero subrayar que lo que vamos a aprender hoy es mucho más importante de lo que podría parecer a primera vista. Estos conocimientos nos proporcionarán la base necesaria para desarrollar habilidades sólidas en Python y serán la clave para afrontar proyectos más complejos.
+
+Por ello, te animo a dedicarle el tiempo y la atención necesarios a esta parte introductoria. Una vez que hayamos cubierto los fundamentos, verás cómo todo empieza a encajar, y estarás listo para aplicar Python en una variedad de contextos, desde el desarrollo de aplicaciones web hasta la creación de videojuegos.

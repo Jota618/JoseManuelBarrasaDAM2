@@ -1,0 +1,31 @@
+Hasta este momento, hemos ejecutado un programa básico en Python que muestra un mensaje en la consola. Esto representa el núcleo de lo que llamamos Python puro, es decir, trabajar directamente con el lenguaje sin herramientas adicionales ni bibliotecas específicas para interfaces gráficas o elementos visuales.
+
+Un Paso Más Allá: Interfaces Gráficas
+Es probable que te preguntes cuándo podrás crear programas con ventanas e interfaces gráficas, como las que usas diariamente en tu ordenador o teléfono. Por ejemplo, un programa que haga aparecer una ventana con el texto "Hola mundo desde Python". Este tipo de aplicaciones se crean utilizando bibliotecas como Tkinter, una herramienta incluida con Python que permite diseñar interfaces gráficas de usuario (GUI).
+
+Para dar una idea de cómo se ve este tipo de programación, aquí tienes un ejemplo básico:
+
+python
+Copiar código
+import tkinter as tk
+
+# Crear una ventana
+ventana = tk.Tk()
+
+# Añadir una etiqueta con texto
+etiqueta = tk.Label(ventana, text="Hola mundo desde Python")
+etiqueta.pack()
+
+# Mostrar la ventana
+ventana.mainloop()
+Al ejecutar este código, se abre una ventana con el texto "Hola mundo desde Python". Este es un programa gráfico que utiliza ventanas para interactuar con el usuario, a diferencia de los programas en consola que hemos trabajado hasta ahora.
+
+¿Por qué Empezamos con Python Puro?
+Es comprensible que quieras saltar directamente al diseño de interfaces gráficas. Sin embargo, para poder crear programas más complejos y útiles, primero necesitamos dominar los fundamentos de Python. Aprender a programar en consola nos proporciona una base sólida sobre cómo funciona el lenguaje, su lógica y sus herramientas principales. Esto incluye conceptos como estructuras de datos, bucles, condicionales y funciones, que son esenciales para cualquier tipo de desarrollo en Python.
+
+Sin esta base, trabajar con herramientas avanzadas como Tkinter podría ser confuso y frustrante. Es como intentar construir una casa sin entender cómo se colocan los cimientos.
+
+Un Camino Paso a Paso
+Aunque no estemos creando ventanas por el momento, esto llegará. Aprenderemos a diseñar interfaces gráficas, pero antes necesitamos desarrollar la habilidad de pensar como programadores y escribir código estructurado. Así que, aunque al principio parezca que trabajar en la consola es menos emocionante, este es un paso esencial para avanzar hacia proyectos más sofisticados y visuales.
+
+En los próximos capítulos, continuaremos profundizando en los conceptos básicos de Python puro, para que más adelante puedas aplicarlos al diseño de interfaces gráficas y otros tipos de programas.

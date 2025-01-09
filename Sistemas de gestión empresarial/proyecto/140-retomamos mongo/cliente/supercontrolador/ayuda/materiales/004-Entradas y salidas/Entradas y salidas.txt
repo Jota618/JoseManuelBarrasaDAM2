@@ -1,0 +1,19 @@
+Para comprender cómo funcionan las entradas y salidas, utilizamos el modelo de caja negra. Este modelo nos dice que un programa informático es un sistema que actúa como una caja negra. En este sistema, el usuario proporciona datos de entrada, el programa procesa esa información internamente y genera una salida. Sin embargo, el usuario no necesita saber qué ocurre dentro de la caja negra; solo le interesa el resultado.
+
+Este concepto no es exclusivo de la informática; lo usamos constantemente en la vida cotidiana. Por ejemplo:
+
+Conducir un coche: Cuando pulsas el pedal del acelerador, el coche se mueve hacia adelante. Este es el resultado visible: la salida. Sin embargo, no necesitas saber cómo funciona exactamente el motor o el sistema de transmisión para conducir.
+
+Abrir una nevera: Al abrir la puerta, la luz dentro de la nevera se enciende. Esto es una interacción básica entre una entrada (abrir la puerta) y una salida (la luz encendida). El mecanismo interno que hace posible este comportamiento permanece oculto para el usuario.
+
+Aplicando el Modelo de Caja Negra en Programas
+Cuando diseñamos programas informáticos, seguimos este principio. Creamos bloques de código que funcionan como cajas negras. Permitimos que los usuarios introduzcan datos mediante entradas y los programas generen resultados mediante salidas, pero sin exponer cómo se realizan los cálculos o procesos internos.
+
+Por ejemplo, al escribir una aplicación en Python, podrías diseñar un programa que permita al usuario ingresar su edad como entrada y, como salida, calcular y mostrar cuántos días ha vivido aproximadamente. El usuario solo ve la entrada y la salida, pero el cálculo interno queda oculto.
+
+Organización del Proyecto
+Para trabajar con este tema, hemos creado una nueva carpeta llamada 004_entradas_y_salidas. Aquí incluiremos un esquema básico que ilustra cómo funciona el modelo de caja negra. Este esquema será útil para conceptualizar cómo se procesan los datos en un programa.
+
+A medida que avancemos, profundizaremos en los métodos específicos para manejar entradas y salidas en Python, como la función input() para capturar datos del usuario y la función print() para mostrar resultados.
+
+
