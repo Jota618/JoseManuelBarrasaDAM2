@@ -8,7 +8,7 @@
 	include "ConectaMongo.php";																									// incluyo el archivo en el cual se encuentra la clase
 
 	$conexion = new conexionDB();
-	$conexionmongo = new ConectaMongo();
+	//$conexionmongo = new ConectaMongo();
 																								// Creo una nueva instancia de la clase
 	if(isset($_GET['o'])){
 		switch($_GET['o']){

@@ -28,7 +28,7 @@ function login(){
 		                 body: JSON.stringify(mensaje),  
 		               })
 	  .then(response => {
-		 return response.json();                                                       // Quiero que el servidor me devuelva un json
+		 return response.text();                                                       // Quiero que el servidor me devuelva un json
 	  })
 	  .then(data => {
 		 

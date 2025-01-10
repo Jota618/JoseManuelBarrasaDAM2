@@ -358,7 +358,7 @@
     // Get the list of tables in the database
     $query = "
         SELECT 
-            table_name 
+            TABLE_NAME 
         FROM 
             information_schema.tables
         WHERE 

@@ -2,9 +2,13 @@
 
 	include "lib/sanear.php";
 	sanear($_REQUEST);
+	// Rodear con un try catch para comprobar si viene algo por php://input, Y SOLO en ese caso, ejecutar este bloque
+	/*
 	$json = file_get_contents('php://input');                   								// Recojo los datos que vienen en json desde la petición del cliente
    $datos = json_decode($json, true);
-	sanear($datos);
+	var_dump($json);	
+   //sanear($datos);
+   */
 	
 	include "lib/fuerzabruta.php";
 	include "lib/codificador.php";

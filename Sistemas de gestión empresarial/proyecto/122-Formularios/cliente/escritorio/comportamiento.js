@@ -12,14 +12,14 @@ window.onload = function(){
     
     fetch("../../servidor/?o=compruebatoken&token="+token) 
     .then(response => {
-          return response.json();                       // Quiero que el servidor me devuelva un json
+          return response.text();                       // Quiero que el servidor me devuelva un json
         })
         .then(data => {
         	console.log(data)
         	if(data.resultado == "ok"){
         		
         	}else{
-        		window.location = "../"
+        		//window.location = "../"
         	}
         })
     
