@@ -1,6 +1,21 @@
-<form action="api.php?o=insertarCliente" method="POST">
-	<input type="text" name="nombre">
-	<input type="text" name="apellidos">
-	<input type="hidden" name="clave" value="falkfawer465a">
-	<input type="submit">
-</form>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Simulacro</title>
+</head>
+<body>
+    <form action="api.php?o=insertarCliente" method="POST">
+        <input type="text" name="nombre" placeholder="Nombre">
+        <input type="text" name="apellidos" placeholder="Apellidos">
+        <input type="email" name="email" placeholder="Email">
+        <input type="text" name="direccion" placeholder="Dirección">
+        <input type="text" name="poblacion" placeholder="Población">
+        <input type="text" name="cp" placeholder="Código Postal">
+        <input type="text" name="pais" placeholder="País">
+        <textarea name="texto" placeholder="Texto"></textarea>
+        <input type="hidden" name="clave" value="falkfawer465a">
+        <input type="submit" value="Enviar">
+    </form>
+</body>
+</html>

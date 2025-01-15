@@ -12,7 +12,7 @@
         }else{
         	die("Error de acceso");
         }
-		 if($_SERVER['SERVER_ADDR'] == "192.168.1.210"){
+		 if($_SERVER['SERVER_ADDR'] == "::1"){
 		 
 		 }else{
 		 	die("Error de IP no admitida");
