@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <fields>
+        <field>
+            <name>customerName</name>
+            <type>text</type>
+            <placeholder>Customer Name</placeholder>
+            <required>true</required>
+        </field>
+        <field>
+            <name>Apellidos</name>
+            <type>text</type>
+            <placeholder>Apellidos del cliente</placeholder>
+            <required>true</required>
+        </field>
+        <field>
+            <name>Email</name>
+            <type>text</type>
+            <placeholder>Email del cliente</placeholder>
+            <required>true</required>
+        </field>
+    </fields>
+    
+</form>
+

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Control XML</title>
+    <title>XML Control Panel</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -18,7 +18,7 @@
             color: #0056b3;
         }
 
-        .carpeta {
+        .folder {
             margin-bottom: 20px;
             padding: 10px;
             border: 1px solid #ddd;
@@ -26,17 +26,17 @@
             border-radius: 5px;
         }
 
-        .carpeta h2 {
+        .folder h2 {
             margin-bottom: 10px;
             color: #007bff;
         }
 
-        .lista-archivos {
+        .file-list {
             list-style-type: none;
             padding: 0;
         }
 
-        .lista-archivos li {
+        .file-list li {
             padding: 5px 0;
             display: flex;
             justify-content: space-between;
@@ -44,7 +44,7 @@
             border-bottom: 1px solid #eee;
         }
 
-        .lista-archivos li:last-child {
+        .file-list li:last-child {
             border-bottom: none;
         }
 
@@ -62,7 +62,7 @@
             background-color: #0056b3;
         }
 
-        /* Estilos del Modal */
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -76,7 +76,7 @@
             z-index: 1000;
         }
 
-        .contenido-modal {
+        .modal-content {
             background: #fff;
             padding: 20px;
             border-radius: 5px;
@@ -85,7 +85,7 @@
             overflow-y: auto;
         }
 
-        .contenido-modal pre {
+        .modal-content pre {
             font-family: monospace;
             background-color: #f9f9f9;
             padding: 10px;
@@ -93,7 +93,7 @@
             border-radius: 5px;
         }
 
-        .boton-cerrar {
+        .close-btn {
             display: block;
             margin-left: auto;
             margin-right: 0;
@@ -101,79 +101,83 @@
             padding: 5px 10px;
         }
 
-        .boton-cerrar:hover {
+        .close-btn:hover {
             background-color: #a71d2a;
         }
     </style>
 </head>
 <body>
-    <h1>Panel de Control XML</h1>
+    <h1>XML Control Panel</h1>
 
     <?php
-    function analizarDirectorio($directorioBase)
+    function parseDirectory($baseDir)
     {
-        $elementos = scandir($directorioBase);
-        foreach ($elementos as $elemento) {
-            if ($elemento === '.' || $elemento === '..') {
+        $items = scandir($baseDir);
+        foreach ($items as $item) {
+            if ($item === '.' || $item === '..') {
                 continue;
             }
 
-            $rutaCompleta = $directorioBase . '/' . $elemento;
+            $fullPath = $baseDir . '/' . $item;
 
-            if (is_dir($rutaCompleta)) {
-                echo "<div class='carpeta'>";
-                echo "<h2>Carpeta: $elemento</h2>";
-                echo "<ul class='lista-archivos'>";
-                analizarDirectorio($rutaCompleta); // Llamada recursiva para subdirectorios
+            if (is_dir($fullPath)) {
+                echo "<div class='folder'>";
+                echo "<h2>Folder: $item</h2>";
+                echo "<ul class='file-list'>";
+                parseDirectory($fullPath); // Recursive call for subdirectories
                 echo "</ul>";
                 echo "</div>";
-            } elseif (pathinfo($rutaCompleta, PATHINFO_EXTENSION) === 'xml') {
+            } elseif (pathinfo($fullPath, PATHINFO_EXTENSION) === 'xml') {
                 echo "<li>
-                        $elemento 
-                        <button onclick=\"verContenido('$rutaCompleta')\">Ver</button>
+                        $item 
+                        <button onclick=\"viewContent('$fullPath')\">View</button>
                       </li>";
             }
         }
     }
 
-    $directorioBase = 'xml';
-    if (!is_dir($directorioBase)) {
-        echo "<p>El directorio base de XML no existe.</p>";
+    $baseDir = 'xml';
+    if (!is_dir($baseDir)) {
+        echo "<p>XML base directory does not exist.</p>";
         exit;
     }
 
-    echo "<ul class='lista-archivos'>";
-    analizarDirectorio($directorioBase);
+    echo "<ul class='file-list'>";
+    parseDirectory($baseDir);
     echo "</ul>";
     ?>
 
     <!-- Modal -->
-    <div id="modalContenido" class="modal">
-        <div class="contenido-modal">
-            <button class="boton-cerrar" onclick="cerrarModal()">Cerrar</button>
-            <pre id="visorContenido"></pre>
+    <div id="contentModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">Close</button>
+            <pre id="contentViewer"></pre>
         </div>
     </div>
 
     <script>
-        function verContenido(rutaArchivo) {
-            fetch(rutaArchivo)
+        function viewContent(filePath) {
+            fetch(filePath)
                 .then(response => {
-                    if (!response.ok) throw new Error('Error al obtener el contenido del archivo.');
+                    if (!response.ok) throw new Error('Failed to fetch file content.');
                     return response.text();
                 })
-                .then(contenido => {
-                    document.getElementById('visorContenido').textContent = contenido;
-                    document.getElementById('modalContenido').style.display = 'flex';
+                .then(content => {
+                    const viewer = document.getElementById('contentViewer');
+                    viewer.textContent = content;
+                    const modal = document.getElementById('contentModal');
+                    modal.style.display = 'flex';
                 })
                 .catch(error => {
-                    alert('Error al cargar el contenido del archivo: ' + error.message);
+                    alert('Error loading file content: ' + error.message);
                 });
         }
 
-        function cerrarModal() {
-            document.getElementById('modalContenido').style.display = 'none';
+        function closeModal() {
+            const modal = document.getElementById('contentModal');
+            modal.style.display = 'none';
         }
     </script>
 </body>
 </html>
+

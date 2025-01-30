@@ -1,0 +1,69 @@
+<!doctype>
+<html>
+	<head>
+		<style>
+			.jvwysiwyg .editor{
+				width:500px;
+				height:500px;
+				border:1px solid grey;
+				box-sizing:border-box;
+				padding:20px;
+			}
+			.jvwysiwyg .botonera{
+				width:500px;
+				height:40px;
+				border:1px solid grey;
+				box-sizing:border-box;
+				padding:5px;
+				box-sizing:border-box;
+			}
+			.jvwysiwyg .botonera button{
+				width:30px;
+				height:30px;
+				text-align:center;
+				margin-right:5px;
+			}
+		</style>
+	</head>
+	<body>
+		<textarea name="uno"></textarea>
+		<script>
+			let textos = document.querySelectorAll("textarea")					// Enumero los elementos textarea
+			console.log("tengo",textos.length,"textareas")						// Indico cuantos tengo
+			textos.forEach(function(textarea){										// PAra cada uno de ellos
+				let nuevocontenedor = document.createElement("div")			// Creo un div
+				nuevocontenedor.setAttribute("class","jvwysiwyg")				// Le pongo una clase
+				textarea.replaceWith(nuevocontenedor)								// Reemplazo el textarea con un div
+				nuevocontenedor.appendChild(textarea)								// Ahora pongo el textarea dentro del contenedor
+				textarea.style.display = "none"										// PEro lo escondo!!!
+				
+				let botonera = document.createElement("div")						// Creo un div
+				botonera.classList.add("botonera")									// Le pongo una clase
+				nuevocontenedor.appendChild(botonera)								// Lo añado
+				
+				let botonnegrita = document.createElement("button")			// Creo un boton
+				botonnegrita.innerHTML = "<b>B</b>"									// Le pongo un poco de estetica
+				botonera.appendChild(botonnegrita)									// Lo añado a la botonera
+				botonnegrita.onclick = function(){									// Cuando hago click en el boton
+					console.log("Has hecho click")									// Lanzo un mensaje
+					let contenido =  window.getSelection().toString();			// Leo el contenido
+					let contenidocompleto = mieditor.innerHTML
+					let inicio = contenidocompleto.indexOf(contenido);
+					let final = contenidocompleto.indexOf(contenido)+contenido.length
+					
+					console.log(contenido,inicio,final)												// Lo lanzo por consola
+					//contenido = "<b>"+contenido+"</b>"								// Le pongo negrita
+					//mieditor.innerHTML = contenido									// Y lo restauro pero modificado
+				}
+				
+				
+				
+				let mieditor = document.createElement("div")						// Creo un nuevo elemento
+				mieditor.classList.add("editor")										// Le pongo una clase
+				nuevocontenedor.appendChild(mieditor)								// Y lo añado al contenedor
+				mieditor.setAttribute("contenteditable","true")					// El contenedor es editable
+			})
+		</script>
+	</body>
+</html>
+

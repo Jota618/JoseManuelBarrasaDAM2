@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <fields>
+        <field>
+            <name>customerName</name>
+            <type>text</type>
+            <placeholder>Customer Name</placeholder>
+            <required>true</required>
+        </field>
+    </fields>
+    <dynamicFields>
+        <fieldGroup name="invoiceLine">
+            <field>
+                <name>description</name>
+                <type>text</type>
+                <placeholder>Description</placeholder>
+                <required>true</required>
+            </field>
+            <field>
+                <name>quantity</name>
+                <type>number</type>
+                <placeholder>Quantity</placeholder>
+                <required>true</required>
+            </field>
+            <field>
+                <name>price</name>
+                <type>number</type>
+                <placeholder>Price</placeholder>
+                <required>true</required>
+            </field>
+        </fieldGroup>
+    </dynamicFields>
+</form>
+

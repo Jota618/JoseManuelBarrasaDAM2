@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="Stylesheet" href="estilo.css">
+    <title>Invoice Form</title>
+    <style>
+        .invoice-line {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .invoice-line input {
+            flex: 1;
+        }
+        .add-line-btn {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <form id="invoiceForm">
+        <!-- Static fields container -->
+        <div id="staticFields"></div>
+
+        <!-- Dynamic invoice lines container -->
+        <div id="invoiceLinesContainer"></div>
+        <button type="button" id="addLineButton" class="add-line-btn">+ Add Line</button><br><br>
+
+        <button type="submit">Submit Invoice</button>
+    </form>
+
+    <script>
+    	const urlParams = new URLSearchParams(window.location.search);
+        document.addEventListener('DOMContentLoaded', async function () {
+            const staticFieldsContainer = document.getElementById('staticFields');
+            const invoiceLinesContainer = document.getElementById('invoiceLinesContainer');
+            const addLineButton = document.getElementById('addLineButton');
+
+            try {
+                // Fetch and parse the XML file
+                const response = await fetch('modelos/'+urlParams.get('f')+'.xml');
+                const xmlText = await response.text();
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(xmlText, 'application/xml');
+
+                // Render static fields
+                const staticFields = xml.querySelectorAll('fields > field');
+                staticFields.forEach(field => {
+                    const name = field.querySelector('name').textContent;
+                    const type = field.querySelector('type').textContent;
+                    const placeholder = field.querySelector('placeholder').textContent;
+                    const required = field.querySelector('required').textContent === 'true';
+
+                    const input = document.createElement('input');
+                    input.type = type;
+                    input.name = name;
+                    input.placeholder = placeholder;
+                    input.required = required;
+                    staticFieldsContainer.appendChild(input);
+                    staticFieldsContainer.appendChild(document.createElement('br'));
+                });
+
+                // Render initial dynamic invoice line
+                renderInvoiceLine();
+
+                // Add new invoice line on button click
+                addLineButton.addEventListener('click', renderInvoiceLine);
+
+                // Handle form submission
+                document.getElementById('invoiceForm').addEventListener('submit', async function (event) {
+                    event.preventDefault(); // Prevent default submission
+
+                    // Collect static fields
+                    const staticData = {};
+                    staticFields.forEach(field => {
+                        const name = field.querySelector('name').textContent;
+                        staticData[name] = document.querySelector(`[name="${name}"]`).value;
+                    });
+
+                    // Collect dynamic invoice lines
+                    const invoiceLines = Array.from(invoiceLinesContainer.querySelectorAll('.invoice-line')).map(line => ({
+                        description: line.querySelector('input[name="description[]"]').value,
+                        quantity: line.querySelector('input[name="quantity[]"]').value,
+                        price: line.querySelector('input[name="price[]"]').value,
+                    }));
+
+                    const formData = {
+                        ...staticData,
+                        invoiceLines,
+                    };
+
+                    try {
+                        // Send data to server
+                        const response = await fetch('guardaxml.php?f='+urlParams.get('f'), {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(formData),
+                        });
+
+                        const result = await response.text();
+                        console.log(result);
+                        alert('Invoice submitted successfully!');
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred while submitting the invoice.');
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading XML:', error);
+            }
+
+            function renderInvoiceLine() {
+                const line = document.createElement('div');
+                line.classList.add('invoice-line');
+                line.innerHTML = `
+                    <input type="text" name="description[]" placeholder="Description" required>
+                    <input type="number" name="quantity[]" placeholder="Quantity" required>
+                    <input type="number" name="price[]" placeholder="Price" required>
+                    <button type="button" class="remove-line-btn">-</button>
+                `;
+                invoiceLinesContainer.appendChild(line);
+
+                line.querySelector('.remove-line-btn').addEventListener('click', () => {
+                    invoiceLinesContainer.removeChild(line);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+

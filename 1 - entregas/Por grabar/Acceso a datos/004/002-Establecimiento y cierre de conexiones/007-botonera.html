@@ -1,0 +1,45 @@
+<!doctype>
+<html>
+	<head>
+		<style>
+			.jvwysiwyg .editor{
+				width:500px;
+				height:500px;
+				border:1px solid grey;
+				box-sizing:border-box;
+				padding:20px;
+			}
+			.jvwysiwyg .botonera{
+				width:500px;
+				height:30px;
+				border:1px solid grey;
+				box-sizing:border-box;
+				padding:20px;
+			}
+		</style>
+	</head>
+	<body>
+		<textarea name="uno"></textarea>
+		<script>
+			let textos = document.querySelectorAll("textarea")					// Enumero los elementos textarea
+			console.log("tengo",textos.length,"textareas")						// Indico cuantos tengo
+			textos.forEach(function(textarea){										// PAra cada uno de ellos
+				let nuevocontenedor = document.createElement("div")			// Creo un div
+				nuevocontenedor.setAttribute("class","jvwysiwyg")				// Le pongo una clase
+				textarea.replaceWith(nuevocontenedor)								// Reemplazo el textarea con un div
+				nuevocontenedor.appendChild(textarea)								// Ahora pongo el textarea dentro del contenedor
+				textarea.style.display = "none"										// PEro lo escondo!!!
+				
+				let botonera = document.createElement("div")
+				botonera.classList.add("botonera")	
+				nuevocontenedor.appendChild(botonera)
+				
+				let mieditor = document.createElement("div")						// Creo un nuevo elemento
+				mieditor.classList.add("editor")										// Le pongo una clase
+				nuevocontenedor.appendChild(mieditor)								// Y lo añado al contenedor
+				mieditor.setAttribute("contenteditable","true")					// El contenedor es editable
+			})
+		</script>
+	</body>
+</html>
+

@@ -1,43 +1,43 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="estilo.css">
-    <title>Formulario Dinámico</title>
+    <title>Dynamic Form</title>
     <style>
-        .grupo-dinamico {
+        .dynamic-group {
             margin-bottom: 15px;
         }
 
-        .linea-dinamica {
+        .dynamic-line {
             display: flex;
             gap: 10px;
             margin-bottom: 10px;
         }
 
-        .linea-dinamica input {
+        .dynamic-line input {
             flex: 1;
         }
 
-        .boton-agregar-linea {
+        .add-line-btn {
             margin: 10px 0;
         }
 
-        .boton-eliminar-linea {
+        .remove-line-btn {
             margin-left: 10px;
         }
     </style>
 </head>
 <body>
-    <form id="formularioDinamico">
-        <!-- Contenedor de campos estáticos -->
-        <div id="camposEstaticos"></div>
+    <form id="dynamicForm">
+        <!-- Static fields container -->
+        <div id="staticFields"></div>
 
-        <!-- Contenedor de campos dinámicos -->
-        <div id="contenedorCamposDinamicos"></div>
+        <!-- Dynamic fields container -->
+        <div id="dynamicFieldsContainer"></div>
 
-        <button type="submit">Enviar Formulario</button>
+        <button type="submit">Submit Form</button>
     </form>
 
     <script src="logica.js"></script>
