@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilo.css">
+    <title>Dynamic Form</title>
+    <style>
+        .dynamic-group {
+            margin-bottom: 15px;
+        }
+
+        .dynamic-line {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .dynamic-line input {
+            flex: 1;
+        }
+
+        .add-line-btn {
+            margin: 10px 0;
+        }
+
+        .remove-line-btn {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <form id="dynamicForm">
+        <!-- Static fields container -->
+        <div id="staticFields"></div>
+
+        <!-- Dynamic fields container -->
+        <div id="dynamicFieldsContainer"></div>
+
+        <button type="submit">Submit Form</button>
+    </form>
+
+    <script src="logica.js"></script>
+</body>
+</html>

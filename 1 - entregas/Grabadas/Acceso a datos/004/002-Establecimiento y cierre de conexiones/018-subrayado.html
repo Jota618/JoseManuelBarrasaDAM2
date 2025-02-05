@@ -1,0 +1,86 @@
+<!doctype>
+<html>
+	<head>
+		<style>
+			.jvwysiwyg .editor{
+				width:500px;
+				height:500px;
+				border:1px solid grey;
+				box-sizing:border-box;
+				padding:20px;
+			}
+			.jvwysiwyg .botonera{
+				width:500px;
+				height:40px;
+				border:1px solid grey;
+				box-sizing:border-box;
+				padding:5px;
+				box-sizing:border-box;
+			}
+			.jvwysiwyg .botonera button{
+				width:30px;
+				height:30px;
+				text-align:center;
+				margin-right:5px;
+			}
+		</style>
+	</head>
+	<body>
+		<textarea name="uno"></textarea>
+		<script>
+			let textos = document.querySelectorAll("textarea")					// Enumero los elementos textarea
+			console.log("tengo",textos.length,"textareas")						// Indico cuantos tengo
+			textos.forEach(function(textarea){										// PAra cada uno de ellos
+				let nuevocontenedor = document.createElement("div")			// Creo un div
+				nuevocontenedor.setAttribute("class","jvwysiwyg")				// Le pongo una clase
+				textarea.replaceWith(nuevocontenedor)								// Reemplazo el textarea con un div
+				nuevocontenedor.appendChild(textarea)								// Ahora pongo el textarea dentro del contenedor
+				textarea.style.display = "none"										// PEro lo escondo!!!
+				
+				let botonera = document.createElement("div")						// Creo un div
+				botonera.classList.add("botonera")									// Le pongo una clase
+				nuevocontenedor.appendChild(botonera)								// Lo añado
+				
+				let botonnegrita = document.createElement("button")			// Creo un boton
+				botonnegrita.innerHTML = "<b>B</b>"									// Le pongo un poco de estetica
+				botonera.appendChild(botonnegrita)									// Lo añado a la botonera
+				botonnegrita.onclick = function(){reemplaza("b")};
+				
+				let botonitalica = document.createElement("button")			// Creo un boton
+				botonitalica.innerHTML = "<i>i</i>"									// Le pongo un poco de estetica
+				botonera.appendChild(botonitalica)									// Lo añado a la botonera
+				botonitalica.onclick = function(){reemplaza("i")};
+				
+				let botonsubrayado = document.createElement("button")			// Creo un boton
+				botonsubrayado.innerHTML = "<u>u</u>"									// Le pongo un poco de estetica
+				botonera.appendChild(botonsubrayado)									// Lo añado a la botonera
+				botonsubrayado.onclick = function(){reemplaza("u")};
+				
+				
+				
+				let mieditor = document.createElement("div")						// Creo un nuevo elemento
+				mieditor.classList.add("editor")										// Le pongo una clase
+				nuevocontenedor.appendChild(mieditor)								// Y lo añado al contenedor
+				mieditor.setAttribute("contenteditable","true")					// El contenedor es editable
+				
+				function reemplaza(etiqueta){
+					console.log("Has hecho click");  									// Lanzo un mensaje
+				 
+					 let selectedText = window.getSelection().toString();  			// Leo el contenido
+					 
+					 // Check if text is selected
+					 if (selectedText.length > 0) {
+						  let range = window.getSelection().getRangeAt(0);  			// Get the range of selected text
+						  let boldElement = document.createElement(etiqueta);    			// Create <b> element
+						  boldElement.textContent = selectedText;           			// Set selected text as content of <b> tag
+						  
+						  // Replace the selected text with bolded version
+						  range.deleteContents();                           			// Remove original selection
+						  range.insertNode(boldElement);                    			// Insert new <b> element with text
+					 }
+				}
+			})
+		</script>
+	</body>
+</html>
+

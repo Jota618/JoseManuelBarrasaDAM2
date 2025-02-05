@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<root>
+  <customerName>Jose Vicente</customerName>
+  <invoiceLines>
+    <item0>
+      <description>producro1</description>
+      <quantity>1</quantity>
+      <price>4</price>
+    </item0>
+    <item1>
+      <description>aaa</description>
+      <quantity>1</quantity>
+      <price>43</price>
+    </item1>
+    <item2>
+      <description>ddd</description>
+      <quantity>1</quantity>
+      <price>4</price>
+    </item2>
+  </invoiceLines>
+</root>
