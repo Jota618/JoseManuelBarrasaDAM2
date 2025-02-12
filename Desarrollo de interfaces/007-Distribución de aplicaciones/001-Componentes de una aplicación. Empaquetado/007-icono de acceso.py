@@ -7,357 +7,357 @@ import subprocess
 import sys
 import platform
 
-# Attempt to import winshell and pywin32 for Windows shortcut creation
+# Intentar importar winshell y pywin32 para la creación de accesos directos en Windows
 try:
     import winshell
     from win32com.client import Dispatch
-    WINDOWS_SHORTCUT_AVAILABLE = True
+    ACCESO_DIRECTO_WINDOWS_DISPONIBLE = True
 except ImportError:
-    WINDOWS_SHORTCUT_AVAILABLE = False
+    ACCESO_DIRECTO_WINDOWS_DISPONIBLE = False
 
-class Installer(tk.Tk):
+class Instalador(tk.Tk):
     def __init__(self):
         super().__init__()
-        
-        self.title("Installer Wizard")
-        self.geometry("500x450")  # Increased height to accommodate additional UI elements
+
+        self.title("Asistente de Instalación")
+        self.geometry("500x450")  # Aumentar la altura para acomodar elementos adicionales de la interfaz
         self.resizable(False, False)
-        
-        # Store the folder selected by the user
-        self.install_path = tk.StringVar(value=os.getcwd())  # default to current working directory
-        
-        # Prepare frames (screens)
-        self.frames = {}
-        
-        for F in (WelcomeScreen, SelectFolderScreen, ProgressScreen, SuccessScreen):
-            frame = F(self)
-            self.frames[F] = frame
-            frame.grid(row=0, column=0, sticky="nsew")
-        
-        # Show the Welcome screen first
-        self.show_frame(WelcomeScreen)
 
-    def show_frame(self, frame_class):
-        """
-        Bring the specified frame to the front.
-        If the frame has an 'on_show' method, call it.
-        """
-        frame = self.frames[frame_class]
-        frame.tkraise()
-        if hasattr(frame, 'on_show'):
-            frame.on_show()
+        # Almacenar la carpeta seleccionada por el usuario
+        self.ruta_instalacion = tk.StringVar(value=os.getcwd())  # por defecto, el directorio de trabajo actual
 
-class WelcomeScreen(tk.Frame):
+        # Preparar los marcos (pantallas)
+        self.marcos = {}
+
+        for F in (PantallaBienvenida, PantallaSeleccionarCarpeta, PantallaProgreso, PantallaExito):
+            marco = F(self)
+            self.marcos[F] = marco
+            marco.grid(row=0, column=0, sticky="nsew")
+
+        # Mostrar primero la pantalla de bienvenida
+        self.mostrar_marco(PantallaBienvenida)
+
+    def mostrar_marco(self, clase_marco):
+        """
+        Traer el marco especificado al frente.
+        Si el marco tiene un método 'al_mostrar', llamarlo.
+        """
+        marco = self.marcos[clase_marco]
+        marco.tkraise()
+        if hasattr(marco, 'al_mostrar'):
+            marco.al_mostrar()
+
+class PantallaBienvenida(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
-        
-        # Title label
-        title_label = tk.Label(self, text="Welcome to My Project Installer", font=("Arial", 16, "bold"))
-        title_label.pack(pady=20)
-        
-        # Description
-        description_label = tk.Label(self, 
-            text="This installer will guide you through the steps\n"
-                 "to install the application on your system.")
-        description_label.pack(pady=10)
-        
-        # Next button
-        next_button = ttk.Button(self, text="Next", command=self.go_next)
-        next_button.pack(pady=20)
-        
+
+        # Etiqueta del título
+        etiqueta_titulo = tk.Label(self, text="Bienvenido al Instalador de Mi Proyecto", font=("Arial", 16, "bold"))
+        etiqueta_titulo.pack(pady=20)
+
+        # Descripción
+        etiqueta_descripcion = tk.Label(self,
+            text="Este instalador le guiará a través de los pasos\n"
+                 "para instalar la aplicación en su sistema.")
+        etiqueta_descripcion.pack(pady=10)
+
+        # Botón Siguiente
+        boton_siguiente = ttk.Button(self, text="Siguiente", command=self.ir_siguiente)
+        boton_siguiente.pack(pady=20)
+
         self.parent = parent
 
-    def go_next(self):
-        self.parent.show_frame(SelectFolderScreen)
+    def ir_siguiente(self):
+        self.parent.mostrar_marco(PantallaSeleccionarCarpeta)
 
-class SelectFolderScreen(tk.Frame):
+class PantallaSeleccionarCarpeta(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
-        
-        # Instruction label
-        instruction_label = tk.Label(self, text="Select Installation Folder", font=("Arial", 12, "bold"))
-        instruction_label.pack(pady=20)
-        
-        # Folder input frame
-        folder_frame = tk.Frame(self)
-        folder_frame.pack(pady=5)
-        
-        # Folder entry
-        self.folder_entry = tk.Entry(folder_frame, textvariable=parent.install_path, width=40)
-        self.folder_entry.pack(side="left", padx=(0, 10))
-        
-        # Browse button
-        browse_button = ttk.Button(folder_frame, text="Browse...", command=self.browse_folder)
-        browse_button.pack(side="left")
-        
-        # Error message label
-        self.error_label = tk.Label(self, text="", fg="red", font=("Arial", 10))
-        self.error_label.pack(pady=5)
-        
-        # Next button
-        self.next_button = ttk.Button(self, text="Next", command=self.go_next)
-        self.next_button.pack(pady=20)
-        self.next_button.config(state="disabled")  # Initially disabled
-        
+
+        # Etiqueta de instrucción
+        etiqueta_instruccion = tk.Label(self, text="Seleccionar Carpeta de Instalación", font=("Arial", 12, "bold"))
+        etiqueta_instruccion.pack(pady=20)
+
+        # Marco de entrada de carpeta
+        marco_carpeta = tk.Frame(self)
+        marco_carpeta.pack(pady=5)
+
+        # Entrada de carpeta
+        self.entrada_carpeta = tk.Entry(marco_carpeta, textvariable=parent.ruta_instalacion, width=40)
+        self.entrada_carpeta.pack(side="left", padx=(0, 10))
+
+        # Botón Examinar
+        boton_examinar = ttk.Button(marco_carpeta, text="Examinar...", command=self.examinar_carpeta)
+        boton_examinar.pack(side="left")
+
+        # Etiqueta de mensaje de error
+        self.etiqueta_error = tk.Label(self, text="", fg="red", font=("Arial", 10))
+        self.etiqueta_error.pack(pady=5)
+
+        # Botón Siguiente
+        self.boton_siguiente = ttk.Button(self, text="Siguiente", command=self.ir_siguiente)
+        self.boton_siguiente.pack(pady=20)
+        self.boton_siguiente.config(state="disabled")  # Inicialmente deshabilitado
+
         self.parent = parent
-        
-        # Add trace to install_path
-        self.parent.install_path.trace_add('write', self.on_path_change)
-        
-        # Initial check
-        self.check_folder_empty()
 
-    def browse_folder(self):
-        folder = filedialog.askdirectory(initialdir=os.getcwd(), title="Select Installation Folder")
-        if folder:
-            self.parent.install_path.set(folder)
+        # Añadir traza a ruta_instalacion
+        self.parent.ruta_instalacion.trace_add('write', self.al_cambiar_ruta)
 
-    def on_path_change(self, *args):
-        self.check_folder_empty()
+        # Verificación inicial
+        self.verificar_carpeta_vacia()
 
-    def check_folder_empty(self):
-        path = self.parent.install_path.get()
-        if os.path.isdir(path):
+    def examinar_carpeta(self):
+        carpeta = filedialog.askdirectory(initialdir=os.getcwd(), title="Seleccionar Carpeta de Instalación")
+        if carpeta:
+            self.parent.ruta_instalacion.set(carpeta)
+
+    def al_cambiar_ruta(self, *args):
+        self.verificar_carpeta_vacia()
+
+    def verificar_carpeta_vacia(self):
+        ruta = self.parent.ruta_instalacion.get()
+        if os.path.isdir(ruta):
             try:
-                if not os.listdir(path):  # Folder is empty
-                    self.next_button.config(state="normal")
-                    self.error_label.config(text="")
+                if not os.listdir(ruta):  # La carpeta está vacía
+                    self.boton_siguiente.config(state="normal")
+                    self.etiqueta_error.config(text="")
                 else:
-                    self.next_button.config(state="disabled")
-                    self.error_label.config(text="Selected folder is not empty. Please choose an empty folder.")
+                    self.boton_siguiente.config(state="disabled")
+                    self.etiqueta_error.config(text="La carpeta seleccionada no está vacía. Por favor, elija una carpeta vacía.")
             except PermissionError:
-                self.next_button.config(state="disabled")
-                self.error_label.config(text="Permission denied to access the selected folder.")
+                self.boton_siguiente.config(state="disabled")
+                self.etiqueta_error.config(text="Permiso denegado para acceder a la carpeta seleccionada.")
             except Exception as e:
-                self.next_button.config(state="disabled")
-                self.error_label.config(text=f"Error accessing folder: {str(e)}")
+                self.boton_siguiente.config(state="disabled")
+                self.etiqueta_error.config(text=f"Error al acceder a la carpeta: {str(e)}")
         else:
-            self.next_button.config(state="disabled")
-            self.error_label.config(text="Selected path is not a valid directory.")
+            self.boton_siguiente.config(state="disabled")
+            self.etiqueta_error.config(text="La ruta seleccionada no es un directorio válido.")
 
-    def go_next(self):
-        self.parent.show_frame(ProgressScreen)
+    def ir_siguiente(self):
+        self.parent.mostrar_marco(PantallaProgreso)
 
-class ProgressScreen(tk.Frame):
+class PantallaProgreso(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
-        
-        # Title
-        title_label = tk.Label(self, text="Installing...", font=("Arial", 14, "bold"))
-        title_label.pack(pady=20)
-        
-        # Progress bar
-        self.progress = ttk.Progressbar(self, orient="horizontal", length=300, mode="determinate")
-        self.progress.pack(pady=10)
-        
-        # Status label
-        self.status_label = tk.Label(self, text="Preparing to install...", font=("Arial", 10))
-        self.status_label.pack(pady=5)
-        
-        # Next button (initially disabled)
-        self.next_button = ttk.Button(self, text="Next", command=self.go_next)
-        self.next_button.pack(pady=20)
-        self.next_button.config(state="disabled")
-        
+
+        # Título
+        etiqueta_titulo = tk.Label(self, text="Instalando...", font=("Arial", 14, "bold"))
+        etiqueta_titulo.pack(pady=20)
+
+        # Barra de progreso
+        self.progreso = ttk.Progressbar(self, orient="horizontal", length=300, mode="determinate")
+        self.progreso.pack(pady=10)
+
+        # Etiqueta de estado
+        self.etiqueta_estado = tk.Label(self, text="Preparando para instalar...", font=("Arial", 10))
+        self.etiqueta_estado.pack(pady=5)
+
+        # Botón Siguiente (inicialmente deshabilitado)
+        self.boton_siguiente = ttk.Button(self, text="Siguiente", command=self.ir_siguiente)
+        self.boton_siguiente.pack(pady=20)
+        self.boton_siguiente.config(state="disabled")
+
         self.parent = parent
-        self.installation_started = False  # Flag to prevent multiple starts
+        self.instalacion_iniciada = False  # Bandera para evitar múltiples inicios
 
-    def on_show(self):
+    def al_mostrar(self):
         """
-        Called when the ProgressScreen is shown.
-        Starts the extraction if not already started.
+        Llamado cuando se muestra la PantallaProgreso.
+        Inicia la extracción si no se ha iniciado ya.
         """
-        if not self.installation_started:
-            self.installation_started = True
-            threading.Thread(target=self.start_extraction, daemon=True).start()
+        if not self.instalacion_iniciada:
+            self.instalacion_iniciada = True
+            threading.Thread(target=self.iniciar_extraccion, daemon=True).start()
 
-    def start_extraction(self):
+    def iniciar_extraccion(self):
         archivo_original = "paquete.zip"
-        salida = self.parent.install_path.get()
-        
-        # Determine the path of the zip file relative to the script
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        zip_path = os.path.join(script_dir, archivo_original)
-        
-        if not os.path.isfile(zip_path):
-            messagebox.showerror("Error", f"Cannot find '{archivo_original}' in '{script_dir}'.")
-            self.status_label.config(text="Installation failed.")
+        salida = self.parent.ruta_instalacion.get()
+
+        # Determinar la ruta del archivo zip relativa al script
+        directorio_script = os.path.dirname(os.path.abspath(__file__))
+        ruta_zip = os.path.join(directorio_script, archivo_original)
+
+        if not os.path.isfile(ruta_zip):
+            messagebox.showerror("Error", f"No se puede encontrar '{archivo_original}' en '{directorio_script}'.")
+            self.etiqueta_estado.config(text="La instalación falló.")
             return
 
         try:
-            with zipfile.ZipFile(zip_path, 'r') as zipped:
-                # Get file list to compute progress
-                file_list = zipped.namelist()
-                total_files = len(file_list)
-                
-                for i, file in enumerate(file_list, start=1):
-                    zipped.extract(file, salida)
-                    
-                    # Update progress
-                    progress_value = int((i / total_files) * 100)
-                    self.progress["value"] = progress_value
-                    
-                    # Update UI elements
-                    self.status_label.config(text=f"Extracting {file} ({i}/{total_files})")
+            with zipfile.ZipFile(ruta_zip, 'r') as zipped:
+                # Obtener la lista de archivos para calcular el progreso
+                lista_archivos = zipped.namelist()
+                total_archivos = len(lista_archivos)
+
+                for i, archivo in enumerate(lista_archivos, start=1):
+                    zipped.extract(archivo, salida)
+
+                    # Actualizar progreso
+                    valor_progreso = int((i / total_archivos) * 100)
+                    self.progreso["value"] = valor_progreso
+
+                    # Actualizar elementos de la interfaz
+                    self.etiqueta_estado.config(text=f"Extrayendo {archivo} ({i}/{total_archivos})")
                     self.parent.update_idletasks()
-            
-            # Extraction successful
-            self.status_label.config(text="Extraction completed.")
-            self.next_button.config(state="normal")
-            
+
+            # Extracción exitosa
+            self.etiqueta_estado.config(text="Extracción completada.")
+            self.boton_siguiente.config(state="normal")
+
         except Exception as e:
-            messagebox.showerror("Error", f"An error occurred during extraction:\n{str(e)}")
-            self.status_label.config(text="Installation failed.")
+            messagebox.showerror("Error", f"Ocurrió un error durante la extracción:\n{str(e)}")
+            self.etiqueta_estado.config(text="La instalación falló.")
 
-    def go_next(self):
-        self.parent.show_frame(SuccessScreen)
+    def ir_siguiente(self):
+        self.parent.mostrar_marco(PantallaExito)
 
-class SuccessScreen(tk.Frame):
+class PantallaExito(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
-        
-        # Title
-        success_label = tk.Label(self, text="Installation Successful!", font=("Arial", 14, "bold"))
-        success_label.pack(pady=20)
-        
-        # Description
-        detail_label = tk.Label(self, text="Your application has been installed successfully.", font=("Arial", 10))
-        detail_label.pack(pady=10)
-        
-        # Checkbox variable
-        self.launch_var = tk.BooleanVar(value=True)  # Default to checked
-        
-        # Checkbox
-        self.launch_checkbox = tk.Checkbutton(
+
+        # Título
+        etiqueta_exito = tk.Label(self, text="¡Instalación Exitosa!", font=("Arial", 14, "bold"))
+        etiqueta_exito.pack(pady=20)
+
+        # Descripción
+        etiqueta_detalle = tk.Label(self, text="Su aplicación se ha instalado correctamente.", font=("Arial", 10))
+        etiqueta_detalle.pack(pady=10)
+
+        # Variable de casilla de verificación
+        self.lanzar_var = tk.BooleanVar(value=True)  # Por defecto, marcada
+
+        # Casilla de verificación
+        self.casilla_lanzar = tk.Checkbutton(
             self,
-            text="Launch Application Now",
-            variable=self.launch_var,
+            text="Lanzar Aplicación Ahora",
+            variable=self.lanzar_var,
             font=("Arial", 10)
         )
-        self.launch_checkbox.pack(pady=10)
-        
-        # Checkbox for creating desktop shortcut
-        self.shortcut_var = tk.BooleanVar(value=True)  # Default to checked
-        self.shortcut_checkbox = tk.Checkbutton(
+        self.casilla_lanzar.pack(pady=10)
+
+        # Casilla de verificación para crear acceso directo en el escritorio
+        self.acceso_directo_var = tk.BooleanVar(value=True)  # Por defecto, marcada
+        self.casilla_acceso_directo = tk.Checkbutton(
             self,
-            text="Create Desktop Shortcut",
-            variable=self.shortcut_var,
+            text="Crear Acceso Directo en el Escritorio",
+            variable=self.acceso_directo_var,
             font=("Arial", 10)
         )
-        self.shortcut_checkbox.pack(pady=5)
-        
-        # Exit button
-        exit_button = ttk.Button(self, text="Finish", command=self.finish_installation)
-        exit_button.pack(pady=20)
-        
+        self.casilla_acceso_directo.pack(pady=5)
+
+        # Botón Salir
+        boton_salir = ttk.Button(self, text="Finalizar", command=self.finalizar_instalacion)
+        boton_salir.pack(pady=20)
+
         self.parent = parent
 
-    def finish_installation(self):
-        # Create desktop shortcut if the checkbox is selected
-        if self.shortcut_var.get():
-            threading.Thread(target=self.create_shortcut, daemon=True).start()
-        
-        # Launch the application if the checkbox is selected
-        if self.launch_var.get():
-            self.launch_main_py()
-        
-        # Close the installer
+    def finalizar_instalacion(self):
+        # Crear acceso directo en el escritorio si la casilla está seleccionada
+        if self.acceso_directo_var.get():
+            threading.Thread(target=self.crear_acceso_directo, daemon=True).start()
+
+        # Lanzar la aplicación si la casilla está seleccionada
+        if self.lanzar_var.get():
+            self.lanzar_main_py()
+
+        # Cerrar el instalador
         self.parent.destroy()
 
-    def create_shortcut(self):
-        current_os = platform.system()
-        target_path = os.path.join(self.parent.install_path.get(), "main.py")
-        shortcut_name = "My Application"  # You can customize the shortcut name
-        
-        if not os.path.isfile(target_path):
-            messagebox.showerror("Error", f"Cannot find 'main.py' in '{self.parent.install_path.get()}'. Cannot create shortcut.")
+    def crear_acceso_directo(self):
+        sistema_actual = platform.system()
+        ruta_destino = os.path.join(self.parent.ruta_instalacion.get(), "main.py")
+        nombre_acceso_directo = "Mi Aplicación"  # Puedes personalizar el nombre del acceso directo
+
+        if not os.path.isfile(ruta_destino):
+            messagebox.showerror("Error", f"No se puede encontrar 'main.py' en '{self.parent.ruta_instalacion.get()}'. No se puede crear el acceso directo.")
             return
-        
-        if current_os == "Windows":
-            self.create_windows_shortcut(target_path, shortcut_name)
-        elif current_os == "Darwin":
-            self.create_macos_shortcut(target_path, shortcut_name)
-        elif current_os == "Linux":
-            self.create_linux_shortcut(target_path, shortcut_name)
+
+        if sistema_actual == "Windows":
+            self.crear_acceso_directo_windows(ruta_destino, nombre_acceso_directo)
+        elif sistema_actual == "Darwin":
+            self.crear_acceso_directo_macos(ruta_destino, nombre_acceso_directo)
+        elif sistema_actual == "Linux":
+            self.crear_acceso_directo_linux(ruta_destino, nombre_acceso_directo)
         else:
-            messagebox.showerror("Error", f"Unsupported operating system: {current_os}. Cannot create shortcut.")
+            messagebox.showerror("Error", f"Sistema operativo no soportado: {sistema_actual}. No se puede crear el acceso directo.")
 
-    def create_windows_shortcut(self, target_path, shortcut_name):
-        if not WINDOWS_SHORTCUT_AVAILABLE:
-            messagebox.showerror("Error", "winshell and pywin32 modules are not installed. Unable to create shortcut on Windows.")
+    def crear_acceso_directo_windows(self, ruta_destino, nombre_acceso_directo):
+        if not ACCESO_DIRECTO_WINDOWS_DISPONIBLE:
+            messagebox.showerror("Error", "Los módulos winshell y pywin32 no están instalados. No se puede crear el acceso directo en Windows.")
             return
-        
-        try:
-            desktop = winshell.desktop()
-            shortcut_path = os.path.join(desktop, f"{shortcut_name}.lnk")
-            with winshell.shortcut(shortcut_path) as link:
-                link.path = sys.executable
-                link.arguments = f'"{target_path}"'
-                link.description = "Launch My Application"
-                link.icon_location = (sys.executable, 0)
-            messagebox.showinfo("Success", "Desktop shortcut created successfully.")
-        except Exception as e:
-            messagebox.showerror("Error", f"Failed to create Windows shortcut:\n{str(e)}")
 
-    def create_macos_shortcut(self, target_path, shortcut_name):
         try:
-            # Path to the desktop
-            desktop = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop')
-            alias_path = os.path.join(desktop, f"{shortcut_name}.app")
-            
-            # AppleScript to create alias
+            escritorio = winshell.desktop()
+            ruta_acceso_directo = os.path.join(escritorio, f"{nombre_acceso_directo}.lnk")
+            with winshell.shortcut(ruta_acceso_directo) as enlace:
+                enlace.path = sys.executable
+                enlace.arguments = f'"{ruta_destino}"'
+                enlace.description = "Lanzar Mi Aplicación"
+                enlace.icon_location = (sys.executable, 0)
+            messagebox.showinfo("Éxito", "Acceso directo en el escritorio creado exitosamente.")
+        except Exception as e:
+            messagebox.showerror("Error", f"Fallo al crear el acceso directo en Windows:\n{str(e)}")
+
+    def crear_acceso_directo_macos(self, ruta_destino, nombre_acceso_directo):
+        try:
+            # Ruta al escritorio
+            escritorio = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop')
+            ruta_alias = os.path.join(escritorio, f"{nombre_acceso_directo}.app")
+
+            # AppleScript para crear alias
             applescript = f'''
             tell application "Finder"
-                make alias file to POSIX file "{target_path}" at POSIX file "{desktop}"
-                set name of result to "{shortcut_name}.app"
+                make alias file to POSIX file "{ruta_destino}" at POSIX file "{escritorio}"
+                set name of result to "{nombre_acceso_directo}.app"
             end tell
             '''
             subprocess.run(['osascript', '-e', applescript], check=True)
-            messagebox.showinfo("Success", "Desktop alias created successfully.")
+            messagebox.showinfo("Éxito", "Alias en el escritorio creado exitosamente.")
         except subprocess.CalledProcessError as e:
-            messagebox.showerror("Error", f"Failed to create macOS alias:\n{str(e)}")
+            messagebox.showerror("Error", f"Fallo al crear el alias en macOS:\n{str(e)}")
         except Exception as e:
-            messagebox.showerror("Error", f"An unexpected error occurred:\n{str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error inesperado:\n{str(e)}")
 
-    def create_linux_shortcut(self, target_path, shortcut_name):
+    def crear_acceso_directo_linux(self, ruta_destino, nombre_acceso_directo):
         try:
-            desktop = os.path.join(os.path.expanduser('~'), 'Desktop')
-            shortcut_path = os.path.join(desktop, f"{shortcut_name}.desktop")
-            
-            # Content of the .desktop file
-            desktop_entry = f"""[Desktop Entry]
+            escritorio = os.path.join(os.path.expanduser('~'), 'Desktop')
+            ruta_acceso_directo = os.path.join(escritorio, f"{nombre_acceso_directo}.desktop")
+
+            # Contenido del archivo .desktop
+            entrada_escritorio = f"""[Desktop Entry]
 Type=Application
-Name={shortcut_name}
-Exec={sys.executable} "{target_path}"
+Name={nombre_acceso_directo}
+Exec={sys.executable} "{ruta_destino}"
 Icon=utilities-terminal
 Terminal=false
 """
-            with open(shortcut_path, 'w') as f:
-                f.write(desktop_entry)
-            
-            # Make the .desktop file executable
-            os.chmod(shortcut_path, 0o755)
-            messagebox.showinfo("Success", "Desktop shortcut created successfully.")
-        except Exception as e:
-            messagebox.showerror("Error", f"Failed to create Linux shortcut:\n{str(e)}")
+            with open(ruta_acceso_directo, 'w') as f:
+                f.write(entrada_escritorio)
 
-    def launch_main_py(self):
-        """
-        Launches the extracted main.py file.
-        """
-        main_py_path = os.path.join(self.parent.install_path.get(), "main.py")
-        
-        if not os.path.isfile(main_py_path):
-            messagebox.showerror("Error", f"Cannot find 'main.py' in '{self.parent.install_path.get()}'.")
-            return
-        
-        try:
-            # Launch main.py using the same Python interpreter
-            subprocess.Popen([sys.executable, main_py_path], cwd=self.parent.install_path.get())
+            # Hacer el archivo .desktop ejecutable
+            os.chmod(ruta_acceso_directo, 0o755)
+            messagebox.showinfo("Éxito", "Acceso directo en el escritorio creado exitosamente.")
         except Exception as e:
-            messagebox.showerror("Error", f"Failed to launch 'main.py':\n{str(e)}")
+            messagebox.showerror("Error", f"Fallo al crear el acceso directo en Linux:\n{str(e)}")
+
+    def lanzar_main_py(self):
+        """
+        Lanza el archivo main.py extraído.
+        """
+        ruta_main_py = os.path.join(self.parent.ruta_instalacion.get(), "main.py")
+
+        if not os.path.isfile(ruta_main_py):
+            messagebox.showerror("Error", f"No se puede encontrar 'main.py' en '{self.parent.ruta_instalacion.get()}'.")
+            return
+
+        try:
+            # Lanzar main.py usando el mismo intérprete de Python
+            subprocess.Popen([sys.executable, ruta_main_py], cwd=self.parent.ruta_instalacion.get())
+        except Exception as e:
+            messagebox.showerror("Error", f"Fallo al lanzar 'main.py':\n{str(e)}")
             return
 
 if __name__ == "__main__":
-    app = Installer()
+    app = Instalador()
     app.mainloop()
