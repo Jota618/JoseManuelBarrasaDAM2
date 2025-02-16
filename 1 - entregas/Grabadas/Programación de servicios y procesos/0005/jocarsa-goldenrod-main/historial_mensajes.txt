@@ -1,0 +1,2 @@
+Enviado: Un mensaje de prueba
+Recibido: El servidor recibió tu mensaje: Un mensaje de prueba
