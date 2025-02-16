@@ -1,0 +1,23 @@
+nav ul{
+  list-style-type:none;
+  padding:0px;
+}
+nav ul li{
+  padding:15px;
+  cursor:pointer;
+}
+main nav {
+  overflow-y: auto; /* Independent scrolling for nav if needed */
+  background: #2E8B57;
+  color: white;
+}
+main nav{
+	background:#2E8B57;
+	color:white;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	align-items: stretch;
+	align-content: stretch;
+}
