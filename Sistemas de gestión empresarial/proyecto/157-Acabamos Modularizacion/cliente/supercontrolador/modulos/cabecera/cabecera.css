@@ -2,6 +2,7 @@
 .titulotabla{
   display:inline-block;
   padding-left:10px;
+  margin-right: 800px;
 }
 .titulotabla *{
   margin:0px;
@@ -42,7 +43,7 @@ h1 img{
 }
 .titulotabla{
 	background:white;
-	color:crimson;
+	color:#000000;
 	padding:10px 30px;
 	border-radius:5px;
 	min-width:300px;

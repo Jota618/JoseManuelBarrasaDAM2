@@ -35,7 +35,7 @@
 #insertar{
   width:60px;
   height:60px;
-  background:crimson;
+  background:#2E8B57;
   color:white;
   border:none;
   border-radius:60px;
@@ -69,7 +69,7 @@
   margin:0px;
 }
 #contienemodal button{
-  background:crimson;
+  background:#2E8B57;
   color:white;
   width:50%;
   padding:10px;

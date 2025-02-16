@@ -1,0 +1,296 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Jocarsa | Greenyellow</title>
+  <style>
+    /* Corporate title styling */
+    h1.corporate-title {
+      background-color: greenyellow;
+      color: #000;
+      text-align: center;
+      font-family: 'Arial', sans-serif;
+      font-size: 2em;
+      margin: 0;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    /* Container style for the page body */
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      background: #f0f0f0; 
+    }
+
+    /* Contenteditable "input" area */
+    #entrada {
+      width: 400px;
+      min-height: 150px;
+      font-size: 14px;
+      line-height: 1.4;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      outline: none;
+      font-family: 'Arial', sans-serif;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+      background: #fff;
+      margin: 100px auto 0;
+      display: block;
+    }
+
+    #entrada:focus {
+      border-color: #88c057;
+    }
+
+    /* Suggestions box (floats above) - hidden by default */
+    #resultados {
+      position: absolute;
+      display: none;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background: #fff;
+      color: #000;
+      width: 250px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+      padding: 5px;
+      z-index: 999;
+    }
+
+    /* Suggestion items */
+    #resultados p {
+      padding: 4px 6px;
+      margin: 2px 0;
+      border-radius: 4px;
+      background: #ccee86;
+      color: #000;
+      cursor: pointer;
+      font-size: 12px;
+      text-align: center;
+      font-family: 'Arial', sans-serif;
+      transition: background 0.2s;
+    }
+    #resultados p:hover {
+      background: #b8dc74;
+    }
+
+    /* Hidden mirror element to calculate caret position */
+    .textarea-mirror {
+      position: absolute;
+      visibility: hidden;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="corporate-title">jocarsa | greenyellow</h1>
+
+  <div id="entrada" contenteditable="true"></div>
+  <div id="resultados"></div>
+
+  <script>
+    const entrada = document.querySelector("#entrada");
+    const resultados = document.querySelector("#resultados");
+
+    /**
+     * Returns the current text from the contenteditable,
+     * trimming extra whitespace.
+     */
+    function getContentText() {
+      return entrada.innerText.trim();
+    }
+
+    /**
+     * Returns the character offset within the entire text of the contenteditable,
+     * for the current caret position. This is analogous to textarea.selectionEnd.
+     */
+    function getCaretCharacterOffset() {
+      const selection = window.getSelection();
+      let caretOffset = 0;
+
+      if (!selection.rangeCount) return 0;
+
+      // We assume there's only one range in use.
+      const range = selection.getRangeAt(0);
+      const preCaretRange = range.cloneRange();
+      preCaretRange.selectNodeContents(entrada);
+      preCaretRange.setEnd(range.endContainer, range.endOffset);
+      caretOffset = preCaretRange.toString().length;
+
+      return caretOffset;
+    }
+
+    /**
+     * Calculates the (x, y) position of the caret in the contenteditable
+     * by creating a hidden "mirror" element that copies its style
+     * and text content up to the caret. 
+     */
+    function getCaretCoordinates(contentEl, position) {
+      const mirror = document.createElement('div');
+      mirror.className = 'textarea-mirror';
+
+      // Copy computed styles from the contenteditable
+      const style = window.getComputedStyle(contentEl);
+      for (let prop of style) {
+        mirror.style[prop] = style[prop];
+      }
+
+      // Fix some properties that might break our calculation
+      mirror.style.position = 'absolute';
+      mirror.style.visibility = 'hidden';
+      mirror.style.whiteSpace = 'pre-wrap';
+      mirror.style.wordWrap = 'break-word';
+      mirror.style.overflow = 'hidden';
+      mirror.style.width = contentEl.offsetWidth + 'px';
+      mirror.style.height = 'auto'; // let it expand
+      mirror.style.padding = style.padding;
+      mirror.style.border = style.border;
+      mirror.style.boxSizing = style.boxSizing;
+
+      // The text up to the caret
+      const fullText = contentEl.innerText; // or textContent
+      const textToCaret = fullText.substring(0, position);
+      
+      // We'll convert newline chars to actual line breaks
+      const escaped = textToCaret.replace(/\n/g, '\n');
+      mirror.textContent = escaped;
+
+      // Insert a marker at the caret position
+      const caretMarker = document.createElement('span');
+      caretMarker.textContent = '\u200b'; // zero-width space
+      mirror.appendChild(caretMarker);
+
+      // Append mirror to body
+      document.body.appendChild(mirror);
+
+      // Measure the caret marker's bounding rect
+      const rect = caretMarker.getBoundingClientRect();
+
+      // Clean up
+      document.body.removeChild(mirror);
+
+      const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+      return {
+        left: rect.left + scrollLeft,
+        top: rect.top + scrollTop,
+        height: rect.height
+      };
+    }
+
+    /**
+     * Positions the #resultados div near the caret inside the contenteditable.
+     */
+    function positionResultados() {
+      const caretPos = getCaretCharacterOffset();
+      if (caretPos === null) return;
+
+      const coords = getCaretCoordinates(entrada, caretPos);
+      if (!coords) return;
+
+      // Offset the popup a little below the caret
+      const offsetX = 0;
+      const offsetY = 6;
+
+      resultados.style.left = (coords.left + offsetX) + 'px';
+      resultados.style.top = (coords.top + coords.height + offsetY) + 'px';
+      resultados.style.display = 'block';
+    }
+
+    /**
+     * Fetches suggestions based on the last 2 or 3 words in the contenteditable,
+     * then displays them in #resultados. (Same logic as the original.)
+     */
+    function busca() {
+      let contenido = getContentText();
+
+      // Example: get the last 3 words 
+      let palabras = contenido.split(/\s+/);
+      let ultimas = palabras.slice(-3).join(" ");
+
+      let codificado = encodeURI(ultimas);
+
+      fetch("predictivo2.php?entrada=" + codificado)
+        .then(response => response.json())
+        .then(datos => {
+          resultados.innerHTML = "";
+
+          // If there's data, display them:
+          if (Array.isArray(datos) && datos.length > 0) {
+            datos.forEach(dato => {
+              const p = document.createElement("p");
+              p.textContent = dato;
+              resultados.appendChild(p);
+
+              p.onclick = function() {
+                // Insert the clicked suggestion into the content
+                // We'll just append a space + suggestion
+                // (Feel free to be more sophisticated, e.g. replacing partial words)
+                let currentText = getContentText();
+                // If there's no trailing space, add one
+                if (currentText && !currentText.endsWith(" ")) {
+                  currentText += " ";
+                }
+                currentText += dato + " ";
+                entrada.innerText = currentText;
+
+                // Move caret to end
+                moveCaretToEnd(entrada);
+
+                // Re-run suggestions
+                busca();
+              };
+            });
+            positionResultados();
+          } else {
+            // If no data, hide the suggestions
+            resultados.style.display = 'none';
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          resultados.style.display = 'none';
+        });
+    }
+
+    /**
+     * Utility: Move the caret to the end of the contenteditable
+     */
+    function moveCaretToEnd(el) {
+      el.focus();
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      range.collapse(false);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+
+    // Trigger suggestions & re-position them on every input
+    entrada.addEventListener("input", busca);
+
+    // If user moves the caret with arrow keys or clicks, 
+    // re-position the suggestions. 
+    // (optional: you might only want this on "input" or "keypress")
+    entrada.addEventListener("keyup", (e) => {
+      // Exclude certain keys if needed, e.g. arrows
+      if (!["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(e.key)) {
+        return;
+      }
+      positionResultados();
+    });
+
+    // Also re-position on mouseup (user clicks somewhere):
+    entrada.addEventListener("mouseup", positionResultados);
+
+    // Initially, hide the suggestions
+    resultados.style.display = 'none';
+  </script>
+</body>
+</html>
+

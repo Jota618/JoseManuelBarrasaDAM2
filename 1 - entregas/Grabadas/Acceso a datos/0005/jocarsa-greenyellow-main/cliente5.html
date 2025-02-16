@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Jota | Greenyellow</title>
+  <style>
+    /* Corporate title styling */
+    h1.corporate-title {
+      background-color: greenyellow;
+      color: #000;
+      text-align: center;
+      font-family: 'Arial', sans-serif;
+      font-size: 2em;
+      margin: 0;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    /* Container style for the page body */
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      background: #f0f0f0; 
+    }
+
+    /* Contenteditable div styling */
+    #entrada {
+      width: 400px;
+      min-height: 150px;
+      font-size: 14px;
+      line-height: 1.4;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      outline: none;
+      resize: none;
+      font-family: 'Arial', sans-serif;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+      background: #fff;
+      transition: border 0.2s;
+      margin: auto;
+      display: block;
+      margin-top: 100px;
+    }
+    #entrada:focus {
+      border-color: #88c057;
+    }
+
+    /* Predictive text styling */
+    .predictive-text {
+      color: #888;
+      pointer-events: none; /* Prevent the span from being clickable */
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="corporate-title">Jota | greenyellow</h1>
+
+  <div id="entrada" contenteditable="true" placeholder="Type something..."></div>
+
+  <script>
+    const entrada = document.querySelector("#entrada");
+
+/**
+ * Fetches suggestions based on the last two words in the contenteditable div,
+ * then displays the most common suggestion inline.
+ */
+function busca() {
+  let contenido = entrada.textContent.trim();
+  let palabras = contenido.split(" ");
+  // Get last two words
+  let dosultimas = palabras.slice(-2).join(" ");
+
+  let codificado = encodeURI(dosultimas);
+
+  fetch("predictivo2.php?entrada=" + codificado)
+    .then(response => response.json())
+    .then(datos => {
+      // Remove any existing predictive text
+      const existingPredictiveText = entrada.querySelector(".predictive-text");
+      if (existingPredictiveText) {
+        existingPredictiveText.remove();
+      }
+
+      if (Array.isArray(datos) && datos.length > 0) {
+        // Find the most common suggestion
+        const mostCommon = datos.reduce((acc, curr) => {
+          acc[curr] = (acc[curr] || 0) + 1;
+          return acc;
+        }, {});
+        const suggestion = Object.keys(mostCommon).reduce((a, b) => mostCommon[a] > mostCommon[b] ? a : b);
+
+        // Append the suggestion as grey text
+        const predictiveText = document.createElement("span");
+        predictiveText.className = "predictive-text";
+        predictiveText.textContent = suggestion;
+        entrada.appendChild(predictiveText);
+
+        // Move the caret to the end of the content
+        const range = document.createRange();
+        const selection = window.getSelection();
+
+        // Ensure the entrada div has child nodes
+        if (entrada.childNodes.length > 0) {
+          const lastChild = entrada.childNodes[entrada.childNodes.length - 1];
+          range.setStart(lastChild, lastChild.textContent.length);
+        } else {
+          range.setStart(entrada, 0);
+        }
+
+        range.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+    })
+    .catch(err => {
+      console.error(err);
+    });
+}
+
+// Handle the Tab key to accept the suggestion
+entrada.addEventListener("keydown", function(event) {
+  if (event.key === "Tab") {
+    event.preventDefault(); // Prevent default Tab behavior
+    const predictiveText = entrada.querySelector(".predictive-text");
+    if (predictiveText) {
+      // Append the suggestion to the content
+      entrada.textContent += predictiveText.textContent;
+      predictiveText.remove(); // Remove the suggestion
+    }
+  }
+});
+
+// Trigger suggestions on every input
+entrada.addEventListener("input", busca);
+  </script>
+</body>
+</html>

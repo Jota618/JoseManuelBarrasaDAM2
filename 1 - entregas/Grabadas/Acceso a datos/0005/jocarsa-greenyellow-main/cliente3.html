@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Predictive Text (Gmail-like) Demo</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0f0f0;
+      margin: 40px;
+    }
+    
+    h1 {
+      background-color: greenyellow;
+      text-align: center;
+      font-family: 'Arial', sans-serif;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    /* The contenteditable container */
+    #editor {
+      width: 500px;
+      min-height: 60px;
+      padding: 10px;
+      margin: 50px auto;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+      font-size: 14px;
+      line-height: 1.4;
+      outline: none;
+    }
+
+    /* Make the prediction text visually distinct */
+    .prediction {
+      color: #888;
+      opacity: 0.7;
+      pointer-events: none; /* So user’s caret doesn’t jump inside the prediction */
+    }
+
+    /* Simple placeholder styling (optional) */
+    #placeholder {
+      color: #aaa;
+      position: absolute;
+      pointer-events: none;
+      margin-left: 14px;
+      margin-top: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Gmail-like Predictive Text</h1>
+
+<div id="placeholder">Type something...</div>
+<div id="editor" contenteditable="true"></div>
+
+<script>
+
+/** DOM references */
+const editor = document.getElementById('editor');
+const placeholder = document.getElementById('placeholder');
+
+/**
+ * Returns only the user’s actual typed text (without the ephemeral .prediction span).
+ */
+function getRealText() {
+  const clone = editor.cloneNode(true);
+  clone.querySelectorAll('.prediction').forEach(span => span.remove());
+  return clone.innerText.trim();
+}
+
+/**
+ * Utility to place caret at the end of the real typed text. 
+ * (In a more advanced app, you might want to preserve exact cursor position.)
+ */
+function setCaretToEndOfContent() {
+  const selection = window.getSelection();
+  const range = document.createRange();
+
+  // Place at the end of the last text node that is not the prediction
+  // or fallback to the end of editor.
+  if (editor.lastChild && editor.lastChild.nodeType === Node.TEXT_NODE) {
+    range.setStart(editor.lastChild, editor.lastChild.length);
+  } else {
+    range.selectNodeContents(editor);
+    range.collapse(false);
+  }
+  
+  selection.removeAllRanges();
+  selection.addRange(range);
+}
+
+/**
+ * Removes the ephemeral prediction (if any).
+ */
+function removePrediction() {
+  editor.querySelectorAll('.prediction').forEach(span => span.remove());
+}
+
+/**
+ * Finds the single most repeated word in the array of suggestions.
+ * (If you want the first item or other logic, adjust this.)
+ */
+function findMostFrequentWord(wordsArray) {
+  if (!Array.isArray(wordsArray) || wordsArray.length === 0) return null;
+
+  const freq = {};
+  let maxCount = 0, mostFreq = null;
+  for (let w of wordsArray) {
+    freq[w] = (freq[w] || 0) + 1;
+    if (freq[w] > maxCount) {
+      maxCount = freq[w];
+      mostFreq = w;
+    }
+  }
+  return mostFreq;
+}
+
+/**
+ * Inserts the ephemeral prediction (inline) at the end of the real typed text.
+ */
+function insertPrediction(word) {
+  if (!word) return; // no word to predict
+  removePrediction(); // ensure no leftover
+
+  // Rebuild real typed text
+  const real = getRealText();
+  editor.innerText = real; 
+  
+  // Append a space + the ephemeral <span>
+  if (real.length > 0) editor.appendChild(document.createTextNode(" "));
+  const span = document.createElement('span');
+  span.className = 'prediction';
+  span.textContent = word;
+  editor.appendChild(span);
+
+  // Move caret back to the end of the real text (before the ephemeral text)
+  setCaretToEndOfContent();
+}
+
+/**
+ * Accepts the ephemeral text (if any) on Tab (merges it into real text).
+ */
+function acceptPrediction() {
+  const predSpan = editor.querySelector('.prediction');
+  if (!predSpan) return;
+
+  const real = getRealText();
+  const predictedWord = predSpan.textContent;
+
+  // Merge ephemeral text into real text
+  let finalText = real;
+  if (finalText.length > 0) finalText += " ";
+  finalText += predictedWord;
+
+  // Rebuild the editor with the newly accepted text + a trailing space
+  editor.innerText = finalText + " ";
+  setCaretToEndOfContent();
+}
+
+/**
+ * Fetch suggestions from predictivo2.php, pick the single best word, 
+ * and insert it as ephemeral text.
+ */
+function fetchAndPredict() {
+  const userText = getRealText();
+
+  // Show/hide placeholder
+  if (userText.length === 0) {
+    placeholder.style.display = 'block';
+  } else {
+    placeholder.style.display = 'none';
+  }
+
+  // For example, we take the last 2 or 3 words as context:
+  const words = userText.split(/\s+/);
+  const lastThree = words.slice(-3).join(" ");
+  const encoded = encodeURI(lastThree);
+
+  // Real fetch from predictivo2.php
+  fetch("predictivo2.php?entrada=" + encoded)
+    .then(response => response.json())
+    .then(data => {
+      // data = array of strings from your DB
+      const best = findMostFrequentWord(data);
+      // Insert ephemeral text if we have a best guess
+      if (best) {
+        insertPrediction(best);
+      } else {
+        removePrediction();
+      }
+    })
+    .catch(err => {
+      console.error("Error fetching suggestions:", err);
+      removePrediction();
+    });
+}
+
+/**
+ * EVENT HANDLERS
+ */
+
+// 1) On input, remove old prediction & fetch a new one
+editor.addEventListener('input', () => {
+  // Remove ephemeral text if user typed something
+  removePrediction();
+  // Re-fetch suggestions
+  fetchAndPredict();
+});
+
+// 2) On focus/blur, manage placeholder
+editor.addEventListener('focus', () => {
+  if (getRealText().length === 0) placeholder.style.display = 'block';
+});
+editor.addEventListener('blur', () => {
+  if (getRealText().length === 0) placeholder.style.display = 'block';
+});
+
+// 3) On keydown, detect Tab => accept ephemeral text
+editor.addEventListener('keydown', (e) => {
+  if (e.key === 'Tab') {
+    e.preventDefault(); // don't tab away
+    acceptPrediction();
+    // Optionally fetch next suggestion after acceptance
+    fetchAndPredict();
+  }
+});
+
+// Initial pass
+fetchAndPredict();
+
+</script>
+</body>
+</html>
+

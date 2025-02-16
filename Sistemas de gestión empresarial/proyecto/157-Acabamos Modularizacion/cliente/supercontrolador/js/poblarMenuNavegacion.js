@@ -7,10 +7,10 @@ function poblarMenuNavegacion(datos,tipoentidad){
                 let icono;
                 switch(tipoentidad){
                 	case "tabla":
-                		icono = "<span class='boton botonblanco'><img src='img/iconotabla.svg'></span>";
+                		icono = "<span class='boton botonblanco'><img src='img/iconotabla.png'></span>";
                 		break;
                 	case "coleccion":
-                		icono = "<span class='boton botonblanco'><img src='img/iconodocumento.svg'></span>";
+                		icono = "<span class='boton botonblanco'><img src='img/iconodocumento.png'></span>";
                 }
                 elemento.innerHTML = icono+" "+nombre_de_la_tabla           // A ese elemento li le pongo como texto el nombre de la tabl
                elemento.setAttribute("destino",nombre_de_la_tabla)

@@ -1,0 +1,219 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Jocarsa | Greenyellow</title>
+  <style>
+    /* Corporate title styling */
+    h1.corporate-title {
+      background-color: greenyellow;
+      color: #000;
+      text-align: center;
+      font-family: 'Arial', sans-serif;
+      font-size: 2em;
+      margin: 0;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    /* Container style for the page body */
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      background: #f0f0f0; 
+    }
+
+    /* Textarea styling */
+    #entrada {
+      width: 400px;
+      height: 150px;
+      font-size: 14px;
+      line-height: 1.4;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      outline: none;
+      resize: none;
+      font-family: 'Arial', sans-serif;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+      background: #fff;
+      transition: border 0.2s;
+      margin:auto;
+      display:block;
+      margin-top:100px;
+    }
+    #entrada:focus {
+      border-color: #88c057;
+    }
+
+    /* Suggestions box (floats above) - hidden by default */
+    #resultados {
+      position: absolute;
+      display: none;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background: #fff;
+      color: #000;
+      width: 250px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+      padding: 5px;
+      z-index: 999;
+    }
+
+    /* Suggestion items */
+    #resultados p {
+      padding: 4px 6px;
+      margin: 2px 0;
+      border-radius: 4px;
+      background: #ccee86;
+      color: #000;
+      cursor: pointer;
+      font-size: 12px;
+      text-align: center;
+      font-family: 'Arial', sans-serif;
+      transition: background 0.2s;
+    }
+    #resultados p:hover {
+      background: #b8dc74;
+    }
+
+    /* Hidden mirror element to calculate caret position */
+    .textarea-mirror {
+      position: absolute;
+      visibility: hidden;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="corporate-title">jocarsa | greenyellow</h1>
+
+  <textarea id="entrada" placeholder="Type something..."></textarea>
+  <div id="resultados"></div>
+
+  <script>
+    const entrada = document.querySelector("#entrada");
+    const resultados = document.querySelector("#resultados");
+
+    /**
+     * Calculates the (x, y) position of the caret in a textarea
+     * by creating a hidden "mirror" element that copies its style
+     * and text content up to the caret. We then measure the marker’s
+     * bounding rectangle, and account for page scroll.
+     */
+    function getCaretCoordinates(textarea, position) {
+      const mirror = document.createElement('div');
+      mirror.className = 'textarea-mirror';
+
+      // Copy styles from the textarea
+      const style = window.getComputedStyle(textarea);
+      for (let prop of style) {
+        mirror.style[prop] = style[prop];
+      }
+
+      // Mirror dimensions
+      mirror.style.position = 'absolute';
+      mirror.style.visibility = 'hidden';
+      mirror.style.whiteSpace = 'pre-wrap';
+      mirror.style.wordWrap = 'break-word';
+      mirror.style.overflow = 'hidden';
+      mirror.style.width = textarea.offsetWidth + 'px';
+      mirror.style.height = textarea.offsetHeight + 'px';
+
+      // The text up to the caret
+      const textContent = textarea.value.substring(0, position);
+      // Replace any new lines with line breaks to emulate textarea
+      mirror.textContent = textContent.replace(/\n/g, '\n');
+
+      // Insert a marker at the caret position
+      const caretMarker = document.createElement('span');
+      caretMarker.textContent = '\u200b'; // zero-width space
+      mirror.appendChild(caretMarker);
+
+      // Append mirror to body
+      document.body.appendChild(mirror);
+
+      // Get bounding box of caret marker
+      const rect = caretMarker.getBoundingClientRect();
+
+      // Remove mirror
+      document.body.removeChild(mirror);
+
+      // Add the page’s scroll offset (important if the user has scrolled)
+      const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+      return {
+        left: rect.left + scrollLeft,
+        top: rect.top + scrollTop,
+        height: rect.height
+      };
+    }
+
+    /**
+     * Positions the #resultados div near the caret inside the textarea.
+     */
+    function positionResultados() {
+      const caretPos = entrada.selectionEnd;
+      const coords = getCaretCoordinates(entrada, caretPos);
+
+      // Offset the popup a little below the caret
+      const offsetX = 0;
+      const offsetY = 6;
+
+      resultados.style.left = (coords.left + offsetX) + 'px';
+      resultados.style.top = (coords.top + coords.height + offsetY) + 'px';
+      resultados.style.display = 'block';
+    }
+
+    /**
+     * Fetches suggestions based on the last two words in the textarea value,
+     * then displays them in #resultados.
+     */
+    function busca() {
+      let contenido = entrada.value;
+      let palabras = contenido.trim().split(" ");
+      // Get last two words
+      let dosultimas = palabras.slice(-2).join(" ");
+
+      let codificado = encodeURI(dosultimas);
+
+      fetch("predictivo2.php?entrada=" + codificado)
+        .then(response => response.json())
+        .then(datos => {
+          resultados.innerHTML = "";
+
+          if (Array.isArray(datos) && datos.length > 0) {
+            datos.forEach(dato => {
+              let palabra = document.createElement("p");
+              palabra.textContent = dato;
+              resultados.appendChild(palabra);
+
+              palabra.onclick = function() {
+                // Append the clicked suggestion
+                entrada.value += dato + " ";
+                // Re-run the suggestions
+                busca();
+              };
+            });
+            positionResultados();
+          } else {
+            // If no data, hide the suggestions
+            resultados.style.display = 'none';
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          resultados.style.display = 'none';
+        });
+    }
+
+    // Trigger suggestions & re-position them on every input
+    entrada.addEventListener("input", busca);
+  </script>
+</body>
+</html>
+

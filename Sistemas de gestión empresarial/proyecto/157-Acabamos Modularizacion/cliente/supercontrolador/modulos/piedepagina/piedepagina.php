@@ -1,5 +1,5 @@
 
- <footer>(c) jocarsa | crimson</footer>
+ <footer>(c) Jota Crimson</footer>
 
 
  <script><?php echo file_get_contents("modulos/piedepagina/piedepagina.js");?></script>

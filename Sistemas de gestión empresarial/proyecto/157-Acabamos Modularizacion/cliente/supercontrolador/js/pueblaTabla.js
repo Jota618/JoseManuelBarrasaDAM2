@@ -87,7 +87,7 @@
             nuevacolumna = document.createElement("td")                     // Creo una nueva columna
             nuevacolumna.innerHTML = `
             
-            	<span class='boton botonrojo'><img src='img/iconoinforme.svg'></span>
+            	<span class='boton botonrojo'><img src='img/iconoinforme.png'></span>
             	`                                     // Le doy el emoji de la papelera
             nuevacolumna.setAttribute("claveprimaria",clave_primaria)           // Ademas le pongo un atributo que se llama claveprimaria y le pongo el valor correspondiente
             nuevafila.appendChild(nuevacolumna)                                 // Lo pongo en las columnas

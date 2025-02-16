@@ -63,7 +63,7 @@ function cargaDatosTabla(tabla){
             ////// CARGO APLICACIONES SI ES QUE LAS HAY
             
             let elemento = document.createElement("th") 							// Creo una columna mas en la tabla
-            elemento.innerHTML = "<span class='boton botonblanco'><img src='img/iconolupa.svg'></span>"												// En la ultima cabecera de columna pongo la lupa
+            elemento.innerHTML = "<span class='boton botonblanco'><img src='img/iconolupa.png'></span>"												// En la ultima cabecera de columna pongo la lupa
             cabeceras_tabla.appendChild(elemento) 									// Lo añado a las cabeceras de la tabla
             elemento.onclick = function(){											// Cuando haga click en la lupa
 

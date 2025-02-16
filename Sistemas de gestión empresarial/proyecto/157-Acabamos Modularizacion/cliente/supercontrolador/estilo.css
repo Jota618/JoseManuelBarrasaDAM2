@@ -7,7 +7,7 @@ html, body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  background: crimson;
+  background: #2E8B57;
   font-family: Ubuntu, sans-serif;
   color: white;
   font-size:12px;
@@ -36,7 +36,7 @@ header, footer {
 
 .menuseleccionado{
   background:white;
-  color:crimson;
+  color:#2E8B57;
 }
 td{
 	transition:all 1s;
@@ -69,7 +69,7 @@ table article{
 	border-radius:5px;
 }
 .botonrojo{
-	background:crimson;
+	background:#2E8B57;
 	
 }
 .botonblanco{

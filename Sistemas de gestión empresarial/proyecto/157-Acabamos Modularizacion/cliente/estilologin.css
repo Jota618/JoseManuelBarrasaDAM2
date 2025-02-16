@@ -1,70 +1,118 @@
-/* Archivo que contiene los estilos generales aplicados en el login de la aplicación */
+/* Fonts */
 @font-face {
-  font-family: Ubuntu;
-  src: url(Ubuntu-R.ttf);
-}
-body{
-  font-family:Ubuntu,sans-serif;
-  background:crimson;
-}
-#formlogin{
-  width:300px;
-  height:380px;
-  margin:auto;
-  margin-top:100px;
-  background:white;
-  padding:30px;
-  text-align:center;
-}
-#logo{
-  width:50%;
-}
-input,button{
-  width:100%;
-  padding:10px 0px;
-  margin-bottom:10px;
-  margin-top:10px;
-  border:none;
-  border-bottom:2px solid crimson;
-  transition:all 1s;
-  font-family:Ubuntu,sans-serif;
-}
-input:focus{
-	outline:none;
-	background:crimson;
-	color:white;
-}
-button{
-	background:crimson;
-	color:white;
-	border:none;
-	padding:10px;
-	border-radius:20px;
-}
-#toast{
-	width:400px;
-	height:50px;
-	line-height:50px;
-	background:white;
-	color:crimson;
-	border-radius:100px;
-	position:absolute;
-	left:50%;
-	margin-left:-200px;
-	bottom:100px;
-	text-align:center;
-	opacity:0;
-}
-.animado{
-	animation: aparece 10s;
-}
-@keyframes aparece{
-	0%{display:block;opacity:0;}
-	10%{display:block;opacity:1;}
-	90%{display:block;opacity:1;}
-	100%{display:block;opacity:0;}
+    font-family: 'Ubuntu';
+    src: url('Ubuntu-R.ttf');
 }
 
+/* Global Styles */
+body {
+    font-family: 'Ubuntu', sans-serif;
+    background-color: #2E8B57; /* Sea green */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
 
+/* Form Container */
+#formlogin {
+    width: 320px;
+    background: linear-gradient(135deg, #E0F7FA, #B2DFDB); /* Modern gradient */
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* Add spacing between elements */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
 
+#formlogin:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+}
 
+/* Logo Container */
+#logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* Logo */
+#logo {
+    width: 35%;
+    margin: 0 auto;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+}
+
+/* Input and Button Styles */
+input,
+button {
+    width: 90%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: 'Ubuntu', sans-serif;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+input {
+    background-color: #F0F4C3; /* Light lime */
+    border: 1px solid #B2DFDB;
+    color: #2E8B57;
+}
+
+input:focus {
+    outline: none;
+    background-color: #DCE775;
+    transform: scale(1.02);
+    border-color: #8BC34A;
+}
+
+button {
+    background-color: #20B2AA; /* Light sea green */
+    color: white;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+button:hover {
+    background-color: #008080; /* Teal */
+    transform: scale(1.05);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Add smooth interaction for focus and hover */
+button:focus {
+    outline: none;
+    transform: scale(1.1);
+}
+
+/* Add responsive design */
+@media (max-width: 480px) {
+    #formlogin {
+        width: 90%;
+        padding: 20px;
+    }
+
+    #logo {
+        width: 50%;
+    }
+
+    input,
+    button {
+        width: 100%;
+    }
+}

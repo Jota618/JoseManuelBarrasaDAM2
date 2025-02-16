@@ -1,7 +1,7 @@
 <nav>
       	<ul>
       	<h4>Aplicaciones</h4>
-      		<li id="businessanalytics"><span class='boton botonblanco'><img src='img/iconotabla.svg'></span> Business Analytics</li>
+      		<li id="businessanalytics"><span class='boton botonblanco'><img src='img/iconotabla.png'></span> Business Analytics</li>
       	</ul>
         <ul id="tabla">
           <h4>Tablas</h4>
@@ -11,7 +11,7 @@
         <h4>Documentos</h4>
         </ul>
         <ul>
-        	<li id="escritorio"><span class='boton botonblanco'><img src='img/iconotabla.svg'></span> Volver al escritorio</li>
+        	<li id="escritorio"><span class='boton botonblanco'><img src='img/iconotabla.png'></span> Volver al escritorio</li>
         </ul>
       </nav>
       

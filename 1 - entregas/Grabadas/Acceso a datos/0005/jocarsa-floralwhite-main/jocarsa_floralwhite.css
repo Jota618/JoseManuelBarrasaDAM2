@@ -1,0 +1,122 @@
+/* Estilos generales */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+#contenedor-grafico {
+  margin-top: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background-color: white;
+}
+
+/* Estilo de los filtros */
+#filtro-nodos,
+#filtro-enlaces {
+  margin-top: 30px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#filtro-nodos label,
+#filtro-enlaces label {
+  font-size: 16px;
+  color: #333;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+#filtro-nodos input,
+#filtro-enlaces input {
+  margin-right: 10px;
+}
+
+/* Estilo de la leyenda */
+.leyenda-sankey {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.leyenda-item {
+  display: flex;
+  align-items: center;
+  margin: 5px 20px;
+}
+
+.leyenda-item span {
+  font-size: 14px;
+  margin-left: 8px;
+}
+
+/* Estilos para los elementos SVG */
+.jocarsa-floralwhite-svg {
+  display: block;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.jocarsa-floralwhite-nodo rect {
+  transition: fill 0.3s ease, transform 0.2s ease;
+}
+
+.jocarsa-floralwhite-nodo rect:hover {
+  fill: #ff8c00;
+  transform: scale(1.05);
+}
+
+.jocarsa-floralwhite-enlace {
+  transition: stroke-opacity 0.3s ease;
+}
+
+.jocarsa-floralwhite-enlace:hover {
+  stroke-opacity: 0.7;
+}
+
+.jocarsa-floralwhite-text {
+  fill: #fff;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Botón de exportación */
+button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Mejorar la accesibilidad y visibilidad */
+a,
+button {
+  font-family: inherit;
+  font-size: inherit;
+}

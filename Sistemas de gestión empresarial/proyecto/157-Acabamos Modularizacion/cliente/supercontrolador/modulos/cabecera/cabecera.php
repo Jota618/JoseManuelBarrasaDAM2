@@ -1,12 +1,12 @@
 <header>
-      <h1><img src="https://jocarsa.com/static/logo/jocarsa | white.svg">jocarsa | crimson</h1>
+      <h1><img src="img/logo.png" id="logo">Jota Crimson</h1>
       <div class="titulotabla">
           <h5>Clientes</h5>
           <p>En esta tabla podremos insertar a los clientes</p>
         </div>
       <nav>
-      <button class="boton botonblanco" id="imprimir"><img src="img/iconoimprimir.svg"></button>
-      	<button class="boton botonblanco" id="mail"><img src="img/iconocorreo.svg"></button>
+      <button class="boton botonblanco" id="imprimir"><img src="img/iconoimprimir.png"></button>
+      	<button class="boton botonblanco" id="mail"><img src="img/iconocorreo.png"></button>
       	<button class="boton botonblanco">A</button>
       	<button class="boton botonblanco">A</button>
       	<button class="boton botonblanco">A</button>
