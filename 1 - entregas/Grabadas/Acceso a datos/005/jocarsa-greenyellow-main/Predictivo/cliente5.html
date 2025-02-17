@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Jota | Greenyellow</title>
+  <style>
+    /* Estilo para el título corporativo */
+    h1.corporate-title {
+      background-color: greenyellow;
+      color: #000;
+      text-align: center;
+      font-family: 'Arial', sans-serif;
+      font-size: 2em;
+      margin: 0;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    /* Estilo para el body */
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      background: #f0f0f0; 
+    }
+
+    /* Estilo para el div contenteditable */
+    #entrada {
+      width: 400px;
+      min-height: 150px;
+      font-size: 14px;
+      line-height: 1.4;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      outline: none;
+      resize: none;
+      font-family: 'Arial', sans-serif;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+      background: #fff;
+      transition: border 0.2s;
+      margin: auto;
+      display: block;
+      margin-top: 100px;
+      position: relative;
+    }
+    #entrada:focus {
+      border-color: #88c057;
+    }
+    /* Simulación de placeholder para contenteditable */
+    #entrada:empty:before {
+      content: attr(placeholder);
+      color: #aaa;
+    }
+
+    /* Estilo para el texto predictivo */
+    .predictive-text {
+      color: #888;
+      pointer-events: none; /* Evita que el span sea clickeable */
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="corporate-title">Jota | greenyellow</h1>
+
+  <div id="entrada" contenteditable="true" placeholder="Escribe algo..."></div>
+
+  <script>
+    const entrada = document.querySelector("#entrada");
+
+    // Función debounce para limitar la frecuencia de llamadas a la API
+    function debounce(func, wait) {
+      let timeout;
+      return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
+
+    /**
+     * Función que busca sugerencias basadas en las dos últimas palabras.
+     */
+    function busca() {
+      let contenido = entrada.textContent.trim();
+      let palabras = contenido.split(" ");
+
+      if (palabras.length < 2) return; // Se requieren al menos dos palabras para predecir
+
+      // Obtener las dos últimas palabras
+      let dosultimas = palabras.slice(-2).join(" ").trim();
+      let codificado = encodeURIComponent(dosultimas);
+
+      fetch("predictivo2.php?entrada=" + codificado)
+        .then(response => response.json())
+        .then(datos => {
+          // Eliminar cualquier sugerencia existente
+          const existingPredictiveText = entrada.querySelector(".predictive-text");
+          if (existingPredictiveText) {
+            existingPredictiveText.remove();
+          }
+
+          if (Array.isArray(datos) && datos.length > 0) {
+            // Calcular la frecuencia de cada sugerencia
+            const frecuencia = datos.reduce((acc, curr) => {
+              acc[curr] = (acc[curr] || 0) + 1;
+              return acc;
+            }, {});
+            // Seleccionar la sugerencia más frecuente
+            const suggestion = Object.keys(frecuencia).reduce((a, b) => 
+              frecuencia[a] > frecuencia[b] ? a : b
+            );
+
+            // Crear el elemento que mostrará la sugerencia
+            const predictiveText = document.createElement("span");
+            predictiveText.className = "predictive-text";
+            predictiveText.textContent = suggestion;
+            entrada.appendChild(predictiveText);
+
+            // Mover el caret al final del contenido
+            const range = document.createRange();
+            const selection = window.getSelection();
+            if (entrada.childNodes.length > 0) {
+              const lastChild = entrada.childNodes[entrada.childNodes.length - 1];
+              range.setStart(lastChild, lastChild.textContent.length);
+            } else {
+              range.setStart(entrada, 0);
+            }
+            range.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(range);
+          }
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
+
+    // Aplicar debounce a la función de búsqueda (300 ms de retardo)
+    const buscaDebounced = debounce(busca, 300);
+    entrada.addEventListener("input", buscaDebounced);
+
+    // Manejar la tecla Tab para aceptar la sugerencia
+    entrada.addEventListener("keydown", function(event) {
+      if (event.key === "Tab") {
+        event.preventDefault(); // Evitar el comportamiento por defecto del Tab
+        const predictiveText = entrada.querySelector(".predictive-text");
+        if (predictiveText) {
+          const suggestionText = predictiveText.textContent;
+          predictiveText.remove();
+
+          // Insertar el texto sugerido en la posición actual del caret
+          const selection = window.getSelection();
+          if (!selection.rangeCount) return;
+          const range = selection.getRangeAt(0);
+          // Eliminar cualquier contenido seleccionado (por si lo hubiera)
+          range.deleteContents();
+          // Insertar la sugerencia seguida de un espacio
+          const textToInsert = suggestionText + " ";
+          const textNode = document.createTextNode(textToInsert);
+          range.insertNode(textNode);
+          // Mover el caret al final del nodo insertado
+          range.setStartAfter(textNode);
+          range.collapse(true);
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
