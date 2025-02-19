@@ -1,13 +1,88 @@
-body{
-	padding:20px;
+body {
+    font-family: Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
-.coche{
-	border:1px solid grey;
-	border-radius:20px;
-	box-sizing:border-box;
-	padding:20px;
-	margin-bottom:20px;
+
+h1 {
+    text-align: center;
+    color: #crimson;
+    margin-bottom: 30px;
 }
-.coche img{
-	width:100%;
+
+.controls-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+#searchInput {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    min-width: 250px;
+}
+
+#filterPrice {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    background: white;
+}
+
+.coche {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    animation: fadeIn 0.5s ease-out;
+    transition: transform 0.3s ease;
+}
+
+.coche:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.coche img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+#carsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .controls-container {
+        flex-direction: column;
+    }
+
+    #searchInput, #filterPrice {
+        width: 100%;
+    }
+
+    .coche {
+        margin: 10px 0;
+    }
 }

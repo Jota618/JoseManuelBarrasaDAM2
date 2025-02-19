@@ -1,122 +1,91 @@
-/* Estilos generales */
-body {
-  font-family: 'Arial', sans-serif;
+/* Reset styles */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
   background-color: #f4f4f9;
+  padding: 20px;
+  text-align: center;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Make body take full viewport height */
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
 }
 
-#contenedor-grafico {
-  margin-top: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  background-color: white;
-}
-
-/* Estilo de los filtros */
-#filtro-nodos,
-#filtro-enlaces {
-  margin-top: 30px;
-  padding: 10px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-#filtro-nodos label,
-#filtro-enlaces label {
-  font-size: 16px;
-  color: #333;
-  margin-right: 20px;
-  cursor: pointer;
-}
-
-#filtro-nodos input,
-#filtro-enlaces input {
-  margin-right: 10px;
-}
-
-/* Estilo de la leyenda */
-.leyenda-sankey {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 20px;
-  padding: 10px;
-}
-
-.leyenda-item {
-  display: flex;
-  align-items: center;
-  margin: 5px 20px;
-}
-
-.leyenda-item span {
-  font-size: 14px;
-  margin-left: 8px;
-}
-
-/* Estilos para los elementos SVG */
-.jocarsa-floralwhite-svg {
-  display: block;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.jocarsa-floralwhite-nodo rect {
-  transition: fill 0.3s ease, transform 0.2s ease;
-}
-
-.jocarsa-floralwhite-nodo rect:hover {
-  fill: #ff8c00;
-  transform: scale(1.05);
-}
-
-.jocarsa-floralwhite-enlace {
-  transition: stroke-opacity 0.3s ease;
-}
-
-.jocarsa-floralwhite-enlace:hover {
-  stroke-opacity: 0.7;
-}
-
-.jocarsa-floralwhite-text {
-  fill: #fff;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-/* Botón de exportación */
 button {
-  background-color: #28a745;
+  background-color: #4CAF50;
   color: white;
+  font-size: 16px;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  font-size: 16px;
   cursor: pointer;
+  margin-bottom: 20px;
   transition: background-color 0.3s ease;
-  margin-top: 20px;
 }
 
 button:hover {
-  background-color: #218838;
+  background-color: #45a049;
 }
 
-button:active {
-  transform: scale(0.98);
+#chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 800px;
+  border: 1px solid #ddd;
+  background-color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 80%; /* Reduced width to fit content better */
+  max-width: 900px; /* Optional: Max width for responsiveness */
 }
 
-/* Mejorar la accesibilidad y visibilidad */
-a,
-button {
-  font-family: inherit;
-  font-size: inherit;
+/* Additional styling for Sankey chart */
+.jocarsa-floralwhite-svg {
+  width: 100%;
+  height: auto;
+}
+
+.jocarsa-floralwhite-node rect {
+  transition: fill 0.3s ease;
+}
+
+.jocarsa-floralwhite-node rect:hover {
+  fill: #ff8c00; /* Orange on hover */
+}
+
+.jocarsa-floralwhite-text {
+  font-size: 14px;
+  fill: #ffffff;
+  pointer-events: none;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.jocarsa-floralwhite-link {
+  transition: stroke-opacity 0.3s ease;
+}
+
+.jocarsa-floralwhite-link:hover {
+  stroke-opacity: 0.7;
+}
+
+/* Style for save button */
+#save-btn {
+  background-color: #007bff;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+#save-btn:hover {
+  background-color: #0056b3;
 }

@@ -1,0 +1,19 @@
+{
+    "poyete": "Aquí todos sois unos polletes menos Jota",
+    "python": "Python es un lenguaje de programación popular, conocido por su sintaxis sencilla y su versatilidad.",
+    "html": "HTML es un lenguaje de marcado utilizado para estructurar páginas web.",
+    "css": "CSS se usa para dar estilo a las páginas web, controlando colores, márgenes y diseño.",
+    "javascript": "JavaScript es un lenguaje de programación que permite añadir interactividad a las páginas web.",
+    "sql": "SQL es un lenguaje de consulta utilizado para gestionar bases de datos relacionales.",
+    "java": "Java es un lenguaje de programación muy utilizado en aplicaciones empresariales y móviles.",
+    "clima": "El clima depende de la ubicación y la temporada. Puedes revisar la previsión en una aplicación meteorológica.",
+    "comida": "La comida es una parte fundamental de la cultura. ¿Tienes alguna receta favorita?",
+    "deporte": "El deporte es una excelente forma de mantenerse en forma y socializar. ¿Cuál es tu deporte favorito?",
+    "musica": "La música tiene muchos géneros y estilos. ¿Qué tipo de música te gusta?",
+    "peliculas": "Hay muchas películas increíbles. ¿Prefieres acción, terror, comedia o ciencia ficción?",
+    "videojuegos": "Los videojuegos han evolucionado mucho con el tiempo. ¿Cuál es tu juego favorito?",
+    "viajes": "Viajar es una gran forma de conocer nuevas culturas. ¿Cuál es tu destino soñado?",
+    "animales": "Los animales son fascinantes y hay muchas especies interesantes. ¿Tienes una mascota?",
+    "historia": "La historia está llena de eventos sorprendentes. ¿Sobre qué época te gustaría aprender más?",
+    "tecnología": "La tecnología avanza rápido y cambia nuestra forma de vivir. ¿Te interesa algún avance en particular?"
+}

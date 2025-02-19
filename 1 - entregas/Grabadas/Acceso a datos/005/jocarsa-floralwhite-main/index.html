@@ -1,54 +1,54 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Ejemplo de gráfico Sankey minimalista</title>
-  <!-- Nombre de archivo CSS actualizado -->
+  <title>Ejemplo de Gráfico Sankey</title>
+  <!-- Actualizar nombre del archivo CSS -->
   <link rel="stylesheet" href="jocarsa_floralwhite.css">
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-
+  <style>
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 <body>
-  <div id="contenedor-grafico"></div>
-  <div id="filtro-nodos">
-    <label><input type="checkbox" id="filtro-nodo-0"> Nodo A</label>
-    <label><input type="checkbox" id="filtro-nodo-1"> Nodo B</label>
-    <label><input type="checkbox" id="filtro-nodo-2"> Nodo C</label>
-  </div>
-  <div id="filtro-enlaces">
-    <label><input type="checkbox" id="filtro-enlace-0"> Enlace 1</label>
-    <label><input type="checkbox" id="filtro-enlace-1"> Enlace 2</label>
-    <label><input type="checkbox" id="filtro-enlace-2"> Enlace 3</label>
-  </div>
-    
-  <!-- Nombre de archivo JavaScript actualizado -->
+  <!-- Título centrado -->
+  <h1>Ejemplo de Gráfico Sankey Mínimo</h1>
+  
+  <button id="save-btn">Guardar Gráfico</button>
+
+  <div id="chart-container"></div>
+
+  <!-- Actualizar nombre del archivo JavaScript -->
   <script src="jocarsa_floralwhite.js"></script>
   <script>
-    const datos = {
-      "nodos": [
-        { "nombre": "Alumno 1", "color": "#1f77b4" },
-        { "nombre": "Alumno 2" }, // Se le asignará un color aleatorio
-        { "nombre": "Alumno 3", "color": "#ff7f0e" },
-        { "nombre": "Alumno 4" }, // Se le asignará un color aleatorio
-        { "nombre": "Empresa 1", "color": "#2ca02c" },
-        { "nombre": "Empresa 2", "color": "#d62728" }
+    const data = {
+      "nodes": [
+        { "name": "Alumno 1", "color": "#1f77b4" },
+        { "name": "Alumno 2" }, // Se asignará un color aleatorio
+        { "name": "Alumno 3", "color": "#ff7f0e" },
+        { "name": "Alumno 4" }, // Se asignará un color aleatorio
+        { "name": "Empresa 1", "color": "#2ca02c" },
+        { "name": "Empresa 2", "color": "#d62728" }
       ],
-      "enlaces": [
-        { "origen": 0, "destino": 4, "valor": 1 },
-        { "origen": 1, "destino": 4, "valor": 3 },
-        { "origen": 2, "destino": 4, "valor": 4 },
-        { "origen": 3, "destino": 5, "valor": 2 }
+      "links": [
+        { "source": 0, "target":4, "value": 1 },
+        { "source": 1, "target": 4, "value": 3 },
+        { "source": 2, "target": 4, "value": 4 },
+        { "source": 3, "target": 5, "value": 2 }
       ]
     };
 
     // Renderizar el gráfico Sankey
-    jocarsaFloralwhite.crearGraficoSankey({
-      elemento: '#contenedor-grafico',
-      datos: datos,
-      ancho: 600,
-      alto: 800,
-      anchoNodo: 120,
-      espacioNodo: 10
+    jocarsaFloralwhite.createSankeyChart({
+      element: '#chart-container',
+      data: data,
+      width: 600,
+      height: 800,
+      nodeWidth: 120,
+      nodePadding: 10
     });
   </script>
 </body>

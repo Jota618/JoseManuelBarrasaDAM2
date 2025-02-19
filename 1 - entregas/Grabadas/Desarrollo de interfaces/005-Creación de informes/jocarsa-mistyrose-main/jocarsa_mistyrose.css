@@ -1,0 +1,162 @@
+/* General body reset */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fa; /* Soft background color */
+    color: #333; /* Dark text for better readability */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    flex-direction: column;
+}
+
+/* Container for the charts */
+.chart-container {
+    background-color: #ffffff; /* White background for the chart containers */
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); /* Light shadow */
+    margin: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 600px; /* Max width for each chart */
+    text-align: center; /* Center content inside containers */
+    display: inline-block; /* Allow horizontal stacking */
+}
+
+/* Add a heading for the chart title */
+h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* SVG styles for the charts */
+svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 4px; /* Slight rounding of the corners for a softer look */
+}
+
+/* Add flexbox to display charts horizontally */
+.container {
+    display: flex;
+    justify-content: space-around; /* Space out charts horizontally */
+    width: 100%;
+    flex-wrap: wrap; /* Allows charts to wrap on smaller screens */
+}
+
+/* Legend for charts */
+.jocarsa-mistyrose .legend {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #555; /* Lighter text for the legend */
+}
+
+.jocarsa-mistyrose .legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.jocarsa-mistyrose .legend-item .color-square {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    border-radius: 50%; /* Circular color markers */
+}
+
+.jocarsa-mistyrose .legend-item span {
+    font-size: 14px;
+    color: #444;
+}
+
+/* Hover effects for chart elements */
+.jocarsa-mistyrose .bar:hover {
+    fill: #4caf50; /* Highlight bar on hover */
+}
+
+.jocarsa-mistyrose .pie-slice:hover {
+    stroke-width: 3;
+    transform: scale(1.1); /* Slight scale-up for interactivity */
+}
+
+.jocarsa-mistyrose .line-circle:hover {
+    r: 7; /* Increase circle size on hover */
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .container {
+        flex-direction: column; /* Stacks charts vertically on small screens */
+        align-items: center;
+    }
+
+    .chart-container {
+        max-width: 100%;
+        margin: 10px 0;
+    }
+
+    h1 {
+        font-size: 20px; /* Smaller title on mobile */
+    }
+}
+
+/* Estilo para el título de la página */
+.page-title {
+  font-size: 36px; /* Tamaño de fuente grande */
+  text-align: center; /* Centrar el título */
+  color: #333; /* Color oscuro para el texto */
+  margin-bottom: 20px; /* Espacio debajo del título */
+  font-weight: bold; /* Negrita para destacar */
+  text-transform: uppercase; /* Transformación a mayúsculas */
+  letter-spacing: 2px; /* Espaciado entre letras */
+}
+
+
+
+/* Add a smooth transition to all interactive elements */
+svg path,
+svg rect,
+svg circle {
+    transition: all 0.3s ease;
+}
+
+svg path:hover,
+svg rect:hover,
+svg circle:hover {
+    opacity: 0.8; /* Add slight fade on hover */
+}
+
+/* Custom button styling for any future interactions */
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

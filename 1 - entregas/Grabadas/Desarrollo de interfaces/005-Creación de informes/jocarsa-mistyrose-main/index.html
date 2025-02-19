@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mistyrose</title>
+    <script src="jocarsa_mistyrose.js"></script>
+    <link rel="stylesheet" href="jocarsa_mistyrose.css">
+</head>
+<body>
+    <!-- Título en la parte superior -->
+    <h1 class="page-title">Mistyrose Data Visualizations</h1>
+
+    <div class="container"> <!-- Contenedor de los gráficos en horizontal -->
+        <div class="chart-container"></div> <!-- Pie chart -->
+        <div class="chart-container"></div> <!-- Bar chart -->
+        <div class="chart-container"></div> <!-- New Line chart -->
+    </div>
+
+    <script>
+        // JSON data
+        const data = [
+            { label: "Category A", value: 30 },
+            { label: "Category B", value: 50 },
+            { label: "Category C", value: 20 }
+        ];
+
+        // Create a new Chart instance for each container
+        document.querySelectorAll(".chart-container").forEach((container, index) => {
+            const chart = new jocarsaMistyrose.Chart(".chart-container", data);
+            if (index === 0) {
+                chart.createPieChart(container); // First container gets a pie chart
+            } else if (index === 1) {
+                chart.createBarChart(container); // Second container gets a bar chart
+            } else {
+                chart.createLineChart(container); // Third container gets a line chart
+            }
+        });
+    </script>
+</body>
+</html>

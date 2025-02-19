@@ -1,0 +1,32 @@
+{
+    "es": {
+        "title": "🏰 Bienvenido al Reino! 🏰",
+        "section-title": "📜 Sobre el Reino 📜",
+        "section-content": "En estas tierras, forjamos el conocimiento con honor y valentía.",
+        "services-title": "⚔️ Servicios del Gremio ⚔️",
+        "service-1": "Asesoramiento arcano",
+        "service-2": "Forja de sitios místicos",
+        "service-3": "Hechizos de promoción",
+        "footer-content": "⚜️ Derechos reservados del Reino © 2025 ⚜️"
+    },
+    "en": {
+        "title": "🏰 Welcome to the Kingdom! 🏰",
+        "section-title": "📜 About the Kingdom 📜",
+        "section-content": "In these lands, we forge knowledge with honor and bravery.",
+        "services-title": "⚔️ Guild Services ⚔️",
+        "service-1": "Arcane Consulting",
+        "service-2": "Mystic Site Forging",
+        "service-3": "Enchantment Promotions",
+        "footer-content": "⚜️ Kingdom Rights Reserved © 2025 ⚜️"
+    },
+    "fr": {
+        "title": "🏰 Bienvenue au Royaume! 🏰",
+        "section-title": "📜 À propos du Royaume 📜",
+        "section-content": "Dans ces contrées, nous forgeons le savoir avec honneur et bravoure.",
+        "services-title": "⚔️ Services de la Guilde ⚔️",
+        "service-1": "Conseil Arcanique",
+        "service-2": "Forge de Sites Mystiques",
+        "service-3": "Enchantements de Promotion",
+        "footer-content": "⚜️ Droits Réservés du Royaume © 2025 ⚜️"
+    }
+}

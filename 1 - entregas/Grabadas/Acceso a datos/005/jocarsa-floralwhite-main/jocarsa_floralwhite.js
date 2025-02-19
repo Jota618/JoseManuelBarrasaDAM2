@@ -1,284 +1,277 @@
 /**
- * jocarsa-floralwhite - Una biblioteca minimalista para crear diagramas Sankey interactivos con SVG
+ * jocarsa-floralwhite - A minimal library for creating interactive Sankey diagrams with SVG
  * 
- * Autor: Tu Nombre
- * Licencia: MIT (o la que prefieras)
+ * Author: Your Name
+ * License: MIT (or as you prefer)
  */
 
 (function (global) {
   const JocarsaFloralwhite = {};
 
   /**
-   * Crear un gráfico Sankey.
-   * @param {Object} config - Configuración para el gráfico Sankey
-   * @param {string|HTMLElement} config.elemento - Selector o elemento DOM en el que crear el gráfico
-   * @param {Object} config.datos - Los datos Sankey: 
+   * Create a Sankey chart.
+   * @param {Object} config - Configuration for the sankey chart
+   * @param {string|HTMLElement} config.element - Selector or DOM element in which to create the chart
+   * @param {Object} config.data - The Sankey data: 
    *   {
-   *     nodos: [
-   *       { nombre: "Nodo A", color: "#xxxxxx" },
-   *       { nombre: "Nodo B", color: "#xxxxxx" },
+   *     nodes: [
+   *       { name: "Node A", color: "#xxxxxx" },
+   *       { name: "Node B", color: "#xxxxxx" },
    *       ...
    *     ],
-   *     enlaces: [
-   *       { origen: "Nodo A", destino: "Nodo B", valor: 10 },
-   *       { origen: 1, destino: 2, valor: 15 }, // también se soportan índices numéricos
+   *     links: [
+   *       { source: "Node A", target: "Node B", value: 10 },
+   *       { source: 1, target: 2, value: 15 }, // numeric indices also supported
    *       ...
    *     ]
    *   }
-   * @param {number} config.ancho - El ancho total del gráfico
-   * @param {number} config.alto - La altura total del gráfico
-   * @param {number} [config.anchoNodo=20] - Ancho de cada rectángulo de nodo
-   * @param {number} [config.espacioNodo=10] - Espaciado vertical entre nodos
-   * @param {boolean} [config.mostrarLeyenda=true] - Si se debe mostrar la leyenda de nodos
+   * @param {number} config.width - The overall width of the chart
+   * @param {number} config.height - The overall height of the chart
+   * @param {number} [config.nodeWidth=20] - Width of each node rect
+   * @param {number} [config.nodePadding=10] - Vertical padding between nodes
    */
-  JocarsaFloralwhite.crearGraficoSankey = function(config) {
+  JocarsaFloralwhite.createSankeyChart = function(config) {
     const {
-      elemento,
-      datos,
-      ancho,
-      alto,
-      anchoNodo = 20,
-      espacioNodo = 10,
-      mostrarLeyenda = true,
+      element,
+      data,
+      width,
+      height,
+      nodeWidth = 20,
+      nodePadding = 10
     } = config;
 
-    // Resolver el elemento contenedor
-    let contenedor;
-    if (typeof elemento === 'string') {
-      contenedor = document.querySelector(elemento);
+    // Resolve container element
+    let container;
+    if (typeof element === 'string') {
+      container = document.querySelector(element);
     } else {
-      contenedor = elemento;
+      container = element;
     }
-    if (!contenedor) {
-      throw new Error("Elemento contenedor no encontrado");
+    if (!container) {
+      throw new Error("Container element not found");
     }
 
-    // Limpiar cualquier contenido existente
-    contenedor.innerHTML = '';
+    // Clear any existing content
+    container.innerHTML = '';
 
-    // Crear un SVG
-    const svg = crearElementoSVG('svg');
-    svg.setAttribute('width', ancho);
-    svg.setAttribute('height', alto);
+    // Create an SVG
+    const svg = createSVGElement('svg');
+    svg.setAttribute('width', width);
+    svg.setAttribute('height', height);
     svg.classList.add('jocarsa-floralwhite-svg');
-    contenedor.appendChild(svg);
+    container.appendChild(svg);
 
-    // Crear <defs> para los gradientes
-    const defs = crearElementoSVG('defs');
+    // Create <defs> for gradients
+    const defs = createSVGElement('defs');
     svg.appendChild(defs);
 
-    // Preparar nodos
-    const nodos = datos.nodos.map((d, i) => {
+    // Prepare nodes
+    const nodes = data.nodes.map((d, i) => {
       return { 
-        indice: i,
-        nombre: d.nombre || `Nodo ${i}`,
-        color: d.color || obtenerColorAleatorio(),
+        index: i,
+        name: d.name || `Node ${i}`,
+        color: d.color || getRandomColor(),
       };
     });
 
-    // Crear leyenda si se solicita
-    if (mostrarLeyenda) {
-      crearLeyenda(nodos, contenedor);
-    }
-
-    // Construir un mapa de nombre de nodo a índice
-    const nombreAIndice = {};
-    nodos.forEach((nodo, i) => {
-      nombreAIndice[nodo.nombre] = i;
+    // Build a lookup from node name to index
+    const nameToIndex = {};
+    nodes.forEach((node, i) => {
+      nameToIndex[node.name] = i;
     });
 
-    // Preparar enlaces, mapeando "origen"/"destino" de nombres a índices si es necesario
-    const enlaces = datos.enlaces.map(enlace => {
-      let indiceOrigen, indiceDestino;
+    // Prepare links, mapping "source"/"target" from names to indices if needed
+    const links = data.links.map(link => {
+      let sourceIndex, targetIndex;
 
-      // Convertir origen si es una cadena
-      if (typeof enlace.origen === 'string') {
-        indiceOrigen = nombreAIndice[enlace.origen];
-        if (indiceOrigen === undefined) {
-          throw new Error(`Nodo origen "${enlace.origen}" no encontrado en el array de nodos`);
+      // Convert source if it's a string
+      if (typeof link.source === 'string') {
+        sourceIndex = nameToIndex[link.source];
+        if (sourceIndex === undefined) {
+          throw new Error(`Source node "${link.source}" not found in nodes array`);
         }
       } else {
-        indiceOrigen = enlace.origen; // asumir que ya es un número
+        sourceIndex = link.source; // assume it's already a number
       }
 
-      // Convertir destino si es una cadena
-      if (typeof enlace.destino === 'string') {
-        indiceDestino = nombreAIndice[enlace.destino];
-        if (indiceDestino === undefined) {
-          throw new Error(`Nodo destino "${enlace.destino}" no encontrado en el array de nodos`);
+      // Convert target if it's a string
+      if (typeof link.target === 'string') {
+        targetIndex = nameToIndex[link.target];
+        if (targetIndex === undefined) {
+          throw new Error(`Target node "${link.target}" not found in nodes array`);
         }
       } else {
-        indiceDestino = enlace.destino; // asumir que ya es un número
+        targetIndex = link.target; // assume it's already a number
       }
 
       return {
-        origen: indiceOrigen,
-        destino: indiceDestino,
-        valor: +enlace.valor
+        source: sourceIndex,
+        target: targetIndex,
+        value: +link.value
       };
     });
 
-    // Construir información de adyacencia y calcular los flujos de entrada/salida
-    nodos.forEach(n => {
-      n.enlacesOrigen = [];
-      n.enlacesDestino = [];
-      n.valorEntrada = 0;
-      n.valorSalida = 0;
-      n.offsetEnlaceSalida = 0; // Inicializar el offset de enlace de salida
-      n.offsetEnlaceEntrada = 0;  // Inicializar el offset de enlace de entrada
+    // Build adjacency info and compute in/out flows
+    nodes.forEach(n => {
+      n.sourceLinks = [];
+      n.targetLinks = [];
+      n.valueIn = 0;
+      n.valueOut = 0;
+      n.linkOffsetOut = 0; // Initialize outgoing link offset
+      n.linkOffsetIn = 0;  // Initialize incoming link offset
     });
 
-    enlaces.forEach(enlace => {
-      const s = nodos[enlace.origen];
-      const t = nodos[enlace.destino];
-      s.enlacesOrigen.push(enlace);
-      t.enlacesDestino.push(enlace);
-      s.valorSalida += enlace.valor;
-      t.valorEntrada += enlace.valor;
+    links.forEach(link => {
+      const s = nodes[link.source];
+      const t = nodes[link.target];
+      s.sourceLinks.push(link);
+      t.targetLinks.push(link);
+      s.valueOut += link.value;
+      t.valueIn += link.value;
     });
 
-    // 1) Asignar a cada nodo una "capa" (posición x) de manera simplificada
-    const nodosOrigen = nodos.filter(n => n.valorEntrada === 0);
-    asignarCapasNodos(nodos, nodosOrigen);
+    // 1) Assign each node a "column" (x-position) in a simplistic manner
+    const sourceNodes = nodes.filter(n => n.valueIn === 0);
+    assignNodeLayers(nodes, sourceNodes);
 
-    // 2) Determinar el número total de capas
-    const capaMaxima = Math.max(...nodos.map(d => d.capa));
-    const totalCapas = capaMaxima + 1;
+    // 2) Determine total number of layers
+    const maxLayer = Math.max(...nodes.map(d => d.layer));
+    const layerCount = maxLayer + 1;
 
-    // 3) Calcular la posición x de cada nodo en píxeles
-    const escalaX = (ancho - anchoNodo) / capaMaxima;
-    nodos.forEach(n => {
-      n.x0 = n.capa * escalaX;
-      n.x1 = n.x0 + anchoNodo;
+    // 3) Compute each node’s x-position in pixels
+    const xScale = (width - nodeWidth) / maxLayer;
+    nodes.forEach(n => {
+      n.x0 = n.layer * xScale;
+      n.x1 = n.x0 + nodeWidth;
     });
 
-    // 4) Dentro de cada capa, distribuir los nodos verticalmente.
-    const capas = [];
-    for (let i = 0; i <= capaMaxima; i++) {
-      capas[i] = [];
+    // 4) Within each layer, distribute nodes vertically.
+    const layers = [];
+    for (let i = 0; i <= maxLayer; i++) {
+      layers[i] = [];
     }
-    nodos.forEach(n => {
-      capas[n.capa].push(n);
+    nodes.forEach(n => {
+      layers[n.layer].push(n);
     });
-    capas.forEach(nodosCapa => {
-      // Ordenarlos si es necesario
-      nodosCapa.sort((a, b) => b.valorSalida - a.valorSalida);
-      distribuirNodosCapa(nodosCapa, alto, espacioNodo);
+    layers.forEach(layerNodes => {
+      // Sort them in some manner if needed
+      layerNodes.sort((a, b) => b.valueOut - a.valueOut);
+      distributeLayerNodes(layerNodes, height, nodePadding);
     });
 
-    // 5) Crear los elementos <path> de enlace en el SVG
-    enlaces.forEach((enlace, idx) => {
-      const origen = nodos[enlace.origen];
-      const destino = nodos[enlace.destino];
+    // 5) Create Link <path> elements in SVG
+    links.forEach((link, idx) => {
+      const source = nodes[link.source];
+      const target = nodes[link.target];
 
-      // Escalar los anchos de los enlaces para que el total coincida con la altura del nodo
-      const escalaAnchoEnlace = (origen.y1 - origen.y0 - (origen.enlacesOrigen.length - 1) * espacioNodo) / 
-                               origen.enlacesOrigen.reduce((sum, l) => sum + l.valor, 0);
+      // Scale link widths so total matches node's height
+      const linkWidthScale = (source.y1 - source.y0 - (source.sourceLinks.length - 1) * nodePadding) / 
+                             source.sourceLinks.reduce((sum, l) => sum + l.value, 0);
 
-      const alturaEnlace = enlace.valor * escalaAnchoEnlace;
+      const linkHeight = link.value * linkWidthScale;
 
-      // Asignar sy0 y ty0
-      const sy0 = origen.y0 + origen.offsetEnlaceSalida + alturaEnlace / 2;
-      origen.offsetEnlaceSalida += alturaEnlace + espacioNodo;
+      // Assign sy0 and ty0
+      const sy0 = source.y0 + source.linkOffsetOut + linkHeight / 2;
+      source.linkOffsetOut += linkHeight + nodePadding;
 
-      const ty0 = destino.y0 + destino.offsetEnlaceEntrada + alturaEnlace / 2;
-      destino.offsetEnlaceEntrada += alturaEnlace + espacioNodo;
+      const ty0 = target.y0 + target.linkOffsetIn + linkHeight / 2;
+      target.linkOffsetIn += linkHeight + nodePadding;
 
-      // Crear gradiente si el origen y el destino tienen colores diferentes
-      let trazoEnlace;
-      if (origen.color === destino.color) {
-        trazoEnlace = origen.color;
+      // Create gradient if source and target have different colors
+      let linkStroke;
+      if (source.color === target.color) {
+        linkStroke = source.color;
       } else {
-        const idGradiente = `gradiente-${origen.indice}-${destino.indice}-${idx}`;
-        const gradienteLineal = crearElementoSVG('linearGradient');
-        gradienteLineal.setAttribute('id', idGradiente);
-        gradienteLineal.setAttribute('x1', '0%');
-        gradienteLineal.setAttribute('y1', '0%');
-        gradienteLineal.setAttribute('x2', '100%');
-        gradienteLineal.setAttribute('y2', '0%');
+        const gradientId = `gradient-${source.index}-${target.index}-${idx}`;
+        const linearGradient = createSVGElement('linearGradient');
+        linearGradient.setAttribute('id', gradientId);
+        linearGradient.setAttribute('x1', '0%');
+        linearGradient.setAttribute('y1', '0%');
+        linearGradient.setAttribute('x2', '100%');
+        linearGradient.setAttribute('y2', '0%');
 
-        const parada1 = crearElementoSVG('stop');
-        parada1.setAttribute('offset', '0%');
-        parada1.setAttribute('stop-color', origen.color);
-        gradienteLineal.appendChild(parada1);
+        const stop1 = createSVGElement('stop');
+        stop1.setAttribute('offset', '0%');
+        stop1.setAttribute('stop-color', source.color);
+        linearGradient.appendChild(stop1);
 
-        const parada2 = crearElementoSVG('stop');
-        parada2.setAttribute('offset', '100%');
-        parada2.setAttribute('stop-color', destino.color);
-        gradienteLineal.appendChild(parada2);
+        const stop2 = createSVGElement('stop');
+        stop2.setAttribute('offset', '100%');
+        stop2.setAttribute('stop-color', target.color);
+        linearGradient.appendChild(stop2);
 
-        defs.appendChild(gradienteLineal);
+        defs.appendChild(linearGradient);
 
-        trazoEnlace = `url(#${idGradiente})`;
+        linkStroke = `url(#${gradientId})`;
       }
 
-      // Crear el path
-      const path = crearElementoSVG('path');
-      path.setAttribute('class', 'jocarsa-floralwhite-enlace');
-      path.setAttribute('d', rutaEnlaceSankey(
-        origen.x1, sy0,
-        destino.x0, ty0
+      // Build path
+      const path = createSVGElement('path');
+      path.setAttribute('class', 'jocarsa-floralwhite-link');
+      path.setAttribute('d', sankeyLinkPath(
+        source.x1, sy0,
+        target.x0, ty0
       ));
-      path.setAttribute('stroke', trazoEnlace);
-      path.setAttribute('stroke-width', alturaEnlace);
+      path.setAttribute('stroke', linkStroke);
+      path.setAttribute('stroke-width', linkHeight);
       path.setAttribute('fill', 'none');
 
-      // Interacción de hover
+      // Hover interaction
       path.addEventListener('mouseover', () => {
-        path.style.strokeOpacity = 0.7;  // o 1 si quieres quitar el desvanecimiento
+        path.style.strokeOpacity = 0.7;  // or 1 if you want to remove fade
       });
       path.addEventListener('mouseout', () => {
-        path.style.strokeOpacity = 0.2;  // volver a una menor opacidad
+        path.style.strokeOpacity = 0.2;  // revert to a lower opacity
       });
 
-      // Opcional: mostrar tooltip o registrar información
+      // Optional: display tooltip or log info
       path.addEventListener('click', () => {
-        alert(`Enlace: ${origen.nombre} -> ${destino.nombre}\nValor: ${enlace.valor}`);
+        alert(`Link: ${source.name} -> ${target.name}\nValue: ${link.value}`);
       });
 
       svg.appendChild(path);
     });
 
-    // 6) Crear elementos <g> para los nodos
-    nodos.forEach(nodo => {
-      const g = crearElementoSVG('g');
-      g.setAttribute('class', 'jocarsa-floralwhite-nodo');
+    // 6) Create Node <g> elements
+    nodes.forEach(node => {
+      const g = createSVGElement('g');
+      g.setAttribute('class', 'jocarsa-floralwhite-node');
 
-      const rect = crearElementoSVG('rect');
-      rect.setAttribute('x', nodo.x0);
-      rect.setAttribute('y', nodo.y0);
-      rect.setAttribute('width', anchoNodo);
-      rect.setAttribute('height', nodo.y1 - nodo.y0);
-      rect.setAttribute('fill', nodo.color);
+      const rect = createSVGElement('rect');
+      rect.setAttribute('x', node.x0);
+      rect.setAttribute('y', node.y0);
+      rect.setAttribute('width', nodeWidth);
+      rect.setAttribute('height', node.y1 - node.y0);
+      rect.setAttribute('fill', node.color);
       rect.setAttribute('stroke', '#ffffff');
       rect.setAttribute('rx', 5);
       rect.setAttribute('ry', 5);
       rect.setAttribute('stroke-width', 2);
       rect.classList.add('jocarsa-floralwhite-rect');
 
-      // Cambiar el relleno a naranja al pasar el ratón
+      // Hover changes fill to orange
       rect.addEventListener('mouseover', () => {
         rect.style.fill = 'orange';
       });
       rect.addEventListener('mouseout', () => {
-        rect.style.fill = nodo.color;
+        rect.style.fill = node.color;
       });
 
       g.appendChild(rect);
 
-      // Etiqueta del nodo
-      const texto = crearElementoSVG('text');
-      texto.setAttribute('x', nodo.x0 + anchoNodo / 2);
-      texto.setAttribute('y', nodo.y0 + (nodo.y1 - nodo.y0) / 2);
-      texto.setAttribute('dy', '0.35em');
-      texto.setAttribute('text-anchor', 'middle');
-      texto.textContent = nodo.nombre;
-      texto.classList.add('jocarsa-floralwhite-text');
-      g.appendChild(texto);
+      // Node label
+      const text = createSVGElement('text');
+      text.setAttribute('x', node.x0 + nodeWidth / 2);
+      text.setAttribute('y', node.y0 + (node.y1 - node.y0) / 2);
+      text.setAttribute('dy', '0.35em');
+      text.setAttribute('text-anchor', 'middle');
+      text.textContent = node.name;
+      text.classList.add('jocarsa-floralwhite-text');
+      g.appendChild(text);
 
-      // Opcional: mostrar información al hacer clic
+      // Optional: show info on click
       rect.addEventListener('click', () => {
-        alert(`Nodo: ${nodo.nombre}\nEntrada: ${nodo.valorEntrada}\nSalida: ${nodo.valorSalida}`);
+        alert(`Node: ${node.name}\nIn: ${node.valueIn}\nOut: ${node.valueOut}`);
       });
 
       svg.appendChild(g);
@@ -286,118 +279,100 @@
   };
 
   // -------------------------------------------------------------------------
-  // Funciones auxiliares
+  // Helper functions
   // -------------------------------------------------------------------------
 
-  function crearLeyenda(nodos, contenedor) {
-    const leyenda = document.createElement('div');
-    leyenda.classList.add('leyenda-sankey');
-    leyenda.style.marginTop = '20px';
+  function assignNodeLayers(nodes, sourceNodes) {
+    nodes.forEach(n => n.layer = undefined);
 
-    nodos.forEach(nodo => {
-      const item = document.createElement('div');
-      item.classList.add('leyenda-item');
-      item.style.display = 'flex';
-      item.style.alignItems = 'center';
-      item.style.marginBottom = '5px';
-
-      const colorBox = document.createElement('div');
-      colorBox.style.width = '20px';
-      colorBox.style.height = '20px';
-      colorBox.style.backgroundColor = nodo.color;
-      colorBox.style.marginRight = '10px';
-
-      const label = document.createElement('span');
-      label.textContent = nodo.nombre;
-
-      item.appendChild(colorBox);
-      item.appendChild(label);
-
-      leyenda.appendChild(item);
+    const queue = [];
+    sourceNodes.forEach(s => {
+      s.layer = 0;
+      queue.push(s);
     });
 
-    contenedor.appendChild(leyenda);
-  }
-
-  function asignarCapasNodos(nodos, nodosOrigen) {
-    nodos.forEach(n => n.capa = undefined);
-
-    const cola = [];
-    nodosOrigen.forEach(s => {
-      s.capa = 0;
-      cola.push(s);
-    });
-
-    while (cola.length) {
-      const actual = cola.shift();
-      const capaActual = actual.capa;
-      actual.enlacesOrigen.forEach(enlace => {
-        const nodoDestino = nodos[enlace.destino];
-        if (nodoDestino.capa == null || nodoDestino.capa < capaActual + 1) {
-          nodoDestino.capa = capaActual + 1;
-          cola.push(nodoDestino);
+    while (queue.length) {
+      const current = queue.shift();
+      const currentLayer = current.layer;
+      current.sourceLinks.forEach(link => {
+        const targetNode = nodes[link.target];
+        if (targetNode.layer == null || targetNode.layer < currentLayer + 1) {
+          targetNode.layer = currentLayer + 1;
+          queue.push(targetNode);
         }
       });
     }
   }
 
-  document.getElementById('filtro-nodo-0').addEventListener('change', (event) => {
-    filtrarNodos(nodos, [0]);
-  });
-  
-  
-  function exportarComoImagen() {
-    const svg = document.querySelector('.jocarsa-floralwhite-svg');
-    const svgData = new XMLSerializer().serializeToString(svg);
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    const image = new Image();
-  
-    image.onload = () => {
-      ctx.drawImage(image, 0, 0);
-      const dataURL = canvas.toDataURL('image/png');
-      const enlace = document.createElement('a');
-      enlace.href = dataURL;
-      enlace.download = 'grafico-sankey.png';
-      enlace.click();
-    };
-  
-    image.src = 'data:image/svg+xml;base64,' + btoa(svgData);
-  }
-  
-  // Crear un botón para exportar
-  const botonExportar = document.createElement('button');
-  botonExportar.innerText = 'Exportar como Imagen';
-  botonExportar.addEventListener('click', exportarComoImagen);
-  document.body.appendChild(botonExportar);
-  
+  function distributeLayerNodes(layerNodes, totalHeight, nodePadding) {
+    if (!layerNodes.length) return;
+    const totalValue = layerNodes.reduce((sum, n) => sum + Math.max(n.valueIn, n.valueOut), 0);
+    let yStart = 0;
 
-  function distribuirNodosCapa(nodosCapa, alturaTotal, espacioNodo) {
-    if (!nodosCapa.length) return;
-    const valorTotal = nodosCapa.reduce((sum, n) => sum + Math.max(n.valorEntrada, n.valorSalida), 0);
-    let yInicio = 0;
-
-    nodosCapa.forEach(n => {
-      const valorNodo = Math.max(n.valorEntrada, n.valorSalida);
-      const alturaNodo = (valorNodo / valorTotal) * (alturaTotal - espacioNodo * (nodosCapa.length - 1));
-      n.y0 = yInicio;
-      n.y1 = yInicio + alturaNodo;
-      yInicio += alturaNodo + espacioNodo;
+    layerNodes.forEach(n => {
+      const nodeValue = Math.max(n.valueIn, n.valueOut);
+      const nodeHeight = (nodeValue / totalValue) * (totalHeight - nodePadding * (layerNodes.length - 1));
+      n.y0 = yStart;
+      n.y1 = yStart + nodeHeight;
+      yStart += nodeHeight + nodePadding;
     });
   }
 
-  function rutaEnlaceSankey(x0, y0, x1, y1) {
-    return `M ${x0} ${y0} C ${x0 + 100} ${y0} ${x1 - 100} ${y1} ${x1} ${y1}`;
+  function sankeyLinkPath(x0, y0, x1, y1) {
+    const curvature = 0.5;
+    const xi = d3InterpolateNumber(x0, x1);
+    const x2 = xi(curvature);
+    const x3 = xi(1 - curvature);
+    return `M${x0},${y0} C${x2},${y0} ${x3},${y1} ${x1},${y1}`;
   }
 
-  function crearElementoSVG(tag) {
-    return document.createElementNS("http://www.w3.org/2000/svg", tag);
+  function d3InterpolateNumber(a, b) {
+    return function(t) {
+      return a + (b - a) * t;
+    };
   }
 
-  function obtenerColorAleatorio() {
-    return `hsl(${Math.random() * 360}, 100%, 50%)`;  // Color aleatorio
+  function createSVGElement(name) {
+    return document.createElementNS('http://www.w3.org/2000/svg', name);
   }
 
-  // Exponer la API
-  global.jocarsaFloralwhite = JocarsaFloralwhite;
+  function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = JocarsaFloralwhite;
+  } else {
+    global.jocarsaFloralwhite = JocarsaFloralwhite;
+  }
+
+  document.getElementById('save-btn').addEventListener('click', function() {
+    // Obtener el SVG generado
+    const svg = document.querySelector('.jocarsa-floralwhite-svg');
+    
+    if (svg) {
+      // Convertir el SVG a una cadena de texto
+      const svgString = new XMLSerializer().serializeToString(svg);
+      
+      // Crear un Blob con el contenido SVG
+      const blob = new Blob([svgString], { type: 'image/svg+xml' });
+  
+      // Crear un enlace para descargar el archivo
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'grafico_sankey.svg'; // Nombre del archivo a descargar
+      
+      // Simular el clic en el enlace para descargar el archivo
+      link.click();
+    } else {
+      alert('No se pudo encontrar el gráfico para guardar.');
+    }
+  });
+    
+
 })(this);

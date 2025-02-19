@@ -2,6 +2,7 @@
 
 import os
 import json
+import csv
 
 def get_size(path):
     """Get the size of a file or directory."""
@@ -20,10 +21,14 @@ def get_size(path):
     except (OSError, PermissionError):
         return None
 
-def list_files_and_folders_recursive(root, folders_only=False):
+def list_files_and_folders_recursive(root, folders_only=False, file_extensions=None):
     """
     Recursively list all files and folders in the given root directory.
-    
+
+    Parameters:
+      - folders_only: If True, only include directories.
+      - file_extensions: List of file extensions to include (e.g., ['.txt', '.pdf']).
+
     Returns a list of dicts with:
       - name
       - path
@@ -40,15 +45,16 @@ def list_files_and_folders_recursive(root, folders_only=False):
                     'path': entry.path,
                     'type': 'directory',
                     'size': get_size(entry.path),
-                    'contents': list_files_and_folders_recursive(entry.path, folders_only)
+                    'contents': list_files_and_folders_recursive(entry.path, folders_only, file_extensions)
                 })
             elif not folders_only:
-                structure.append({
-                    'name': entry.name,
-                    'path': entry.path,
-                    'type': 'file',
-                    'size': get_size(entry.path)
-                })
+                if file_extensions is None or any(entry.name.lower().endswith(ext) for ext in file_extensions):
+                    structure.append({
+                        'name': entry.name,
+                        'path': entry.path,
+                        'type': 'file',
+                        'size': get_size(entry.path)
+                    })
     except (OSError, PermissionError):
         pass
     return structure
@@ -69,7 +75,7 @@ def transform_for_d3_sunburst(data, parent_name="root"):
         "name": parent_name,
         "children": []
     }
-    
+
     for item in data:
         size = item.get('size', 0) or 0
         if 'contents' in item and item['contents']:
@@ -84,7 +90,7 @@ def transform_for_d3_sunburst(data, parent_name="root"):
                 "name": item['path'],
                 "value": size
             })
-    
+
     return node
 
 def create_html_sunburst_chart(data, html_file):
@@ -107,7 +113,7 @@ def create_html_sunburst_chart(data, html_file):
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<title>Zoomable Sunburst Chart</title>
+<title>Grafico de Sunburst con zoom</title>
 <style>
   /* ----- Reset & Body ----- */
   * {{
@@ -240,21 +246,21 @@ def create_html_sunburst_chart(data, html_file):
 <div class="center-container">
   <!-- LOGIN FORM -->
   <div class="login-card" id="login-card">
-    <h1>Login</h1>
+    <h1>Iniciar Sesión</h1>
     <label for="username">Username</label>
-    <input type="text" id="username" placeholder="Username" />
+    <input type="text" id="username" placeholder="Usuario" />
     <label for="password">Password</label>
-    <input type="password" id="password" placeholder="Password" />
-    <button onclick="attemptLogin()">Sign In</button>
+    <input type="password" id="password" placeholder="Contraseña" />
+    <button onclick="attemptLogin()">Iniciar</button>
     <div class="error-msg" id="error-msg"></div>
   </div>
 
   <!-- CHART CONTAINER (hidden until login) -->
   <div id="chart-container">
-    <div class="chart-title">Zoomable Sunburst Chart</div>
+    <div class="chart-title">Grafico de Sunburst con zoomt</div>
     <div class="chart-controls">
-      <button onclick="goParent()">Go to Parent Folder</button>
-      <button onclick="goRoot()">Go to Root Folder</button>
+      <button onclick="goParent()">Ir al directorio anterior</button>
+      <button onclick="goRoot()">Ir al directorio raiz</button>
     </div>
     <div class="chart">
       <svg id="sunburst" width="800" height="800"></svg>
@@ -438,27 +444,94 @@ def create_html_sunburst_chart(data, html_file):
     with open(html_file, "w", encoding="utf-8") as f:
         f.write(html_content)
 
+def calculate_total_size_by_type(file_structure):
+    """Calculate the total size of files grouped by their type."""
+    size_by_type = {}
+
+    def recursive_size_calc(structure):
+        for item in structure:
+            if item['type'] == 'file':
+                ext = os.path.splitext(item['name'])[1].lower()
+                if ext not in size_by_type:
+                    size_by_type[ext] = 0
+                size_by_type[ext] += item.get('size', 0)
+            elif item['type'] == 'directory':
+                recursive_size_calc(item['contents'])
+
+    recursive_size_calc(file_structure)
+    return size_by_type
+
+def generate_summary(file_structure):
+    """Generate a summary of the file structure."""
+    total_files = 0
+    total_directories = 0
+    total_size = 0
+
+    def recursive_summary(structure):
+        nonlocal total_files, total_directories, total_size
+        for item in structure:
+            if item['type'] == 'file':
+                total_files += 1
+                total_size += item.get('size', 0)
+            elif item['type'] == 'directory':
+                total_directories += 1
+                recursive_summary(item['contents'])
+
+    recursive_summary(file_structure)
+    return {
+        'total_files': total_files,
+        'total_directories': total_directories,
+        'total_size': total_size
+    }
+
+def export_to_csv(file_structure, csv_file):
+    """Export the file structure to a CSV file."""
+    with open(csv_file, mode='w', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerow(['Name', 'Path', 'Type', 'Size'])
+
+        def write_items(items):
+            for item in items:
+                writer.writerow([item['name'], item['path'], item['type'], item.get('size', 0)])
+                if item['type'] == 'directory':
+                    write_items(item['contents'])
+
+        write_items(file_structure)
+
 def main():
     # Change this to the folder you want to scan
     root_dir = "/xampp/htdocs/JoseManuelBarrasaDAM2"
     output_file = "file_structure.json"
     html_file = "file_structure_sunburst.html"
+    csv_file = "file_structure.csv"
     folders_only = True  # Set to False to include files as well
+    file_extensions = ['.txt', '.pdf']  # Add the file extensions you want to include
 
-    print("Scanning the root directory. This may take some time...")
-    file_structure = list_files_and_folders_recursive(root_dir, folders_only=folders_only)
+    print("Escaneando el directorio raíz. Esto puede tardar un poco...")
+    file_structure = list_files_and_folders_recursive(root_dir, folders_only=folders_only, file_extensions=file_extensions)
 
-    print(f"Saving raw results to {output_file}...")
+    print(f"Guardando resultados en bruto en {output_file}...")
     with open(output_file, "w") as f:
         json.dump(file_structure, f, indent=4)
 
-    print("Transforming data for D3 sunburst...")
+    print("Transformando datos para D3 sunburst...")
     d3_data = transform_for_d3_sunburst(file_structure, parent_name=root_dir)
 
-    print(f"Creating interactive zoomable sunburst chart with login. Saving to {html_file}...")
+    print(f"Creando gráfico sunburst ampliable interactivo con inicio de sesión. Guardando en {html_file}...")
     create_html_sunburst_chart(d3_data, html_file)
 
-    print("Process completed!")
+    print("Calculando el tamaño total de archivos por tipo...")
+    size_by_type = calculate_total_size_by_type(file_structure)
+    print("Tamaño total por tipo de archivo:", size_by_type)
+
+    print("Generando un resumen de la estructura de archivos...")
+    summary = generate_summary(file_structure)
+    print("Resumen:", summary)
+
+    print(f"Exportando la estructura de archivos a un archivo CSV: {csv_file}...")
+    export_to_csv(file_structure, csv_file)
+
+    print("Proceso completado")
 
 if __name__ == "__main__":
     main()

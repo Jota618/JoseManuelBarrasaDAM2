@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reino Multilingüe</title>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: url('parchment.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'MedievalSharp', cursive;
+            text-align: center;
+            color: #4A2C2A;
+            padding: 0;
+            margin: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 30px;
+        }
+        .parchment {
+            background: rgba(255, 248, 220, 0.95);
+            padding: 25px;
+            border: 12px solid #8B4513;
+            border-radius: 15px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
+            margin: 20px 0;
+            transition: transform 0.3s;
+        }
+        .parchment:hover {
+            transform: scale(1.02);
+        }
+        .dropbtn {
+            background-color: #8B4513;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 5px;
+        }
+        .dropdown {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: rgba(255, 248, 220, 0.95);
+            min-width: 120px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            border: 2px solid #8B4513;
+            border-radius: 5px;
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #4A2C2A;
+        }
+        .dropdown-content a:hover {
+            background-color: #8B4513;
+            color: white;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 id="title">🏰 Bienvenido al Reino! 🏰</h1>
+        </header>
+        
+        <main>
+            <section class="parchment">
+                <h2 id="section-title">📜 Sobre el Reino 📜</h2>
+                <p id="section-content">En estas tierras, forjamos el conocimiento con honor y valentía.</p>
+            </section>
+
+            <section class="parchment">
+                <h2 id="services-title">⚔️ Servicios del Gremio ⚔️</h2>
+                <ul>
+                    <li id="service-1">Asesoramiento arcano</li>
+                    <li id="service-2">Forja de sitios místicos</li>
+                    <li id="service-3">Hechizos de promoción</li>
+                </ul>
+            </section>
+        </main>
+        
+        <footer>
+            <p id="footer-content">⚜️ Derechos reservados del Reino © 2025 ⚜️</p>
+        </footer>
+    </div>
+
+    <div class="dropdown">
+        <button class="dropbtn">Idioma 🌍</button>
+        <div class="dropdown-content">
+            <a href="#" onclick="changeLanguage('es')">Español</a>
+            <a href="#" onclick="changeLanguage('en')">English</a>
+            <a href="#" onclick="changeLanguage('fr')">Français</a>
+        </div>
+    </div>
+
+    <script>
+        fetch('translations.json')
+.then(response => response.json())
+.then(data => {
+    window.translations = data;
+    changeLanguage('es'); // Idioma por defecto
+});
+
+function changeLanguage(lang) {
+    document.getElementById('title').textContent = translations[lang]['title'];
+    document.getElementById('section-title').textContent = translations[lang]['section-title'];
+    document.getElementById('section-content').textContent = translations[lang]['section-content'];
+    document.getElementById('services-title').textContent = translations[lang]['services-title'];
+    document.getElementById('service-1').textContent = translations[lang]['service-1'];
+    document.getElementById('service-2').textContent = translations[lang]['service-2'];
+    document.getElementById('service-3').textContent = translations[lang]['service-3'];
+    document.getElementById('footer-content').textContent = translations[lang]['footer-content'];
+}
+    </script>
+</body>
+</html>
