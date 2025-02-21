@@ -1,0 +1,160 @@
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0 20px;
+    background-color: #f5f5f5;
+}
+
+/* Encabezado (si usas header en el admin, opcional) */
+header {
+    background-color: #333;
+    padding: 10px;
+}
+
+header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+header nav ul li {
+    margin-right: 20px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Contenedor principal */
+main {
+    padding: 20px;
+    background-color: white;
+    margin: 20px auto;
+    max-width: 800px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Pie de página (si se utiliza) */
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Navegación del admin */
+.nav {
+    margin-bottom: 20px;
+}
+
+.nav a {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #333;
+    background-color: #e0e0e0;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.nav a:hover {
+    background-color: #ccc;
+}
+
+/* Estilos para las tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+/* Estilos para formularios */
+form {
+    margin-bottom: 20px;
+}
+
+form label {
+    display: inline-block;
+    width: 150px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* Estilos para inputs de texto, textarea, select, file y url */
+form input[type="text"],
+form textarea,
+form select,
+form input[type="file"],
+form input[type="url"] {
+    width: calc(100% - 160px);
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form button {
+    padding: 8px 15px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #555;
+}
+
+/* Mensajes */
+.msg {
+    color: green;
+    margin-bottom: 20px;
+}
+
+.error {
+    color: red;
+    margin-bottom: 20px;
+}
+
+/* Estilos para elementos específicos del admin */
+h1, h2 {
+    margin-bottom: 20px;
+}
+
+/* Estilo específico para el botón "Volver al inicio" */
+.volver-inicio {
+    margin-left: 15px; /* Ajusta el margen izquierdo para separarlo del botón de "Asignaturas" */
+    text-decoration: none;
+    color: #333;
+    background-color: #e0e0e0;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.volver-inicio:hover {
+    background-color: #ccc;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    form label, form input[type="text"], form textarea, form select, form input[type="file"], form input[type="url"] {
+        width: 100%;
+        display: block;
+    }
+}

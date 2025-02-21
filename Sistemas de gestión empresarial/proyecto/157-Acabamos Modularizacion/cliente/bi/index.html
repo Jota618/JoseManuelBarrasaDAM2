@@ -48,93 +48,94 @@
 		<input type="number" id="limite">
 	</div>
 	<div class="derecha">
-		<div class="peticion">
-			
-		</div>
-		<div id="resultadotabla">
-			
-		</div>
+		<div class="peticion"></div>
+		<div id="resultadotabla"></div>
+		<button onclick="exportarCSV()">Exportar como CSV</button> <!-- Nuevo botón -->
 	</div>
 </div>
 <script>
-			let peticion = "SELECT "
-			let tabla = ""
-			let columnas = "*"
-			let desde = " FROM "
-			let limite = 100;
-			
-			ejecutaPeticion()
-			
-			fetch("../../servidor/?o=listatablas")
-			.then(function(response){
-				return response.json()
-			})
-			.then(function(datos){
-				datos.forEach(function(tabla){
-					let elemento = document.createElement("option")
-					elemento.value = tabla.Tables_in_crimson
-					elemento.textContent = tabla.Tables_in_crimson
-					document.querySelector("#tablas").appendChild(elemento)
-				})
-			})
-			document.querySelector("#tablas").onchange = function () {
-				 console.log("Tabla seleccionada, vamos con el siguiente paso");
-				 tabla = this.value;
-				 ejecutaPeticion()
-				 fetch("../../servidor/?o=columnastabla&tabla=" + this.value)
-					  .then(function (response) {
-						   return response.json();
-					  })
-					  .then(function (datos) {
-						   let contenedor = document.querySelector("#contienecampos");
-						   contenedor.innerHTML = ""; // Limpiar el contenedor antes de agregar nuevos elementos
-						   datos.forEach(function (dato) {
-						       let etiqueta = document.createElement("label");
-						       let elemento = document.createElement("input");
-						       elemento.setAttribute("type", "checkbox");
-						       elemento.setAttribute("name", dato.Field);
-						       elemento.classList.add("campo")
+	let peticion = "SELECT ";
+	let tabla = "";
+	let columnas = "*";
+	let desde = " FROM ";
+	let limite = 100;
+	
+	ejecutaPeticion();
+	
+	fetch("../../servidor/?o=listatablas")
+	.then(response => response.json())
+	.then(datos => {
+		datos.forEach(tabla => {
+			let elemento = document.createElement("option");
+			elemento.value = tabla.Tables_in_crimson;
+			elemento.textContent = tabla.Tables_in_crimson;
+			document.querySelector("#tablas").appendChild(elemento);
+		});
+	});
+	
+	document.querySelector("#tablas").onchange = function () {
+		console.log("Tabla seleccionada, vamos con el siguiente paso");
+		tabla = this.value;
+		ejecutaPeticion();
+		fetch("../../servidor/?o=columnastabla&tabla=" + this.value)
+		.then(response => response.json())
+		.then(datos => {
+			let contenedor = document.querySelector("#contienecampos");
+			contenedor.innerHTML = ""; 
+			datos.forEach(dato => {
+				let etiqueta = document.createElement("label");
+				let elemento = document.createElement("input");
+				elemento.setAttribute("type", "checkbox");
+				elemento.setAttribute("name", dato.Field);
+				elemento.classList.add("campo");
 
-						       // Añadir evento al checkbox
-						       elemento.onclick = function () {
-						           let campos = document.querySelectorAll(".campo")
-						           console.log(campos)
-						           columnas = ""
-						           campos.forEach(function(campo){
-						           		if(campo.checked){
-						           			columnas += campo.name+","
-						           		}
-						           })
-						           columnas = columnas.slice(0, -1);
-						           ejecutaPeticion()
-						       };
+				elemento.onclick = function () {
+					let campos = document.querySelectorAll(".campo");
+					columnas = "";
+					campos.forEach(campo => {
+						if (campo.checked) {
+							columnas += campo.name + ",";
+						}
+					});
+					columnas = columnas.slice(0, -1);
+					ejecutaPeticion();
+				};
 
-						       // Añadir el texto al label
-						       etiqueta.appendChild(elemento);
-						       let texto = document.createElement("p");
-						       texto.textContent = dato.Field;
-						       etiqueta.appendChild(texto);
+				etiqueta.appendChild(elemento);
+				let texto = document.createElement("p");
+				texto.textContent = dato.Field;
+				etiqueta.appendChild(texto);
+				contenedor.appendChild(etiqueta);
+			});
+		});
+	};
 
-						       // Añadir el label al contenedor
-						       contenedor.appendChild(etiqueta);
-						   });
-					  });
-			};
-			function ejecutaPeticion(){
-				let sql = peticion + columnas + desde + tabla +" LIMIT "+limite
-				document.querySelector(".peticion").textContent = sql;
-				
-				fetch("ejecuta.php?sql="+encodeURI(sql))
-				.then(function (response) {
-						   return response.text();
-					  })
-					  .then(function (datos) {
-					  		document.querySelector("#resultadotabla").innerHTML = datos
-					  })
-				
-			}
-			document.querySelector("#limite").onchange = function(){
-				limite = this.value
-				ejecutaPeticion()
-			}
-		</script>
+	function ejecutaPeticion() {
+		let sql = peticion + columnas + desde + tabla + " LIMIT " + limite;
+		document.querySelector(".peticion").textContent = sql;
+		
+		fetch("ejecuta.php?sql=" + encodeURI(sql))
+		.then(response => response.text())
+		.then(datos => {
+			document.querySelector("#resultadotabla").innerHTML = datos;
+		});
+	}
+
+	document.querySelector("#limite").onchange = function() {
+		limite = this.value;
+		ejecutaPeticion();
+	};
+
+	function exportarCSV() {
+    if (!tabla || tabla === "Selecciona una tabla...") {
+        alert("Por favor, selecciona una tabla antes de exportar.");
+        return;
+    }
+    
+    let columnasSeleccionadas = columnas.trim() || "*"; // Si no hay columnas, usa todas
+    let sql = `SELECT ${columnasSeleccionadas} FROM ${tabla} LIMIT ${limite}`;
+    
+    window.location.href = "exportar.php?sql=" + encodeURIComponent(sql);
+}
+
+</script>
